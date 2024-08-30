@@ -128,3 +128,78 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# --- Spring Boot (Java) ---
+
+# Compiled class files
+*.class
+
+# Spring Boot specific directories and files
+target/
+build/
+*.war
+*.jar
+
+# Maven / Gradle directories
+.mvn/
+.mvnw
+.gradle/
+.gradle/
+!gradle-wrapper.jar
+
+# Temporary files
+hs_err_pid*
+*.log.*
+
+# IDE files
+*.project
+*.classpath
+.settings/
+.idea/
+.vscode/
+*.iml
+
+# Logs
+spring.log
+
+# --- React Native (Expo) ---
+
+# React Native / Expo specific
+.expo/
+.expo-shared/
+web-build/
+
+# Mac build files
+ios/build/
+ios/Pods/
+
+# Android build files
+android/.gradle/
+android/app/build/
+android/.idea/
+android/local.properties
+android/.vscode/
+
+# Bundler / Node / Yarn
+node_modules/
+npm-debug.log
+yarn-debug.log*
+yarn-error.log*
+
+# Expo Cache/Files
+.expo/
+
+# Prevent tracking of build directories
+*.bundle
+*.expo
+
+# Fastlane build logs
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/screenshots/**/*.jpg
+
+# Misc
+*~.nib
+.lock/
+*.lock
