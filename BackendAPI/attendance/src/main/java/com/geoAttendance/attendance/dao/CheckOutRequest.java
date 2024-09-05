@@ -1,10 +1,9 @@
 package com.geoAttendance.attendance.dao;
 
-public class CheckInRequest {
+public class CheckOutRequest {
     private Long employeeId;
     private Double latitude;
     private Double longitude;
-    private String locationDescription;
 
     public String getEmployeeId() {
         return employeeId;
@@ -30,11 +29,4 @@ public class CheckInRequest {
         this.longitude = longitude;
     }
 
-    public String getLocationDescription() {
-        return locationDescription;
-    }
-
-    public void setLocationDescription(String locationDescription) {
-        this.locationDescription = locationDescription;
-    }
 }
