@@ -3,13 +3,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../services/api_service.dart';
 import 'package:latlong2/latlong.dart';
+import '../screens/checkin_success_page.dart';
 
 class CheckinButton extends StatelessWidget {
   final LatLng? currentPosition;
 
   const CheckinButton({super.key, this.currentPosition});
 
-  Future<void> _checkIn() async {
+  Future<void> _checkIn(BuildContext context) async {
     if (currentPosition == null) {
       print('Current position is null');
       return;
@@ -25,11 +26,23 @@ class CheckinButton extends StatelessWidget {
 
       if (response.statusCode == 200) {
         print('Check-in successful');
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => CheckinSuccessPage(
+              employeeId: 1, // Replace with actual employee ID
+              latitude: currentPosition!.latitude,
+              longitude: currentPosition!.longitude,
+              timestamp: DateTime.now().toIso8601String(),
+            ),
+          ),
+        );
       } else {
         print('Failed to check in: ${response.body}');
+        // Optionally, show an error message
       }
     } catch (e) {
       print('Error: $e');
+      // Optionally, show an error message
     }
   }
 
@@ -50,7 +63,7 @@ class CheckinButton extends StatelessWidget {
         elevation: 4,
       ),
       onPressed: () async {
-        await _checkIn();
+        await _checkIn(context);
       },
       child: const Text('Check In'),
     );
