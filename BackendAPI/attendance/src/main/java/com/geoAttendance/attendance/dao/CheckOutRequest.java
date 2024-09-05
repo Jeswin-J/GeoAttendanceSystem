@@ -5,7 +5,7 @@ public class CheckOutRequest {
     private Double latitude;
     private Double longitude;
 
-    public Long getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId;
     }
 
@@ -29,5 +29,4 @@ public class CheckOutRequest {
         this.longitude = longitude;
     }
 
-    // Getters and setters
 }

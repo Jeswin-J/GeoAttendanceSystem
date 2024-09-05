@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import '../widgets/checkout_button.dart'; 
+import '../widgets/checkout_button.dart';
 
 class CheckinSuccessPage extends StatelessWidget {
   final int employeeId;

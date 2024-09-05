@@ -6,7 +6,7 @@ public class CheckInRequest {
     private Double longitude;
     private String locationDescription;
 
-    public Long getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId;
     }
 

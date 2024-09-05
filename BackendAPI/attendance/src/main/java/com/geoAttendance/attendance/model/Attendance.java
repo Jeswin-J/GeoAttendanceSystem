@@ -12,8 +12,19 @@ public class Attendance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+//    @ManyToOne //TODO: UNCOMMENT WHILE RESTRUCTURING
+//    @JoinColumn(name = "employee_id", nullable = false)
+//    private Employee employee;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "location_id", nullable = false)
+//    private Location location;
+
+//    @Column(name = "manual")
+//    private Boolean manualCheck;
+
     @Column(name = "employee_id")
-    private Long employeeId;
+    private String employeeId; //TODO: NOT NEEDED
 
     @Column(name = "check_in_time")
     private LocalDateTime checkInTime;
@@ -28,13 +39,13 @@ public class Attendance {
     private Double longitude;
 
     @Column(name = "location_description")
-    private String locationDescription;
+    private String locationDescription;//TODO: NOT NEEDED
 
-    public Long getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
 
