@@ -36,7 +36,6 @@ class ApiService {
       'longitude': longitude,
     });
 
-    // Log the request body for debugging
     print('Sending checkOut request with data: $requestBody');
 
     try {
@@ -48,14 +47,13 @@ class ApiService {
         body: requestBody,
       );
 
-      // Log the response for debugging
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
       return response;
     } catch (e) {
       print('Error making request: $e');
-      rethrow; // Optional: rethrow to allow further handling
+      rethrow;
     }
   }
 }

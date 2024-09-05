@@ -16,7 +16,7 @@ class CheckoutButton extends StatelessWidget {
 
     try {
       final response = await ApiService.checkOut(
-        employeeId: 1, // Ensure this is a valid employee ID
+        employeeId: 1,
         latitude: currentPosition!.latitude,
         longitude: currentPosition!.longitude,
       );
@@ -29,17 +29,17 @@ class CheckoutButton extends StatelessWidget {
           ),
         );
       } else {
-        print('Failed to check out: ${response.body}'); // Detailed error message
+        print('Failed to check out: ${response.body}');
       }
     } catch (e) {
-      print('Error: $e'); // Catch any errors
+      print('Error: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => _checkOut(context), // Pass context here
+      onPressed: () => _checkOut(context),
       child: const Text('Check Out'),
     );
   }

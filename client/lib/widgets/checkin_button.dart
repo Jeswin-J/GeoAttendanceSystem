@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../services/api_service.dart';
 import 'package:latlong2/latlong.dart';
 import '../screens/checkin_success_page.dart';
@@ -18,7 +16,7 @@ class CheckinButton extends StatelessWidget {
 
     try {
       final response = await ApiService.checkIn(
-        employeeId: 1, // Replace with actual employee ID
+        employeeId: 1,
         latitude: currentPosition!.latitude,
         longitude: currentPosition!.longitude,
         locationDescription: 'Current Location',
@@ -29,7 +27,7 @@ class CheckinButton extends StatelessWidget {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => CheckinSuccessPage(
-              employeeId: 1, // Replace with actual employee ID
+              employeeId: 1,
               latitude: currentPosition!.latitude,
               longitude: currentPosition!.longitude,
               timestamp: DateTime.now().toIso8601String(),
@@ -39,11 +37,9 @@ class CheckinButton extends StatelessWidget {
         );
       } else {
         print('Failed to check in: ${response.body}');
-        // Optionally, show an error message
       }
     } catch (e) {
       print('Error: $e');
-      // Optionally, show an error message
     }
   }
 
