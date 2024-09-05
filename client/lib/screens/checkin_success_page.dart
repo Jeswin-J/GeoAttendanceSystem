@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
+import '../widgets/checkout_button.dart'; // Import the CheckinButton if it is a separate widget
 
 class CheckinSuccessPage extends StatelessWidget {
   final int employeeId;
   final double latitude;
   final double longitude;
   final String timestamp;
+  final LatLng currentPosition; // Add the current position here
 
   const CheckinSuccessPage({
     super.key,
@@ -12,6 +15,7 @@ class CheckinSuccessPage extends StatelessWidget {
     required this.latitude,
     required this.longitude,
     required this.timestamp,
+    required this.currentPosition, // Add this parameter
   });
 
   @override
@@ -52,6 +56,11 @@ class CheckinSuccessPage extends StatelessWidget {
             Text(
               'Timestamp: $timestamp',
               style: const TextStyle(fontSize: 18),
+            ),
+            const Spacer(), // Pushes the button to the bottom
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: CheckoutButton(currentPosition: currentPosition), // Ensure you pass currentPosition
             ),
           ],
         ),

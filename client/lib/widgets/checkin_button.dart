@@ -33,6 +33,7 @@ class CheckinButton extends StatelessWidget {
               latitude: currentPosition!.latitude,
               longitude: currentPosition!.longitude,
               timestamp: DateTime.now().toIso8601String(),
+              currentPosition: currentPosition!,
             ),
           ),
         );

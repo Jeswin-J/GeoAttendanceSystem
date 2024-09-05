@@ -1,5 +1,6 @@
 package com.geoAttendance.attendance.controller;
 import com.geoAttendance.attendance.dao.CheckInRequest;
+import com.geoAttendance.attendance.dao.CheckOutRequest;
 import com.geoAttendance.attendance.model.Attendance;
 import com.geoAttendance.attendance.services.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,11 @@ public class AttendanceController {
     }
 
     @PostMapping("/checkout")
-    public Attendance checkOut(@RequestParam Long employeeId,
-                               @RequestParam Double latitude,
-                               @RequestParam Double longitude) {
-        return attendanceService.checkOut(employeeId, latitude, longitude);
+    public Attendance checkOut(@RequestBody CheckOutRequest request) {
+        return attendanceService.checkOut(
+                request.getEmployeeId(),
+                request.getLatitude(),
+                request.getLongitude()
+        );
     }
 }
