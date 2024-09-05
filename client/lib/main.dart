@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+
+
+// import 'BlockchainService.dart';
 
 void main() {
   runApp(const MyApp());
@@ -142,13 +148,13 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Icon(Icons.my_location),
             ),
           ),
-          const Positioned(
+          Positioned(
             bottom: 80,
             left: 0,
             right: 0,
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: CheckinButton(),
+              child: CheckinButton(currentPosition: _currentPosition),
             ),
           ),
         ],
@@ -158,7 +164,41 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class CheckinButton extends StatelessWidget {
-  const CheckinButton({super.key});
+  final LatLng? currentPosition;
+
+  CheckinButton({super.key, this.currentPosition});
+
+  final String apiUrl = "http://localhost:8080/api/attendance/checkin";
+
+  Future<void> _checkIn() async {
+    if (currentPosition == null) {
+      print('Current position is null');
+      return;
+    }
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'employeeId': 1, // Replace with actual employee ID
+          'latitude': currentPosition?.latitude,
+          'longitude': currentPosition?.longitude,
+          'locationDescription': 'Current Location',
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print('Check-in successful');
+      } else {
+        print('Failed to check in: ${response.body}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,16 +208,16 @@ class CheckinButton extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
-        backgroundColor: Colors.blue, // Background color
-        foregroundColor: Colors.white, // Text color
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12), // Button border radius
+          borderRadius: BorderRadius.circular(12),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 12), // Button padding
-        elevation: 4, // Button elevation (shadow)
+        padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 12),
+        elevation: 4,
       ),
-      onPressed: () {
-        print('Check In');
+      onPressed: () async {
+        await _checkIn();
       },
       child: const Text('Check In'),
     );
