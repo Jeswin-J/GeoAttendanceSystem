@@ -14,7 +14,7 @@ public class AttendanceService implements AttendanceInterface{
     private AttendanceRepository attendanceRepository;
 
     @Override
-    public Attendance checkIn(String employeeId, Double latitude, Double longitude, String locationDescription) {
+    public Attendance checkIn(Long employeeId, Double latitude, Double longitude, String locationDescription) {
         Attendance attendance = new Attendance();
         attendance.setEmployeeId(employeeId);
         attendance.setCheckInTime(LocalDateTime.now());
@@ -25,7 +25,7 @@ public class AttendanceService implements AttendanceInterface{
     }
 
     @Override
-    public Attendance checkOut(String employeeId, Double latitude, Double longitude) {
+    public Attendance checkOut(Long employeeId, Double latitude, Double longitude) {
         Optional<Attendance> attendanceOptional = attendanceRepository.findAll()
                 .stream()
                 .filter(att -> att.getEmployeeId().equals(employeeId) && att.getCheckOutTime() == null)

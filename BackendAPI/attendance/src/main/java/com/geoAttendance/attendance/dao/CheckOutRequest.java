@@ -5,7 +5,7 @@ public class CheckOutRequest {
     private Double latitude;
     private Double longitude;
 
-    public String getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
