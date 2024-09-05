@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           FlutterMap(
             options: MapOptions(
-              initialCenter: _currentPosition!,
+              initialCenter: _currentPosition ?? const LatLng(13.0495936, 80.0754833),
               initialZoom: 15,
               interactionOptions: const InteractionOptions(
                 flags: InteractiveFlag.all,
@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (_currentPosition != null)
                 CircleLayer(circles: [
                   CircleMarker(
-                    point: _currentPosition!,
+                    point: _currentPosition ?? const LatLng(13.0495936, 80.0754833),
                     radius: 200,
                     useRadiusInMeter: true,
                     color: Colors.lightBlueAccent.withOpacity(0.3),
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Marker(
                       width: 150.0,
                       height: 150.0,
-                      point: _currentPosition!,
+                      point: _currentPosition ?? const LatLng(13.0495936, 80.0754833),
                       child: const Icon(
                         Icons.location_on,
                         color: Colors.red,
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: FloatingActionButton(
               onPressed: () {
                 if (_currentPosition != null) {
-                  _mapController.move(_currentPosition!, 15);
+                  _mapController.move(_currentPosition ?? const LatLng(13.0495936, 80.0754833), 15);
                 }
               },
               child: const Icon(Icons.my_location),

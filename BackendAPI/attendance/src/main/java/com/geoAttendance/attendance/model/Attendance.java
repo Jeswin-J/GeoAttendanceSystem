@@ -24,7 +24,7 @@ public class Attendance {
 //    private Boolean manualCheck;
 
     @Column(name = "employee_id")
-    private String employeeId; //TODO: NOT NEEDED
+    private Long employeeId; //TODO: NOT NEEDED
 
     @Column(name = "check_in_time")
     private LocalDateTime checkInTime;
@@ -41,11 +41,11 @@ public class Attendance {
     @Column(name = "location_description")
     private String locationDescription;//TODO: NOT NEEDED
 
-    public String getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 

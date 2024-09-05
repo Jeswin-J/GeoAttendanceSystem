@@ -6,6 +6,8 @@ import com.geoAttendance.attendance.services.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/attendance")
@@ -36,5 +38,10 @@ public class AttendanceController {
                 request.getLatitude(),
                 request.getLongitude()
         );
+    }
+
+    @GetMapping("/{employeeId}")
+    public List<Attendance> attendanceRecord(@PathVariable Long employeeId){
+        return null;
     }
 }
