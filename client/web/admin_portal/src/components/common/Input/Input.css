@@ -1,0 +1,38 @@
+.input-container {
+    margin-bottom: 1rem;
+  }
+  
+  .input-label {
+    display: block;
+    margin-bottom: 0.1rem;
+    font-weight: 400;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  
+  .input-field:focus {
+    border-color: #617CB5;
+    outline: none;
+  }
+  
+  .input-error {
+    border-color: #AC1D1B;
+  }
+  
+  .input-disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+  }
+  
+  .error-message {
+    color: #AC1D1B; 
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+  }
+  
