@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+spring.log
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -144,7 +145,6 @@ build/
 .mvn/
 .mvnw
 .gradle/
-.gradle/
 !gradle-wrapper.jar
 
 # Temporary files
@@ -158,9 +158,6 @@ hs_err_pid*
 .idea/
 .vscode/
 *.iml
-
-# Logs
-spring.log
 
 # --- React Native (Expo) ---
 
