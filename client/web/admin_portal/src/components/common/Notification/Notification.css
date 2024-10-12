@@ -1,0 +1,80 @@
+.notification {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 5px;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #101318;
+  transition: all 0.3s ease;
+  animation: slideIn 0.5s ease;
+  width: 300px;
+  z-index: 1000;
+}
+
+.notification.info {
+  background-color: #f6f9ff;
+  border: 2px solid #7aa2f9;
+}
+
+.notification.success {
+  background-color: #eafdec;
+  border: 2px solid #78d893;
+}
+
+.notification.warning {
+  background-color: #fff2e2;
+  border: 2px solid #eca22b;
+}
+
+.notification.error {
+  background-color: #ffe2e2;
+  border: 2px solid #d23030;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: #101318;
+  font-size: 1.2rem;
+  cursor: pointer;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px); /* Slide in from the top */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Original position */
+  }
+}
+
+/* Scale Animation */
+@keyframes scaleUp {
+  0% {
+    transform: scale(0.9); /* Start slightly smaller */
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Slide-in Animation */
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
