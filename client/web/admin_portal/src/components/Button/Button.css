@@ -1,0 +1,59 @@
+.button {
+    font-weight: 500;
+    outline: none;
+    transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    color: #FFFFFF;
+  }
+
+
+.button:active {
+    transform: scale(0.98); 
+    transition: all 0.1s step-end;
+}
+
+.button.primary {
+    background-color: #0083d4; 
+}
+
+.button.primary:hover {
+    background-color: #017dc9; 
+}
+
+.button.success {
+    background-color: #008854;
+}
+
+.button.success:hover {
+    background-color: #007B47; 
+}
+
+.button.danger {
+    background-color: #AC1D1B;
+}
+
+.button.danger:hover {
+    background-color: #9C1716; 
+}
+
+.button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.button.sm {
+    padding: 0.2rem 0.4rem; 
+    font-size: 0.75rem;
+    border-radius: 0.15rem;
+}
+
+.button.md {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+}
+
+.button.lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem; 
+    border-radius: 0.35rem;
+}
