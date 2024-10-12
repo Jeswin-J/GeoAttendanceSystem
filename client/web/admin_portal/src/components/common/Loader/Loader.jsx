@@ -5,7 +5,7 @@ import "./Loader.css"
 const Loader = () => {
     const isLoading = useSelector((state) => state.loader.isLoading);
 
-    if (!isLoading) return null; // Render nothing if not loading
+    if (!isLoading) return null;
 
     return (
         <div className={`loader-overlay ${isLoading ? 'active' : ''}`}>
