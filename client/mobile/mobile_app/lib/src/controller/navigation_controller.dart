@@ -1,13 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile_app/src/screens/attendance/checkin_screen.dart';
+import 'package:mobile_app/src/screens/home/home_screen.dart';
+import 'package:mobile_app/src/screens/profile/profile_screen.dart';
+import 'package:mobile_app/src/screens/settings/settings_screen.dart';
 
 class NavigationController extends GetxController{
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
-    Container(color: Colors.pink,),
-    Container(color: Colors.red,),
-    Container(color: Colors.blue,),
-    Container(color: Colors.orange,),
+    const HomeScreen(),
+    const CheckinScreen(),
+    const SettingsScreen(),
+    const ProfileScreen(),
   ];
 }

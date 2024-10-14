@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+import '../widgets/navigation_menu.dart';
+
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +15,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Text(AppLocalizations.of(context)!.title),
       ),
+      bottomNavigationBar: const NavigationMenu(),
     );
   }
 }
