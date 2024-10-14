@@ -9,6 +9,11 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.title),
+        backgroundColor: Colors.blueGrey,
+        elevation: 4.0,
+        actions: [
+
+        ],
       ),
       body: Center(
         child: Text(AppLocalizations.of(context)!.title),
