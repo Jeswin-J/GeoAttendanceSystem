@@ -41,11 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 25.0),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
           child: Icon(
             Icons.gps_fixed,
-            color: Colors.blueAccent,
+            color: Colors.blue[900],
           ),
         ),
         title: Text(AppLocalizations.of(context)!.title),
@@ -55,9 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           WelcomeCard(
-            title: "Employee",
+            empName: "Jeswin Joseph J" " 👋🏼",
             date: formattedDate,
             time: "$formattedTime PM [IST]",
+            profileImagePath: "assets/images/profile.png",
           ),
         ],
       ),

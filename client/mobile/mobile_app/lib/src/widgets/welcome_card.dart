@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class WelcomeCard extends StatelessWidget {
-  final String title;
+  final String empName;
   final String date;
   final String time;
+  final String profileImagePath;
   final List<Widget> actions;
 
   const WelcomeCard({
     super.key,
-    required this.title,
+    required this.empName,
     required this.date,
     required this.time,
+    required this.profileImagePath,
     this.actions = const [],
   });
 
@@ -30,49 +32,73 @@ class WelcomeCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  ClipOval(
+                    child: Image.asset(
+                      profileImagePath,
+                      width: 45,
+                      height: 45,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          empName,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_month,
+                              color: Colors.blue[900],
+                              size: 20,
+                            ),
+                            const SizedBox(width: 2),
+                            Flexible(
+                              child: Text(
+                                date,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF474747),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Icon(
+                              Icons.access_time_outlined,
+                              color: Colors.blue[900],
+                              size: 20,
+                            ),
+                            const SizedBox(width: 2),
+                            Flexible(
+                              child: Text(
+                                time,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF474747),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.calendar_month,
-                    color: Color(0xFF474747),
-                  ),
-                  const SizedBox(width: 8), // Space between icon and date
-                  Text(
-                    date,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF474747),
-                    ),
-                  ),
-                  const SizedBox(width: 16), // Space between date and time icon
-                  const Icon(
-                    Icons.access_time_outlined,
-                    color: Color(0xFF474747),
-                  ),
-                  const SizedBox(width: 8), // Space between icon and time
-                  Text(
-                    time,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF474747),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
+              if (actions.isNotEmpty) const SizedBox(height: 16),
               if (actions.isNotEmpty)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
