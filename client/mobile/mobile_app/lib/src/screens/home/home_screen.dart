@@ -2,6 +2,7 @@ import 'dart:async'; // Import to use Timer
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile_app/src/widgets/button.dart';
 import 'package:mobile_app/src/widgets/checkin_card.dart';
 import 'package:mobile_app/src/widgets/welcome_card.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,15 +21,15 @@ class _HomeScreenState extends State<HomeScreen> {
   String _address = "";
   double _latitude = 0.0;
   double _longitude = 0.0;
-  static const Duration locationUpdateInterval = Duration(seconds: 5); // Update every 5 seconds
+  static const Duration locationUpdateInterval = Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
 
   @override
   void initState() {
     super.initState();
     _updateTime();
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
-    _initializeLocation(); // Initialize with cached location
-    Timer.periodic(locationUpdateInterval, (Timer t) => _getCurrentLocation()); // Dynamic location updates
+    _initializeLocation();
+    Timer.periodic(locationUpdateInterval, (Timer t) => _getCurrentLocation());
   }
 
   void _updateTime() {
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _initializeLocation() async {
-    // Get the last known position
+
     Position? lastPosition = await Geolocator.getLastKnownPosition();
     if (lastPosition != null) {
       setState(() {
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122"; // Can be updated later
       });
     }
-    // Fetch the current location after initializing with the last known position
+
     await _getCurrentLocation();
   }
 
@@ -61,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Check if the widget is still mounted before calling setState
+      
       if (mounted) {
         setState(() {
           _address = "Location permissions are permanently denied.";
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
           print(position);
           _latitude = position.latitude;
           _longitude = position.longitude;
-          _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122"; // Update with reverse geocoding if needed
+          _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122"; 
         });
       }
     } catch (e) {
@@ -100,17 +101,23 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey.shade50,
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.only(left: 25.0),
           child: Icon(
             Icons.gps_fixed,
-            color: Colors.blue[900],
+            color: Colors.blue[800],
           ),
         ),
-        title: Text(AppLocalizations.of(context)!.title),
-        elevation: 0,
-        backgroundColor: Colors.white10,
+        title: Text(
+            AppLocalizations.of(context)!.title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87
+            ),
+        ),
+        backgroundColor: Colors.transparent,
       ),
       body: Column(
         children: [
@@ -127,6 +134,23 @@ class _HomeScreenState extends State<HomeScreen> {
             latitude: _latitude,
             longitude: _longitude,
           ),
+          const SizedBox(height: 14),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: Button(text: "Check-In",
+                  onPressed: (){
+
+                  },
+                backgroundColor: Colors.green.shade700,
+                textColor: Colors.white,
+                fontSize: 18,
+                borderRadius: 10,
+                elevation: 4,
+              ),
+            ),
+          )
         ],
       ),
     );

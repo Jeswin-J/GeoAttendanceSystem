@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart'; // Import flutter_map package
-import 'package:latlong2/latlong.dart'; // Import for LatLng class
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class CheckInCard extends StatefulWidget {
   final String status;
@@ -26,7 +26,7 @@ class CheckInCard extends StatefulWidget {
 
 class _CheckInCardState extends State<CheckInCard> {
   late final MapController _mapController;
-  double _zoomLevel = 5.0; // Start with a lower zoom level
+  final double _zoomLevel = 15.0;
 
   @override
   void initState() {
@@ -37,10 +37,9 @@ class _CheckInCardState extends State<CheckInCard> {
     });
   }
 
-  // Method to animate zoom after the map is rendered
   void _animateZoom() {
     Future.delayed(const Duration(milliseconds: 500), () {
-      _mapController.move(LatLng(widget.latitude, widget.longitude), 15); // Zoom to 15 after map is loaded
+      _mapController.move(LatLng(widget.latitude, widget.longitude), 15);
     });
   }
 
@@ -69,16 +68,15 @@ class _CheckInCardState extends State<CheckInCard> {
               ),
               const SizedBox(height: 16),
 
-              // Flutter Map Widget with MapController for animation
               SizedBox(
-                height: 300, // Set a fixed height for the map
+                height: 300,
                 width: double.infinity,
                 child: FlutterMap(
-                  mapController: _mapController, // Pass the MapController
+                  mapController: _mapController,
                   options: MapOptions(
                     initialCenter: LatLng(widget.latitude, widget.longitude),
-                    initialZoom: _zoomLevel, // Set initial zoom level
-                    onMapReady: _animateZoom, // Call zoom animation when map is ready
+                    initialZoom: _zoomLevel,
+                    onMapReady: _animateZoom,
                   ),
                   children: [
                     TileLayer(
@@ -89,7 +87,7 @@ class _CheckInCardState extends State<CheckInCard> {
                       circles: [
                         CircleMarker(
                           point: LatLng(widget.latitude, widget.longitude),
-                          radius: 500,
+                          radius: 200,
                           useRadiusInMeter: true,
                           color: Colors.blue.withOpacity(0.2),
                           borderStrokeWidth: 0.5,
