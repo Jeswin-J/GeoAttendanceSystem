@@ -18,8 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late String formattedTime;
   late Timer timer;
   String _address = "";
-  String _latitude = "";
-  String _longitude = "";
+  double _latitude = 0.0;
+  double _longitude = 0.0;
   static const Duration locationUpdateInterval = Duration(seconds: 5); // Update every 5 seconds
 
   @override
@@ -44,8 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
     Position? lastPosition = await Geolocator.getLastKnownPosition();
     if (lastPosition != null) {
       setState(() {
-        _latitude = "${lastPosition.latitude}";
-        _longitude = "${lastPosition.longitude}";
+        _latitude = lastPosition.latitude;
+        _longitude = lastPosition.longitude;
         _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122"; // Can be updated later
       });
     }
@@ -76,8 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (mounted) {
         setState(() {
           print(position);
-          _latitude = "${position.latitude}";
-          _longitude = "${position.longitude}";
+          _latitude = position.latitude;
+          _longitude = position.longitude;
           _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122"; // Update with reverse geocoding if needed
         });
       }
