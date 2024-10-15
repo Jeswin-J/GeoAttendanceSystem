@@ -13,8 +13,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: Colors.blueGrey
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.blue.withOpacity(0.2),
+        statusBarIconBrightness: Brightness.light,
     ));
     return MaterialApp(
       title: 'Attendance Tracking App',
