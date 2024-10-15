@@ -119,7 +119,7 @@ class _CheckInCardState extends State<CheckInCard> {
                 children: [
                   Icon(
                     Icons.gps_fixed,
-                    color: Colors.blue[900],
+                    color: Colors.blue[800],
                   ),
                   const SizedBox(width: 8),
                   Text(
