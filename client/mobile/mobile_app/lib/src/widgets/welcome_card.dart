@@ -19,15 +19,15 @@ class WelcomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.only(right: 12.0, left: 12.0, top: 6.0, bottom: 6.0),
       child: Card(
         elevation: 1,
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,8 +37,8 @@ class WelcomeCard extends StatelessWidget {
                   ClipOval(
                     child: Image.asset(
                       profileImagePath,
-                      width: 45,
-                      height: 45,
+                      width: 50,
+                      height: 50,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -58,9 +58,9 @@ class WelcomeCard extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.calendar_month,
-                              color: Colors.blue[900],
+                              color: Color(0xFF474747),
                               size: 20,
                             ),
                             const SizedBox(width: 2),
@@ -75,9 +75,9 @@ class WelcomeCard extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            Icon(
+                            const Icon(
                               Icons.access_time_outlined,
-                              color: Colors.blue[900],
+                              color: Color(0xFF474747),
                               size: 20,
                             ),
                             const SizedBox(width: 2),
