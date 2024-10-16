@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/src/widgets/button.dart';
 import 'package:mobile_app/src/widgets/checkin_card.dart';
+import 'package:mobile_app/src/widgets/checkout_card.dart'; // Import your CheckoutCard widget
 import 'package:mobile_app/src/widgets/welcome_card.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -23,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   double _longitude = 0.0;
   static const Duration locationUpdateInterval = Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
 
+  bool _isCheckedIn = false; // Tracks check-in status
+
   @override
   void initState() {
     super.initState();
@@ -41,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _initializeLocation() async {
-
     Position? lastPosition = await Geolocator.getLastKnownPosition();
     if (lastPosition != null) {
       setState(() {
@@ -62,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      
       if (mounted) {
         setState(() {
           _address = "Location permissions are permanently denied.";
@@ -76,10 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (mounted) {
         setState(() {
-          print(position);
           _latitude = position.latitude;
           _longitude = position.longitude;
-          _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122"; 
+          _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
         });
       }
     } catch (e) {
@@ -91,6 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _toggleCheckIn() {
+    setState(() {
+      _isCheckedIn = !_isCheckedIn; // Toggle check-in state
+    });
+  }
 
   @override
   void dispose() {
@@ -111,11 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         title: Text(
-            AppLocalizations.of(context)!.title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black87
-            ),
+          AppLocalizations.of(context)!.title,
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
         ),
         backgroundColor: Colors.transparent,
       ),
@@ -127,23 +129,34 @@ class _HomeScreenState extends State<HomeScreen> {
             time: "$formattedTime PM [IST]",
             profileImagePath: "assets/images/profile.png",
           ),
-          CheckInCard(
+
+          // CheckInCard or CheckoutCard based on _isCheckedIn state
+          _isCheckedIn
+              ? CheckoutCard(
+            status: "Check-Out",
+            location: "GAIL Office, Delhi",
+            address: _address,
+            latitude: _latitude,
+            longitude: _longitude,
+          )
+              : CheckInCard(
             status: "Check-In",
             location: "GAIL Office, Delhi",
             address: _address,
             latitude: _latitude,
             longitude: _longitude,
           ),
+
           const SizedBox(height: 14),
+
           Padding(
             padding: const EdgeInsets.only(right: 16.0, left: 16.0),
             child: SizedBox(
               width: double.infinity,
-              child: Button(text: "Check-In",
-                  onPressed: (){
-
-                  },
-                backgroundColor: Colors.green.shade700,
+              child: Button(
+                text: _isCheckedIn ? "Check-Out" : "Check-In", // Button text changes
+                onPressed: _toggleCheckIn, // Toggle check-in/out state
+                backgroundColor: _isCheckedIn ? Colors.red.shade700 : Colors.green.shade700,
                 textColor: Colors.white,
                 fontSize: 18,
                 borderRadius: 10,

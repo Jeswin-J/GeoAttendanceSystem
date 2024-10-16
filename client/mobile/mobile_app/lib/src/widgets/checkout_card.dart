@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class CheckoutCard extends StatefulWidget {
   final String status;
@@ -23,6 +25,35 @@ class CheckoutCard extends StatefulWidget {
 }
 
 class _CheckoutCardState extends State<CheckoutCard> {
+  late Timer _timer;
+  int _secondsElapsed = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _secondsElapsed++;
+      });
+    });
+  }
+
+  String _formatDuration(int seconds) {
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,7 +77,29 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   color: Colors.blue[800],
                 ),
               ),
-              const SizedBox(height: 16),
+
+              Lottie.asset(
+                'assets/animations/work_animation.json',
+                height: 250,
+              ),
+
+              Text(
+                "Time Elapsed",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+
+              Text(
+                _formatDuration(_secondsElapsed),
+                style: TextStyle(
+                  fontSize: 38,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue[800],
+                ),
+              ),
 
               const SizedBox(height: 16),
 
@@ -57,19 +110,19 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   Icon(
                     Icons.gps_fixed,
                     color: Colors.blue[800],
+                    size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 4),
                   Text(
                     widget.location,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: Colors.black87,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
               Text(
                 "${widget.latitude}, ${widget.longitude}",
                 style: const TextStyle(
