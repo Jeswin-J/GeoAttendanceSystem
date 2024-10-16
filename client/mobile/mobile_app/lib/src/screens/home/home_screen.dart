@@ -181,7 +181,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: Button(
                       text: "Check-Out",
-                      onPressed: _toggleCheckIn,
+                      onPressed: () async {
+                        bool confirmed = await showConfirmationDialog(
+                          context,
+                          title: 'Confirm Action',
+                          message: 'Are you sure you want to Check-Out?',
+                          confirmText: 'Yes',
+                          cancelText: 'No',
+                        );
+
+                        if (confirmed) {
+                          _toggleCheckIn();
+                        }
+                      },
                       backgroundColor: Colors.red.shade700,
                       textColor: Colors.white,
                       fontSize: 18,
