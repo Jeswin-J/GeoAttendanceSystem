@@ -1,10 +1,10 @@
-import 'dart:async'; // Import to use Timer
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/src/widgets/button.dart';
 import 'package:mobile_app/src/widgets/checkin_card.dart';
-import 'package:mobile_app/src/widgets/checkout_card.dart'; // Import your CheckoutCard widget
+import 'package:mobile_app/src/widgets/checkout_card.dart';
 import 'package:mobile_app/src/widgets/welcome_card.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -22,15 +22,17 @@ class _HomeScreenState extends State<HomeScreen> {
   String _address = "";
   double _latitude = 0.0;
   double _longitude = 0.0;
-  static const Duration locationUpdateInterval = Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
+  static const Duration locationUpdateInterval = Duration(
+      seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
 
-  bool _isCheckedIn = false; // Tracks check-in status
+  bool _isCheckedIn = false;
 
   @override
   void initState() {
     super.initState();
     _updateTime();
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
+    timer =
+        Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
     _initializeLocation();
     Timer.periodic(locationUpdateInterval, (Timer t) => _getCurrentLocation());
   }
@@ -49,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _latitude = lastPosition.latitude;
         _longitude = lastPosition.longitude;
-        _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122"; // Can be updated later
+        _address =
+        "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
       });
     }
 
@@ -73,13 +76,15 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     try {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
       if (mounted) {
         setState(() {
           _latitude = position.latitude;
           _longitude = position.longitude;
-          _address = "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
+          _address =
+          "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
         });
       }
     } catch (e) {
@@ -93,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _toggleCheckIn() {
     setState(() {
-      _isCheckedIn = !_isCheckedIn; // Toggle check-in state
+      _isCheckedIn = !_isCheckedIn;
     });
   }
 
@@ -117,7 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: Text(
           AppLocalizations.of(context)!.title,
-          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black87),
         ),
         backgroundColor: Colors.transparent,
       ),
@@ -130,7 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
             profileImagePath: "assets/images/profile.png",
           ),
 
-          // CheckInCard or CheckoutCard based on _isCheckedIn state
           _isCheckedIn
               ? CheckoutCard(
             status: "Check-Out",
@@ -150,20 +155,51 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 14),
 
           Padding(
-            padding: const EdgeInsets.only(right: 16.0, left: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SizedBox(
               width: double.infinity,
-              child: Button(
-                text: _isCheckedIn ? "Check-Out" : "Check-In", // Button text changes
-                onPressed: _toggleCheckIn, // Toggle check-in/out state
-                backgroundColor: _isCheckedIn ? Colors.red.shade700 : Colors.green.shade700,
+              child: _isCheckedIn
+                  ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Button(
+                      text: "Take Break",
+                      onPressed: () {
+                        print("Taking a break");
+                      },
+                      backgroundColor: Colors.blue.shade800,
+                      textColor: Colors.white,
+                      fontSize: 18,
+                      borderRadius: 10,
+                      elevation: 4,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Button(
+                      text: "Check-Out",
+                      onPressed: _toggleCheckIn,
+                      backgroundColor: Colors.red.shade700,
+                      textColor: Colors.white,
+                      fontSize: 18,
+                      borderRadius: 10,
+                      elevation: 4,
+                    ),
+                  ),
+                ],
+              )
+                  : Button(
+                text: "Check-In",
+                onPressed: _toggleCheckIn,
+                backgroundColor: Colors.green.shade700,
                 textColor: Colors.white,
                 fontSize: 18,
                 borderRadius: 10,
                 elevation: 4,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
