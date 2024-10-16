@@ -15,7 +15,7 @@ class NavigationMenu extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: Obx(
         () => NavigationBar(
-          height: 70,
+          height: 80,
           elevation: 4,
 
           indicatorShape: const RoundedRectangleBorder(
