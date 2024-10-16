@@ -8,6 +8,8 @@ import 'package:mobile_app/src/widgets/checkout_card.dart';
 import 'package:mobile_app/src/widgets/welcome_card.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'package:mobile_app/src/utils/helper.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -179,7 +181,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: Button(
                       text: "Check-Out",
-                      onPressed: _toggleCheckIn,
+                      onPressed: () async {
+                        bool confirmed = await showConfirmationDialog(
+                          context,
+                          title: 'Confirm Action',
+                          message: 'Are you sure you want to Check-Out?',
+                          confirmText: 'Yes',
+                          cancelText: 'No',
+                        );
+
+                        if (confirmed) {
+                          _toggleCheckIn();
+                        }
+                      },
                       backgroundColor: Colors.red.shade700,
                       textColor: Colors.white,
                       fontSize: 18,
@@ -191,7 +205,20 @@ class _HomeScreenState extends State<HomeScreen> {
               )
                   : Button(
                 text: "Check-In",
-                onPressed: _toggleCheckIn,
+
+                onPressed: () async {
+                  bool confirmed = await showConfirmationDialog(
+                    context,
+                    title: 'Confirm Action',
+                    message: 'Are you sure you want to Check-In?',
+                    confirmText: 'Yes',
+                    cancelText: 'No',
+                  );
+
+                  if (confirmed) {
+                    _toggleCheckIn();
+                  }
+                },
                 backgroundColor: Colors.green.shade700,
                 textColor: Colors.white,
                 fontSize: 18,
