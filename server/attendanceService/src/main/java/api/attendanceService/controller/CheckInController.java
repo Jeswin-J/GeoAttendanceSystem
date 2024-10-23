@@ -17,7 +17,7 @@ public class CheckInController {
 
 
     /**
-     * Records the check-out time and geolocation for the employee.
+     * Records the check-in time and geolocation for the employee.
      */
     @PostMapping("/")
     public ResponseEntity<Attendance> checkIn(@RequestBody String employeeId){
@@ -44,4 +44,15 @@ public class CheckInController {
 
         return ResponseEntity.ok(null);
     }
+
+
+    /**
+     * Fetches the full check-in history for a specific user.
+     */
+    @PostMapping("/history/{checkInId}")
+    public ResponseEntity<List<Attendance>> getHistory(@RequestBody Long checkInId){
+
+        return ResponseEntity.ok(null);
+    }
+
 }
