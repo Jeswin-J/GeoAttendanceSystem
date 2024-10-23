@@ -11,17 +11,16 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long employeeId; 
+    private Long id; 
+
+    @NotNull(message = "Employee ID cannot be null")
+    @Column(name = "employee_id", nullable = false)
+    private String employeeId;
 
     @NotNull(message = "Name cannot be null")
     @Size(min = 1, max = 100, message = "Name must be between 1 and 100 characters")
     @Column(name = "name", nullable = false) 
     private String name;  
-
-    @NotNull(message = "Email cannot be null")
-    @Email(message = "Email should be valid")
-    @Column(name = "email", unique = true, nullable = false)
-    private String email;  
 
     @NotNull(message = "Role cannot be null")
     @Enumerated(EnumType.STRING)
@@ -33,20 +32,20 @@ public class Employee {
     @Column(name = "department", nullable = false)
     private String department; 
 
-    @NotNull(message = "Location cannot be null")
-    @Size(min = 1, max = 100, message = "Location must be between 1 and 100 characters")
-    @Column(name = "location", nullable = false)
-    private String location;  
 
-    @Column(name = "geo_coordinates", nullable = true)
-    private String geoCoordinates; 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Long getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -56,14 +55,6 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Role getRole() {
@@ -80,21 +71,5 @@ public class Employee {
 
     public void setDepartment(String department) {
         this.department = department;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getGeoCoordinates() {
-        return geoCoordinates;
-    }
-
-    public void setGeoCoordinates(String geoCoordinates) {
-        this.geoCoordinates = geoCoordinates;
     }
 }
