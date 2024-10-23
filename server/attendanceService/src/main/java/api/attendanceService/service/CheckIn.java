@@ -1,7 +1,9 @@
 package api.attendanceService.service;
 
+import api.attendanceService.dto.CheckInRequest;
+
 public interface CheckIn {
-    public boolean markCheckIn(String employeeId);
+    public boolean markCheckIn(CheckInRequest checkInRequest);
 
 
 }

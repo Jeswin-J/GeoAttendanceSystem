@@ -1,5 +1,6 @@
 package api.attendanceService.controller;
 
+import api.attendanceService.dto.CheckInRequest;
 import api.attendanceService.model.Attendance;
 import api.attendanceService.service.CheckIn;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +22,15 @@ public class CheckInController {
      * Records the check-in time and geolocation for the employee.
      */
     @PostMapping("/")
-    public ResponseEntity<String> checkIn(@RequestBody String employeeId){
+    public ResponseEntity<String> checkIn(@RequestBody CheckInRequest checkInRequest){
 
-        boolean success = checkin.markCheckIn(employeeId);
+        boolean success = checkin.markCheckIn(checkInRequest);
 
         if(success){
-            return ResponseEntity.ok("Check-In Success for: " + employeeId);
+            return ResponseEntity.ok("Check-In Success for: " + checkInRequest.getEmployeeId());
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check-In Failed for: " + employeeId);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check-In Failed for: " + checkInRequest.getEmployeeId());
     }
 
 
