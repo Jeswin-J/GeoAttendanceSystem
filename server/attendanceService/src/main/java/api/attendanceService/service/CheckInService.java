@@ -1,5 +1,6 @@
 package api.attendanceService.service;
 
+import api.attendanceService.builder.AttendanceBuilder;
 import api.attendanceService.dto.CheckInRequest;
 import api.attendanceService.enums.Status;
 import api.attendanceService.model.Attendance;
@@ -25,22 +26,21 @@ public class CheckInService implements CheckIn{
             return false;
         }
 
-        Attendance attendance = new Attendance();
-        attendance.setEmployee(employee);
-        attendance.setCheckInTimeStamp(checkInRequest.getCheckInTimestamp());
-
-
         Location location = new Location();
         location.setTimestamp(checkInRequest.getCheckInTimestamp());
         location.setLatitude(checkInRequest.getLocation().getLatitude());
         location.setLongitude(checkInRequest.getLocation().getLongitude());
         location.setAccuracy(checkInRequest.getLocation().getAccuracy());
 
-
-        attendance.setCheckInLocation(location);
-        attendance.setAttendanceStatus(Status.PRESENT);
+        Attendance attendance = new AttendanceBuilder()
+                .withEmployee(employee)
+                .withCheckInTimeStamp(checkInRequest.getCheckInTimestamp())
+                .withLocation(location)
+                .withStatus(Status.PRESENT)
+                .build();
 
         attendanceRepository.save(attendance);
         return true;
     }
+
 }
