@@ -1,5 +1,6 @@
 package api.attendanceService.builder;
 
+import api.attendanceService.enums.LocationType;
 import api.attendanceService.model.Employee;
 import api.attendanceService.model.Location;
 
@@ -28,6 +29,11 @@ public class LocationBuilder {
 
     public LocationBuilder withAccuracy(Double accuracy) {
         location.setAccuracy(accuracy);
+        return this;
+    }
+
+    public LocationBuilder withLocationType(LocationType type) {
+        location.setType(type);
         return this;
     }
 

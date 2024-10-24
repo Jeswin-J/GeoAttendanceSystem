@@ -14,7 +14,7 @@ public class Employee {
     private Long id; 
 
     @NotNull(message = "Employee ID cannot be null")
-    @Column(name = "employee_id", nullable = false)
+    @Column(name = "employeeId", nullable = false)
     private String employeeId;
 
     @NotNull(message = "Name cannot be null")
