@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 public interface Attendance {
     boolean markCheckIn(AttendanceRequest attendanceRequest);
 
+    boolean markCheckOut(AttendanceRequest attendanceRequest);
+
     AttendanceEntity getLastAttendanceRecord(String employeeId);
 
 

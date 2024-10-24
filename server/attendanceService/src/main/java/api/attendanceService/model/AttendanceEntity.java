@@ -98,4 +98,8 @@ public class AttendanceEntity {
     public void setWorkingHours(BigDecimal workingHours) {
         this.workingHours = workingHours;
     }
+
+    public Timestamp getCheckInTimeStamp() {
+        return checkInTimeStamp;
+    }
 }
