@@ -37,8 +37,15 @@ public class CheckInController {
     /**
      * Retrieves the current check-in status of the specified employee (e.g., checked in or not).
      */
-    @PostMapping("/status")
-    public ResponseEntity<String> getStatus(@RequestBody String employeeId){
+    @GetMapping("/status/{employeeId}")
+    public ResponseEntity<Attendance> getStatus(@PathVariable String employeeId){
+
+        System.out.println(employeeId);
+        Attendance attendance = checkin.getLastAttendanceRecord(employeeId);
+
+        if (attendance != null) {
+            return ResponseEntity.ok(attendance);
+        }
 
         return ResponseEntity.notFound().build();
     }

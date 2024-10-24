@@ -63,4 +63,17 @@ public class CheckInService implements CheckIn{
         attendanceRepository.save(attendance);
         return true;
     }
+
+    @Override
+    public Attendance getLastAttendanceRecord(String employeeId) {
+
+        Employee employee = employeeRepository.findEmployeeByEmployeeId(employeeId);
+
+        if (employee == null) {
+            return null;
+        }
+
+        return attendanceRepository.findTopByEmployeeOrderByCheckInTimeStampDesc(employee);
+    }
+
 }
