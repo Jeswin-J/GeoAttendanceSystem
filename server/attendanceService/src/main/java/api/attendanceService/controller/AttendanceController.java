@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/checkIn/")
+@RequestMapping("api/attendance/")
 public class AttendanceController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class AttendanceController {
     /**
      * Records the check-in time and geolocation for the employee.
      */
-    @PostMapping("/")
+    @PostMapping("/checkIn")
     public ResponseEntity<String> checkIn(@RequestBody AttendanceRequest attendanceRequest){
 
         boolean success = attendanceService.markCheckIn(attendanceRequest);
@@ -31,6 +31,21 @@ public class AttendanceController {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check-In Failed for: " + attendanceRequest.getEmployeeId());
+    }
+
+    /**
+     * Records the check-in time and geolocation for the employee.
+     */
+    @PostMapping("/checkOut")
+    public ResponseEntity<String> checkOut(@RequestBody AttendanceRequest attendanceRequest){
+
+        boolean success = attendanceService.markCheckOut(attendanceRequest);
+
+        if(success){
+            return ResponseEntity.ok("Check-Out Success for: " + attendanceRequest.getEmployeeId());
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check-Out Failed for: " + attendanceRequest.getEmployeeId());
     }
 
 
