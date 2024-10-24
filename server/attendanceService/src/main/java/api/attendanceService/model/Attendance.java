@@ -1,5 +1,6 @@
 package api.attendanceService.model;
 
+import api.attendanceService.builder.AttendanceBuilder;
 import api.attendanceService.enums.Status;
 import jakarta.persistence.*;
 
