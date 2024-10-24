@@ -42,7 +42,11 @@ public class CheckInService implements CheckIn{
             return false;
         }
 
-        //TODO: Condition check to avoid multiple check-ins without proper check-out
+        Attendance lastAttendanceRecord = getLastAttendanceRecord(employee.getEmployeeId());
+
+        if(lastAttendanceRecord.getCheckOutTimeStamp() == null){
+            return false;
+        }
 
         Location location = new LocationBuilder()
                 .withEmployee(employee)
@@ -63,4 +67,17 @@ public class CheckInService implements CheckIn{
         attendanceRepository.save(attendance);
         return true;
     }
+
+    @Override
+    public Attendance getLastAttendanceRecord(String employeeId) {
+
+        Employee employee = employeeRepository.findEmployeeByEmployeeId(employeeId);
+
+        if (employee == null) {
+            return null;
+        }
+
+        return attendanceRepository.findTopByEmployeeOrderByCheckInTimeStampDesc(employee);
+    }
+
 }

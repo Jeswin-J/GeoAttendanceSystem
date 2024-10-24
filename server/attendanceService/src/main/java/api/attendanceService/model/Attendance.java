@@ -21,7 +21,7 @@ public class Attendance {
     @Column(nullable = false)
     private Timestamp checkInTimeStamp = new Timestamp(System.currentTimeMillis());
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false) 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "checkInLocationId", nullable = false)
     private Location checkInLocation;
 
