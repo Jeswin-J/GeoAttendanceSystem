@@ -37,10 +37,10 @@ public class CheckInController {
     /**
      * Retrieves the current check-in status of the specified employee (e.g., checked in or not).
      */
-    @PostMapping("/status/{employeeId}")
+    @PostMapping("/status")
     public ResponseEntity<String> getStatus(@RequestBody String employeeId){
 
-        return ResponseEntity.ok("STATUS");
+        return ResponseEntity.notFound().build();
     }
 
 

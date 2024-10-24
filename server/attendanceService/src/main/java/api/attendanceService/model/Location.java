@@ -17,10 +17,6 @@ public class Location {
     @JoinColumn(name = "employeeId", nullable = false)  
     private Employee employee;
 
-    @NotNull(message = "Timestamp cannot be null")
-    @Column(nullable = false)
-    private Timestamp timestamp;
-
     @NotNull(message = "Latitude cannot be null")
     @Column(nullable = false)
     private Double latitude;
@@ -53,14 +49,6 @@ public class Location {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
     }
 
     public Double getLatitude() {

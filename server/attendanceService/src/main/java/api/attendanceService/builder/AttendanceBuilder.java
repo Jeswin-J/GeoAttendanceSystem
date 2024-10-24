@@ -19,11 +19,6 @@ public class AttendanceBuilder {
         return this;
     }
 
-    public AttendanceBuilder withCheckInTimeStamp(Timestamp checkInTimeStamp) {
-        attendance.setCheckInTimeStamp(checkInTimeStamp);
-        return this;
-    }
-
     public AttendanceBuilder withLocation(Location location) {
         attendance.setCheckInLocation(location);
         return this;
