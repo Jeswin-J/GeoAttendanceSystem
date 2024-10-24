@@ -1,43 +1,43 @@
 package api.attendanceService.builder;
 
 import api.attendanceService.enums.LocationType;
-import api.attendanceService.model.Employee;
-import api.attendanceService.model.Location;
+import api.attendanceService.model.EmployeeEntity;
+import api.attendanceService.model.LocationEntity;
 
 
 public class LocationBuilder {
-    private Location location;
+    private LocationEntity locationEntity;
 
     public LocationBuilder() {
-        this.location = new Location();
+        this.locationEntity = new LocationEntity();
     }
 
-    public LocationBuilder withEmployee(Employee employee) {
-        location.setEmployee(employee);
+    public LocationBuilder withEmployee(EmployeeEntity employee) {
+        locationEntity.setEmployee(employee);
         return this;
     }
 
     public LocationBuilder withLatitude(Double latitude) {
-        location.setLatitude(latitude);
+        locationEntity.setLatitude(latitude);
         return this;
     }
 
     public LocationBuilder withLongitude(Double longitude) {
-        location.setLongitude(longitude);
+        locationEntity.setLongitude(longitude);
         return this;
     }
 
     public LocationBuilder withAccuracy(Double accuracy) {
-        location.setAccuracy(accuracy);
+        locationEntity.setAccuracy(accuracy);
         return this;
     }
 
     public LocationBuilder withLocationType(LocationType type) {
-        location.setType(type);
+        locationEntity.setType(type);
         return this;
     }
 
-    public Location build() {
-        return location;
+    public LocationEntity build() {
+        return locationEntity;
     }
 }

@@ -1,6 +1,5 @@
 package api.attendanceService.model;
 
-import api.attendanceService.builder.AttendanceBuilder;
 import api.attendanceService.enums.Status;
 import jakarta.persistence.*;
 
@@ -8,7 +7,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-public class Attendance {
+@Table(name = "attendance")
+public class AttendanceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +16,14 @@ public class Attendance {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "employeeId", nullable = false)
-    private Employee employee;
+    private EmployeeEntity employee;
 
     @Column(nullable = false)
     private Timestamp checkInTimeStamp = new Timestamp(System.currentTimeMillis());
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "checkInLocationId", nullable = false)
-    private Location checkInLocation;
+    private LocationEntity checkInLocationEntity;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -34,7 +34,7 @@ public class Attendance {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "checkOutLocationId")
-    private Location checkOutLocation;
+    private LocationEntity checkOutLocationEntity;
 
     @Column(precision = 5, scale = 2)
     private BigDecimal workingHours;
@@ -51,20 +51,20 @@ public class Attendance {
         this.attendanceId = attendanceId;
     }
 
-    public Employee getEmployee() {
+    public EmployeeEntity getEmployee() {
         return employee;
     }
 
-    public void setEmployee(Employee employee) {
+    public void setEmployee(EmployeeEntity employee) {
         this.employee = employee;
     }
 
-    public Location getCheckInLocation() {
-        return checkInLocation;
+    public LocationEntity getCheckInLocation() {
+        return checkInLocationEntity;
     }
 
-    public void setCheckInLocation(Location checkInLocation) {
-        this.checkInLocation = checkInLocation;
+    public void setCheckInLocation(LocationEntity checkInLocationEntity) {
+        this.checkInLocationEntity = checkInLocationEntity;
     }
 
     public Status getAttendanceStatus() {
@@ -83,12 +83,12 @@ public class Attendance {
         this.checkOutTimeStamp = checkOutTimeStamp;
     }
 
-    public Location getCheckOutLocation() {
-        return checkOutLocation;
+    public LocationEntity getCheckOutLocation() {
+        return checkOutLocationEntity;
     }
 
-    public void setCheckOutLocation(Location checkOutLocation) {
-        this.checkOutLocation = checkOutLocation;
+    public void setCheckOutLocation(LocationEntity checkOutLocationEntity) {
+        this.checkOutLocationEntity = checkOutLocationEntity;
     }
 
     public BigDecimal getWorkingHours() {

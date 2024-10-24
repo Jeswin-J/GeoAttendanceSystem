@@ -7,13 +7,13 @@ import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class EmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; 
 
-    @NotNull(message = "Employee ID cannot be null")
+    @NotNull(message = "EmployeeEntity ID cannot be null")
     @Column(name = "employeeId", nullable = false)
     private String employeeId;
 

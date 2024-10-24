@@ -1,8 +1,8 @@
 package api.attendanceService.repository;
 
-import api.attendanceService.model.Employee;
+import api.attendanceService.model.EmployeeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    Employee findEmployeeByEmployeeId(String employeeId);
+public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
+    EmployeeEntity findEmployeeByEmployeeId(String employeeId);
 }

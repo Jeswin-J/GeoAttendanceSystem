@@ -2,12 +2,12 @@ package api.attendanceService.service;
 
 import api.attendanceService.builder.AttendanceBuilder;
 import api.attendanceService.builder.LocationBuilder;
-import api.attendanceService.dto.CheckInRequest;
+import api.attendanceService.dto.AttendanceRequest;
 import api.attendanceService.enums.LocationType;
 import api.attendanceService.enums.Status;
-import api.attendanceService.model.Attendance;
-import api.attendanceService.model.Employee;
-import api.attendanceService.model.Location;
+import api.attendanceService.model.AttendanceEntity;
+import api.attendanceService.model.EmployeeEntity;
+import api.attendanceService.model.LocationEntity;
 import api.attendanceService.repository.AttendanceRepository;
 import api.attendanceService.repository.EmployeeRepository;
 import api.attendanceService.repository.LocationRepository;
@@ -15,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 @Service
-public class CheckInService implements CheckIn{
+public class AttendanceService implements Attendance {
 
     @Autowired
     AttendanceRepository attendanceRepository;
@@ -31,47 +29,47 @@ public class CheckInService implements CheckIn{
 
     @Override
     @Transactional
-    public boolean markCheckIn(CheckInRequest checkInRequest) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeId(checkInRequest.getEmployeeId());
+    public boolean markCheckIn(AttendanceRequest attendanceRequest) {
+        EmployeeEntity employee = employeeRepository.findEmployeeByEmployeeId(attendanceRequest.getEmployeeId());
 
         if (employee == null) {
             return false;
         }
 
-        if (checkInRequest.getLocation() == null) {
+        if (attendanceRequest.getLocation() == null) {
             return false;
         }
 
-        Attendance lastAttendanceRecord = getLastAttendanceRecord(employee.getEmployeeId());
+        AttendanceEntity lastAttendanceRecord = getLastAttendanceRecord(employee.getEmployeeId());
 
-        if(lastAttendanceRecord.getCheckOutTimeStamp() == null){
+        if (lastAttendanceRecord != null && lastAttendanceRecord.getCheckOutTimeStamp() == null) {
             return false;
         }
 
-        Location location = new LocationBuilder()
+        LocationEntity locationEntity = new LocationBuilder()
                 .withEmployee(employee)
-                .withLatitude(checkInRequest.getLocation().getLatitude())
-                .withLongitude(checkInRequest.getLocation().getLongitude())
-                .withAccuracy(checkInRequest.getLocation().getAccuracy())
+                .withLatitude(attendanceRequest.getLocation().getLatitude())
+                .withLongitude(attendanceRequest.getLocation().getLongitude())
+                .withAccuracy(attendanceRequest.getLocation().getAccuracy())
                 .withLocationType(LocationType.CHECK_IN)
                 .build();
 
-        location = locationRepository.save(location);
+        locationEntity = locationRepository.save(locationEntity);
 
-        Attendance attendance = new AttendanceBuilder()
+        AttendanceEntity attendanceEntity = new AttendanceBuilder()
                 .withEmployee(employee)
-                .withLocation(location)
+                .withLocation(locationEntity)
                 .withStatus(Status.PRESENT)
                 .build();
 
-        attendanceRepository.save(attendance);
+        attendanceRepository.save(attendanceEntity);
         return true;
     }
 
     @Override
-    public Attendance getLastAttendanceRecord(String employeeId) {
+    public AttendanceEntity getLastAttendanceRecord(String employeeId) {
 
-        Employee employee = employeeRepository.findEmployeeByEmployeeId(employeeId);
+        EmployeeEntity employee = employeeRepository.findEmployeeByEmployeeId(employeeId);
 
         if (employee == null) {
             return null;

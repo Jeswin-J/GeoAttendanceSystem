@@ -4,10 +4,9 @@ import api.attendanceService.enums.LocationType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.sql.Timestamp;
-
 @Entity
-public class Location {
+@Table(name = "location")
+public class LocationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +14,7 @@ public class Location {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false) 
     @JoinColumn(name = "employeeId", nullable = false)  
-    private Employee employee;
+    private EmployeeEntity employee;
 
     @NotNull(message = "Latitude cannot be null")
     @Column(nullable = false)
@@ -30,7 +29,7 @@ public class Location {
     private Double accuracy;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Location type cannot be null")
+    @NotNull(message = "LocationEntity type cannot be null")
     @Column(nullable = false)
     private LocationType type;
 
@@ -43,11 +42,11 @@ public class Location {
         this.locationId = locationId;
     }
 
-    public Employee getEmployee() {
+    public EmployeeEntity getEmployee() {
         return employee;
     }
 
-    public void setEmployee(Employee employee) {
+    public void setEmployee(EmployeeEntity employee) {
         this.employee = employee;
     }
 

@@ -1,35 +1,33 @@
 package api.attendanceService.builder;
 
 import api.attendanceService.enums.Status;
-import api.attendanceService.model.Attendance;
-import api.attendanceService.model.Employee;
-import api.attendanceService.model.Location;
-
-import java.sql.Timestamp;
+import api.attendanceService.model.AttendanceEntity;
+import api.attendanceService.model.EmployeeEntity;
+import api.attendanceService.model.LocationEntity;
 
 public class AttendanceBuilder {
-    private Attendance attendance;
+    private AttendanceEntity attendanceEntity;
 
     public AttendanceBuilder() {
-        this.attendance = new Attendance();
+        this.attendanceEntity = new AttendanceEntity();
     }
 
-    public AttendanceBuilder withEmployee(Employee employee) {
-        attendance.setEmployee(employee);
+    public AttendanceBuilder withEmployee(EmployeeEntity employee) {
+        attendanceEntity.setEmployee(employee);
         return this;
     }
 
-    public AttendanceBuilder withLocation(Location location) {
-        attendance.setCheckInLocation(location);
+    public AttendanceBuilder withLocation(LocationEntity locationEntity) {
+        attendanceEntity.setCheckInLocation(locationEntity);
         return this;
     }
 
     public AttendanceBuilder withStatus(Status status) {
-        attendance.setAttendanceStatus(status);
+        attendanceEntity.setAttendanceStatus(status);
         return this;
     }
 
-    public Attendance build() {
-        return attendance;
+    public AttendanceEntity build() {
+        return attendanceEntity;
     }
 }
