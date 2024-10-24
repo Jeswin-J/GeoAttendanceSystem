@@ -3,12 +3,12 @@ package api.attendanceService.dto;
 import jakarta.validation.constraints.NotNull;
 
 
-public class CheckInRequest {
+public class AttendanceRequest {
 
-    @NotNull(message = "Employee ID cannot be null")
+    @NotNull(message = "EmployeeEntity ID cannot be null")
     private String employeeId;
 
-    @NotNull(message = "Location cannot be null")
+    @NotNull(message = "LocationEntity cannot be null")
     private LocationDTO location;
 
 
