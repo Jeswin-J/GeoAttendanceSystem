@@ -35,7 +35,6 @@ public class CheckInService implements CheckIn{
 
         Attendance attendance = new AttendanceBuilder()
                 .withEmployee(employee)
-                .withCheckInTimeStamp(checkInRequest.getCheckInTimestamp())
                 .withLocation(location)
                 .withStatus(Status.PRESENT)
                 .build();

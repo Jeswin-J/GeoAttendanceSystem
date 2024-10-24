@@ -19,7 +19,7 @@ public class Attendance {
     private Employee employee;
 
     @Column(nullable = false)
-    private Timestamp checkInTimeStamp;
+    private Timestamp checkInTimeStamp = new Timestamp(System.currentTimeMillis());
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false) 
     @JoinColumn(name = "checkInLocationId", nullable = false)
@@ -57,14 +57,6 @@ public class Attendance {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    public Timestamp getCheckInTimeStamp() {
-        return checkInTimeStamp;
-    }
-
-    public void setCheckInTimeStamp(Timestamp checkInTimeStamp) {
-        this.checkInTimeStamp = checkInTimeStamp;
     }
 
     public Location getCheckInLocation() {
