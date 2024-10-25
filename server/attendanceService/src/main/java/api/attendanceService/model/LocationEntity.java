@@ -1,11 +1,13 @@
 package api.attendanceService.model;
 
 import api.attendanceService.enums.LocationType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "location")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LocationEntity {
 
     @Id
