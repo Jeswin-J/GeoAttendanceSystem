@@ -10,7 +10,8 @@ import 'package:mobile_app/src/widgets/checkin_card.dart';
 import 'package:mobile_app/src/widgets/checkout_card.dart';
 import 'package:mobile_app/src/widgets/welcome_card.dart';
 
-import '../../models/attendance.dart';
+import '../../models/attendance_request.dart';
+import '../../models/status_request.dart';
 import '../../services/api_service.dart';
 import '../../utils/app_constants.dart';
 
@@ -31,21 +32,19 @@ class _HomeScreenState extends State<HomeScreen> {
   double _latitude = 0.0;
   double _longitude = 0.0;
   static const Duration locationUpdateInterval =
-      Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
+  Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
+
+  StatusRequest? _attendanceData;
 
   bool _isCheckedIn = false;
-
-  Attendance? _attendanceData;
 
   @override
   void initState() {
     super.initState();
 
     _fetchAttendanceDataOnStart();
-
     _updateTime();
-    timer =
-        Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
     _initializeLocation();
     Timer.periodic(locationUpdateInterval, (Timer t) => _getCurrentLocation());
   }
@@ -53,14 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _fetchAttendanceDataOnStart() async {
     final attendanceData = await apiService.fetchData(
       AppConstants.statusEndpoint,
-      (json) => Attendance.fromJson(json),
+          (json) => StatusRequest.fromJson(json),
     );
 
     if (attendanceData != null) {
       setState(() {
         _attendanceData = attendanceData;
+        _isCheckedIn = _attendanceData!.checkOutTimeStamp == null;
       });
-      print("SUCCESS: Attendance Data vandhuchi!");
+      print("SUCCESS: Attendance Data vanthuduchi!");
     } else {
       print("ERROR: Attendance Data varla!");
     }
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DateTime now = DateTime.now();
     setState(() {
       formattedDate = DateFormat('MMM d, yyyy').format(now);
-      formattedTime = DateFormat('hh:mm').format(now);
+      formattedTime = DateFormat('hh:mm a').format(now);
     });
   }
 
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _latitude = lastPosition.latitude;
         _longitude = lastPosition.longitude;
         _address =
-            "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
+        "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
       });
     }
 
@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _latitude = position.latitude;
           _longitude = position.longitude;
           _address =
-              "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
+          "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
         });
       }
     } catch (e) {
@@ -125,6 +125,49 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+
+  void toggleCheckInOut() async {
+    String endpoint = _isCheckedIn ? "checkOut" : "checkIn";
+
+  var requestBody = {
+      "employeeId": "E2",
+      "location": {
+        "latitude": _latitude,
+        "longitude": _longitude,
+        "accuracy": 0.9999,
+      },
+    };
+
+    AttendanceRequest request = AttendanceRequest.fromJson(requestBody);
+
+    final response = await apiService.postData(
+      endpoint,
+      request,
+          (json) => json,
+    );
+
+    if (response != null) {
+      setState(() {
+        _isCheckedIn = !_isCheckedIn;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error during ${_isCheckedIn ? "Check-Out" : "Check-In"}"),
+          )
+        );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              "Error during ${_isCheckedIn ? "Check-Out" : "Check-In"}"),
+        ),
+      );
+    }
+  }
+
+
+
   @override
   void dispose() {
     timer.cancel();
@@ -134,8 +177,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (_attendanceData == null) {
-      return const Center(child: CircularProgressIndicator()); // Show a loading indicator
+      return const Center(
+          child: CircularProgressIndicator());
     }
+
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade50,
       appBar: AppBar(
@@ -157,97 +202,96 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           WelcomeCard(
             empName:
-                "${_attendanceData?.employee.name} 👋🏼" ?? "Employee 👋🏼",
+            "${_attendanceData?.employee.name} 👋🏼",
             date: formattedDate,
-            time: "$formattedTime PM [IST]",
+            time: formattedTime,
             profileImagePath: "assets/images/profile.png",
           ),
-          _attendanceData != null && _attendanceData!.checkOutTimeStamp == null
+          !_isCheckedIn
               ? CheckInCard(
-                  status: "Check-In",
-                  location: "GAIL Office, Delhi",
-                  address: _address,
-                  latitude: _latitude,
-                  longitude: _longitude,
-                )
+            status: "Check-In",
+            location: "GAIL Office, Delhi",
+            address: _address,
+            latitude: _latitude,
+            longitude: _longitude,
+          )
               : CheckoutCard(
-                  checkInTime: _attendanceData!.checkInTimeStamp,
-                  status: "Check-Out",
-                  location: "GAIL Office, Delhi",
-                  address: _address,
-                  latitude: _latitude,
-                  longitude: _longitude,
-                ),
+            checkInTime: _attendanceData!.checkInTimeStamp,
+            status: "Check-Out",
+            location: "GAIL Office, Delhi",
+            address: _address,
+            latitude: _latitude,
+            longitude: _longitude,
+          ),
           const SizedBox(height: 14),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SizedBox(
               width: double.infinity,
-              child: _attendanceData != null &&
-                      _attendanceData!.checkOutTimeStamp == null
+              child: !_isCheckedIn
                   ? Button(
-                      text: "Check-In",
+                text: "Check-In",
+                onPressed: () async {
+                  bool confirmed = await showConfirmationDialog(
+                    context,
+                    title: 'Confirm Action',
+                    message: 'Are you sure you want to Check-In?',
+                    confirmText: 'Yes',
+                    cancelText: 'No',
+                  );
+
+                  if (confirmed) {
+                    toggleCheckInOut();
+                  }
+                },
+                backgroundColor: Colors.green.shade700,
+                textColor: Colors.white,
+                fontSize: 18,
+                borderRadius: 10,
+                elevation: 4,
+              )
+                  : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Button(
+                      text: "Take Break",
+                      onPressed: () {
+                        print("Taking a break");
+                      },
+                      backgroundColor: Colors.blue.shade800,
+                      textColor: Colors.white,
+                      fontSize: 18,
+                      borderRadius: 10,
+                      elevation: 4,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Button(
+                      text: "Check-Out",
                       onPressed: () async {
                         bool confirmed = await showConfirmationDialog(
                           context,
                           title: 'Confirm Action',
-                          message: 'Are you sure you want to Check-In?',
+                          message: 'Are you sure you want to Check-Out?',
                           confirmText: 'Yes',
                           cancelText: 'No',
                         );
 
                         if (confirmed) {
-                          // Handle check-in logic
+                          toggleCheckInOut();
                         }
                       },
-                      backgroundColor: Colors.green.shade700,
+                      backgroundColor: Colors.red.shade700,
                       textColor: Colors.white,
                       fontSize: 18,
                       borderRadius: 10,
                       elevation: 4,
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Button(
-                            text: "Take Break",
-                            onPressed: () {
-                              print("Taking a break");
-                            },
-                            backgroundColor: Colors.blue.shade800,
-                            textColor: Colors.white,
-                            fontSize: 18,
-                            borderRadius: 10,
-                            elevation: 4,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Button(
-                            text: "Check-Out",
-                            onPressed: () async {
-                              bool confirmed = await showConfirmationDialog(
-                                context,
-                                title: 'Confirm Action',
-                                message: 'Are you sure you want to Check-Out?',
-                                confirmText: 'Yes',
-                                cancelText: 'No',
-                              );
-
-                              if (confirmed) {
-                                // Handle check-out logic
-                              }
-                            },
-                            backgroundColor: Colors.red.shade700,
-                            textColor: Colors.white,
-                            fontSize: 18,
-                            borderRadius: 10,
-                            elevation: 4,
-                          ),
-                        ),
-                      ],
                     ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -1,14 +1,15 @@
 package api.attendanceService.service;
 
 import api.attendanceService.dto.AttendanceRequest;
+import api.attendanceService.dto.AttendanceResponse;
 import api.attendanceService.model.AttendanceEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface Attendance {
-    boolean markCheckIn(AttendanceRequest attendanceRequest);
+    AttendanceResponse markCheckIn(AttendanceRequest attendanceRequest);
 
-    boolean markCheckOut(AttendanceRequest attendanceRequest);
+    AttendanceResponse markCheckOut(AttendanceRequest attendanceRequest);
 
     AttendanceEntity getLastAttendanceRecord(String employeeId);
 

@@ -83,4 +83,8 @@ public class LocationEntity {
     public void setType(LocationType type) {
         this.type = type;
     }
+
+    public Long getLocationId() {
+        return this.locationId;
+    }
 }

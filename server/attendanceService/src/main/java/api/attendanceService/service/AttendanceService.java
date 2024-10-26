@@ -3,6 +3,8 @@ package api.attendanceService.service;
 import api.attendanceService.builder.AttendanceBuilder;
 import api.attendanceService.builder.LocationBuilder;
 import api.attendanceService.dto.AttendanceRequest;
+import api.attendanceService.dto.AttendanceResponse;
+import api.attendanceService.dto.LocationDTO;
 import api.attendanceService.enums.LocationType;
 import api.attendanceService.enums.Status;
 import api.attendanceService.model.AttendanceEntity;
@@ -33,17 +35,17 @@ public class AttendanceService implements Attendance {
 
     @Override
     @Transactional
-    public boolean markCheckIn(AttendanceRequest attendanceRequest) {
+    public AttendanceResponse markCheckIn(AttendanceRequest attendanceRequest) {
         EmployeeEntity employee = employeeRepository.findEmployeeByEmployeeId(attendanceRequest.getEmployeeId());
 
         if (employee == null || attendanceRequest.getLocation() == null) {
-            return false;
+            return null;
         }
 
         AttendanceEntity lastAttendanceRecord = getLastAttendanceRecord(employee.getEmployeeId());
 
         if (lastAttendanceRecord != null && lastAttendanceRecord.getCheckOutTimeStamp() == null) {
-            return false;
+            return null;
         }
 
         LocationEntity locationEntity = new LocationBuilder()
@@ -63,15 +65,22 @@ public class AttendanceService implements Attendance {
                 .build();
 
         attendanceRepository.save(attendanceEntity);
-        return true;
+
+        return new AttendanceResponse(
+                employee.getEmployeeId(),
+                attendanceEntity.getCheckInTimeStamp().toString(),
+                attendanceEntity.getCheckInLocation().getLatitude(),
+                attendanceEntity.getCheckInLocation().getLongitude()
+        );
     }
 
     @Override
-    public boolean markCheckOut(AttendanceRequest attendanceRequest){
+    public AttendanceResponse markCheckOut(AttendanceRequest attendanceRequest) {
         EmployeeEntity employee = employeeRepository.findEmployeeByEmployeeId(attendanceRequest.getEmployeeId());
 
+
         if (employee == null || attendanceRequest.getLocation() == null) {
-            return false;
+            return null;
         }
 
         LocationEntity location = new LocationBuilder()
@@ -85,14 +94,25 @@ public class AttendanceService implements Attendance {
         location = locationRepository.save(location);
 
         AttendanceEntity attendanceRecord = getLastAttendanceRecord(employee.getEmployeeId());
+        if (attendanceRecord == null) {
+            return null;
+        }
+
         attendanceRecord.setCheckOutLocation(location);
         Timestamp now = new Timestamp(System.currentTimeMillis());
         attendanceRecord.setCheckOutTimeStamp(now);
         attendanceRecord.setWorkingHours(AttendanceUtils.calculateWorkHours(attendanceRecord.getCheckInTimeStamp(), now));
 
         attendanceRepository.save(attendanceRecord);
-        return true;
+
+        return new AttendanceResponse(
+                employee.getEmployeeId(),
+                attendanceRecord.getCheckOutTimeStamp().toString(),
+                attendanceRecord.getCheckOutLocation().getLatitude(),
+                attendanceRecord.getCheckOutLocation().getLongitude()
+        );
     }
+
 
 
     @Override
