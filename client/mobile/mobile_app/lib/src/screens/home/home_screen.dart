@@ -14,6 +14,7 @@ import '../../models/attendance_request.dart';
 import '../../models/status_request.dart';
 import '../../services/api_service.dart';
 import '../../utils/app_constants.dart';
+import '../../widgets/auto_close_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -151,20 +152,34 @@ class _HomeScreenState extends State<HomeScreen> {
         _isCheckedIn = !_isCheckedIn;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Error during ${_isCheckedIn ? "Check-Out" : "Check-In"}"),
-          )
-        );
+      _showAutoCloseDialog(
+        lottieFile: 'assets/animations/success.json',
+        message: _isCheckedIn ? "Check-In Successful" : "Check-Out Successful",
+          isSuccess: true
+      );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              "Error during ${_isCheckedIn ? "Check-Out" : "Check-In"}"),
-        ),
+      _showAutoCloseDialog(
+        lottieFile: 'assets/animations/failed.json',
+        message: _isCheckedIn ? "Check-Out Failed" : "Check-In Failed",
+          isSuccess: false
       );
     }
   }
+
+  void _showAutoCloseDialog({required String lottieFile, required String message, required bool isSuccess}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AutoCloseDialog(
+          lottieFile: lottieFile,
+          message: message,
+          context: context,
+          isSuccess: isSuccess,
+        );
+      },
+    );
+  }
+
 
 
 
