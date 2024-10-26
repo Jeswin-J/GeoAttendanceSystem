@@ -9,6 +9,7 @@ class CheckoutCard extends StatefulWidget {
   final double latitude;
   final double longitude;
   final List<Widget> actions;
+  final DateTime checkInTime;
 
   const CheckoutCard({
     super.key,
@@ -17,6 +18,7 @@ class CheckoutCard extends StatefulWidget {
     required this.address,
     required this.latitude,
     required this.longitude,
+    required this.checkInTime,
     this.actions = const [],
   });
 
@@ -31,6 +33,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
   @override
   void initState() {
     super.initState();
+    _secondsElapsed = _calculateInitialElapsedTime();
     _startTimer();
   }
 
@@ -48,10 +51,18 @@ class _CheckoutCardState extends State<CheckoutCard> {
     });
   }
 
+  int _calculateInitialElapsedTime() {
+    final now = DateTime.now();
+    return now.difference(widget.checkInTime).inSeconds; // Calculate elapsed seconds
+  }
+
+
   String _formatDuration(int seconds) {
-    int minutes = seconds ~/ 60;
+    int hours = seconds ~/ 3600;
+    int minutes = (seconds % 3600) ~/ 60;
     int remainingSeconds = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
   @override

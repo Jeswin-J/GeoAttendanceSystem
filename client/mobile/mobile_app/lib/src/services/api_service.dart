@@ -2,25 +2,28 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../utils/app_constants.dart';
+
 class APIService {
-  final String baseUrl = "http://YOUR_BACKEND_URL/api";
 
   Future<T?> fetchData<T>(String endpoint, T Function(dynamic json) fromJson) async {
-    final url = Uri.parse("$baseUrl/$endpoint");
+    final String endpointUrl = AppConstants.getEndpoint(AppConstants.attendanceService, AppConstants.statusEndpoint);
+
+    print("URL: $endpointUrl");
 
     try {
-      final response = await http.get(url);
+      final response = await http.get(Uri.parse(endpointUrl));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return fromJson(data); 
+        return fromJson(data);
       } else {
-        print("Failed to load data: ${response.statusCode}");
+        print("ERROR -> Enna error nu nee ae pathuko: ${response.statusCode}");
         return null;
       }
     } catch (e) {
-      print("Error occurred: $e");
-      return null;
-    }
+        print("ERROR -> Ingae paar: $e");
+        return null;
+      }
   }
 }
