@@ -3,6 +3,8 @@ package api.attendanceService.controller;
 import api.attendanceService.dto.AttendanceRequest;
 import api.attendanceService.model.AttendanceEntity;
 import api.attendanceService.service.Attendance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ public class AttendanceController {
 
     @Autowired
     private Attendance attendanceService;
+
+    private static final Logger logger = LoggerFactory.getLogger(AttendanceController.class);
 
 
     /**
