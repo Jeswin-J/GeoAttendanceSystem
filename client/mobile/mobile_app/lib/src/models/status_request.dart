@@ -1,7 +1,7 @@
 import 'employee.dart';
 import 'location.dart';
 
-class Attendance {
+class StatusRequest {
   final int attendanceId;
   final Employee employee;
   final DateTime checkInTimeStamp;
@@ -9,21 +9,21 @@ class Attendance {
   final DateTime? checkOutTimeStamp;
   final double workingHours;
   final Location checkInLocation;
-  final Location checkOutLocation;
+  final Location? checkOutLocation;
 
-  Attendance({
+  StatusRequest({
     required this.attendanceId,
     required this.employee,
     required this.checkInTimeStamp,
     required this.attendanceStatus,
-    required this.checkOutTimeStamp,
+    this.checkOutTimeStamp,
     required this.workingHours,
     required this.checkInLocation,
-    required this.checkOutLocation,
+    this.checkOutLocation,
   });
 
-  factory Attendance.fromJson(Map<String, dynamic> json) {
-    return Attendance(
+  factory StatusRequest.fromJson(Map<String, dynamic> json) {
+    return StatusRequest(
       attendanceId: json['attendanceId'],
       employee: Employee.fromJson(json['employee']),
       checkInTimeStamp: DateTime.parse(json['checkInTimeStamp']),
@@ -31,9 +31,12 @@ class Attendance {
       checkOutTimeStamp: json['checkOutTimeStamp'] != null
           ? DateTime.parse(json['checkOutTimeStamp'])
           : null,
-      workingHours: json['workingHours'].toDouble(),
+      workingHours: json['workingHours'] != null ?
+      json['workingHours'].toDouble() : 0.0,
       checkInLocation: Location.fromJson(json['checkInLocation']),
-      checkOutLocation: Location.fromJson(json['checkOutLocation']),
+      checkOutLocation: json['checkOutLocation'] != null
+          ? Location.fromJson(json['checkOutLocation'])
+          : null,
     );
   }
 }

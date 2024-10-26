@@ -13,7 +13,7 @@ public class LocationDTO {
     @NotNull(message = "Accuracy cannot be null")
     private Double accuracy;
 
-    // Getters and Setters
+
     public Double getLatitude() {
         return latitude;
     }

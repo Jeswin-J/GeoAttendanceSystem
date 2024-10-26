@@ -1,6 +1,7 @@
 package api.attendanceService.controller;
 
 import api.attendanceService.dto.AttendanceRequest;
+import api.attendanceService.dto.AttendanceResponse;
 import api.attendanceService.model.AttendanceEntity;
 import api.attendanceService.service.Attendance;
 import org.slf4j.Logger;
@@ -19,37 +20,36 @@ public class AttendanceController {
     @Autowired
     private Attendance attendanceService;
 
-    private static final Logger logger = LoggerFactory.getLogger(AttendanceController.class);
-
 
     /**
      * Records the check-in time and geolocation for the employee.
      */
     @PostMapping("/checkIn")
-    public ResponseEntity<String> checkIn(@RequestBody AttendanceRequest attendanceRequest){
+    public ResponseEntity<AttendanceResponse> checkIn(@RequestBody AttendanceRequest attendanceRequest){
 
-        boolean success = attendanceService.markCheckIn(attendanceRequest);
+        AttendanceResponse response = attendanceService.markCheckIn(attendanceRequest);
 
-        if(success){
-            return ResponseEntity.ok("Check-In Success for: " + attendanceRequest.getEmployeeId());
+        if(response != null){
+            return ResponseEntity.ok(response);
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check-In Failed for: " + attendanceRequest.getEmployeeId());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     /**
      * Records the check-in time and geolocation for the employee.
      */
-    @PostMapping("/checkOut")
-    public ResponseEntity<String> checkOut(@RequestBody AttendanceRequest attendanceRequest){
+    @PostMapping(value = "/checkOut", produces = "application/json")
+    public ResponseEntity<AttendanceResponse> checkOut(@RequestBody AttendanceRequest attendanceRequest){
 
-        boolean success = attendanceService.markCheckOut(attendanceRequest);
+        AttendanceResponse response = attendanceService.markCheckOut(attendanceRequest);
 
-        if(success){
-            return ResponseEntity.ok("Check-Out Success for: " + attendanceRequest.getEmployeeId());
+        if(response != null){
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check-Out Failed for: " + attendanceRequest.getEmployeeId());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
 
