@@ -118,7 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       GestureDetector(
                         onTap: _navigateToLogin,
                         child: Text(
