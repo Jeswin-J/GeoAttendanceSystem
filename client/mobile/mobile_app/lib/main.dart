@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile_app/src/models/status_request.dart';
+import 'package:mobile_app/src/screens/auth/login_screen.dart';
+import 'package:mobile_app/src/screens/auth/register_screen.dart';
 import 'package:mobile_app/src/screens/main_screen.dart';
 import 'package:mobile_app/src/services/api_service.dart';
 import 'package:mobile_app/src/utils/app_constants.dart';
@@ -27,9 +29,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.blue.withOpacity(0.2),
-        statusBarIconBrightness: Brightness.light,
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
     ));
     return MaterialApp(
       title: 'Attendance Tracking App',
@@ -37,7 +41,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const SafeArea(child: MainScreen()),
+      home: const SafeArea(child: LoginScreen()),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         AppLocalizations.delegate,
