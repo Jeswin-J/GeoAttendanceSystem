@@ -67,7 +67,6 @@ class _CheckInCardState extends State<CheckInCard> {
                 ),
               ),
               const SizedBox(height: 16),
-
               SizedBox(
                 height: 300,
                 width: double.infinity,
@@ -80,19 +79,19 @@ class _CheckInCardState extends State<CheckInCard> {
                   ),
                   children: [
                     TileLayer(
-                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.example.app',
                     ),
                     CircleLayer(
                       circles: [
                         CircleMarker(
-                          point: LatLng(widget.latitude, widget.longitude),
-                          radius: 200,
-                          useRadiusInMeter: true,
-                          color: Colors.blue.withOpacity(0.2),
-                          borderStrokeWidth: 0.5,
-                          borderColor: Colors.blue
-                        ),
+                            point: LatLng(widget.latitude, widget.longitude),
+                            radius: 200,
+                            useRadiusInMeter: true,
+                            color: Colors.blue.withOpacity(0.2),
+                            borderStrokeWidth: 0.5,
+                            borderColor: Colors.blue),
                       ],
                     ),
                     MarkerLayer(
@@ -110,9 +109,7 @@ class _CheckInCardState extends State<CheckInCard> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 16),
-
               Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +147,6 @@ class _CheckInCardState extends State<CheckInCard> {
                   color: Colors.grey,
                 ),
               ),
-
               if (widget.actions.isNotEmpty)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

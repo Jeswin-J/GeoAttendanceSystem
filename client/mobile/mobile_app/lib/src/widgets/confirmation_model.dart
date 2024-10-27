@@ -40,11 +40,9 @@ class ConfirmationDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           child: Text(
-              cancelText,
+            cancelText,
             style: TextStyle(
-                color: Colors.red.shade800,
-                fontWeight: FontWeight.bold
-            ),
+                color: Colors.red.shade800, fontWeight: FontWeight.bold),
           ),
           onPressed: () {
             Navigator.of(context).pop(false);
@@ -52,11 +50,9 @@ class ConfirmationDialog extends StatelessWidget {
         ),
         TextButton(
           child: Text(
-              confirmText,
+            confirmText,
             style: TextStyle(
-              color: Colors.green.shade800,
-              fontWeight: FontWeight.bold
-            ),
+                color: Colors.green.shade800, fontWeight: FontWeight.bold),
           ),
           onPressed: () {
             Navigator.of(context).pop(true);
