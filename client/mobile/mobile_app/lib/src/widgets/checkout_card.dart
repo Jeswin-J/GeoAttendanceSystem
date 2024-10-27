@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -53,9 +54,10 @@ class _CheckoutCardState extends State<CheckoutCard> {
 
   int _calculateInitialElapsedTime() {
     final now = DateTime.now();
-    return now.difference(widget.checkInTime).inSeconds; // Calculate elapsed seconds
+    return now
+        .difference(widget.checkInTime)
+        .inSeconds; // Calculate elapsed seconds
   }
-
 
   String _formatDuration(int seconds) {
     int hours = seconds ~/ 3600;
@@ -88,12 +90,10 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   color: Colors.blue[800],
                 ),
               ),
-
               Lottie.asset(
                 'assets/animations/work_animation.json',
                 height: 250,
               ),
-
               Text(
                 "Time Elapsed",
                 style: TextStyle(
@@ -102,7 +102,6 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   color: Colors.grey[800],
                 ),
               ),
-
               Text(
                 _formatDuration(_secondsElapsed),
                 style: TextStyle(
@@ -111,9 +110,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   color: Colors.blue[800],
                 ),
               ),
-
               const SizedBox(height: 16),
-
               Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -151,7 +148,6 @@ class _CheckoutCardState extends State<CheckoutCard> {
                   color: Colors.grey,
                 ),
               ),
-
               if (widget.actions.isNotEmpty)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/src/screens/auth/register_screen.dart';
 
@@ -12,14 +11,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-
   final _formKey = GlobalKey<FormState>();
   String? _employeeId;
   String? _password;
 
   void _navigateToSignUp() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const RegisterScreen()));
   }
 
   @override
@@ -65,7 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-
                       TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Password',
@@ -84,7 +81,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const SizedBox(height: 20),
-
                       Button(
                         text: "Authenticate",
                         onPressed: () {
@@ -97,7 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 18,
                         borderRadius: 10,
                         elevation: 4,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 10),
                       ),
                       const SizedBox(height: 16),
                       GestureDetector(
@@ -107,8 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                               color: Colors.blue.shade800,
                               fontSize: 16,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/button.dart';
@@ -18,7 +17,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? _activationCode;
 
   void _navigateToLogin() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -64,7 +64,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-
                       TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Password',
@@ -83,7 +82,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-
                       TextFormField(
                         decoration: const InputDecoration(
                           labelText: 'Confirm Password',
@@ -102,7 +100,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       const SizedBox(height: 20),
-
                       Button(
                         text: "Authenticate",
                         onPressed: () {
@@ -115,19 +112,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fontSize: 18,
                         borderRadius: 10,
                         elevation: 4,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 10),
                       ),
-
                       const SizedBox(height: 16),
                       GestureDetector(
                         onTap: _navigateToLogin,
                         child: Text(
                           "Login Instead?",
                           style: TextStyle(
-                            color: Colors.blue.shade800,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold
-                          ),
+                              color: Colors.blue.shade800,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

@@ -31,8 +31,8 @@ class StatusRequest {
       checkOutTimeStamp: json['checkOutTimeStamp'] != null
           ? DateTime.parse(json['checkOutTimeStamp'])
           : null,
-      workingHours: json['workingHours'] != null ?
-      json['workingHours'].toDouble() : 0.0,
+      workingHours:
+          json['workingHours'] != null ? json['workingHours'].toDouble() : 0.0,
       checkInLocation: Location.fromJson(json['checkInLocation']),
       checkOutLocation: json['checkOutLocation'] != null
           ? Location.fromJson(json['checkOutLocation'])

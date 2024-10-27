@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -47,8 +48,7 @@ class AutoCloseDialog extends StatelessWidget {
             style: TextStyle(
                 fontSize: 18,
                 color: isSuccess ? Colors.green.shade600 : Colors.red.shade600,
-                fontWeight: FontWeight.bold
-            ),
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),

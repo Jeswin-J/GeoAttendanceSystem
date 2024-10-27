@@ -19,7 +19,8 @@ class WelcomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 12.0, left: 12.0, top: 6.0, bottom: 6.0),
+      padding:
+          const EdgeInsets.only(right: 12.0, left: 12.0, top: 6.0, bottom: 6.0),
       child: Card(
         elevation: 1,
         color: Colors.white,
