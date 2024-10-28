@@ -1,10 +1,18 @@
 package api.authService.service;
 
+import api.authService.dto.AuthRequest;
+import api.authService.dto.AuthResponse;
+import api.authService.model.CredentialsEntity;
+import api.authService.repository.CredentialsRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -20,6 +28,19 @@ public class AuthService implements Auth{
 
     @Autowired
     private TemplateEngine templateEngine;
+
+    @Autowired
+    private CredentialsRepository credentialsRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    AuthenticationManager authManager;
+
 
     @Override
     public String generateAccessToken(String employeeId) throws NoSuchAlgorithmException {
@@ -62,6 +83,28 @@ public class AuthService implements Auth{
 
         } catch (MessagingException e){
             return false;
+        }
+    }
+
+    @Override
+    public AuthResponse register(AuthRequest registerRequest) {
+
+        CredentialsEntity user = new CredentialsEntity();
+        user.setEmployeeId(registerRequest.getEmployeeId());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        credentialsRepository.save(user);
+
+        return new AuthResponse("User registered successfully");
+    }
+
+
+    @Override
+    public String verify(AuthRequest authRequest) {
+        Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmployeeId(), authRequest.getPassword()));
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(authRequest.getEmployeeId());
+        } else {
+            return "fail";
         }
     }
 }
