@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "authToken")
 public class AuthTokenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

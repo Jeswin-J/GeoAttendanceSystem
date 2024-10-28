@@ -3,6 +3,7 @@ package api.authService.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "credentials")
 public class CredentialsEntity {
 
     @Id

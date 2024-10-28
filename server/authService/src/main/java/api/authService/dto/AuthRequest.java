@@ -6,6 +6,9 @@ public class AuthRequest {
     private String employeeId;
     private String password;
 
+    public AuthRequest(){
+
+    }
 
     public AuthRequest(String accessToken, String employeeId, String password) {
         this.accessToken = accessToken;

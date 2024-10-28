@@ -21,7 +21,7 @@ import java.util.function.Function;
 public class JwtService {
 
 
-    private String secretkey = "";
+    private String secretkey = "secret";
 
     public JwtService() {
 
