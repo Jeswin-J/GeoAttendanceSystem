@@ -200,3 +200,6 @@ fastlane/screenshots/**/*.jpg
 *~.nib
 .lock/
 *.lock
+
+.properties
+*.properties
