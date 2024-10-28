@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<p>Hello,</p>
+<p>Your access token is: <strong th:text="${accessToken}"></strong></p>
+
+<p>Please keep this token secure and follow these guidelines:</p>
+
+<h4>DO:</h4>
+<ul>
+    <li>Store your token in a secure location.</li>
+    <li>Use it only for authentication in the application.</li>
+    <li>Contact support if you suspect any unauthorized use.</li>
+</ul>
+
+<h4>DON'T:</h4>
+<ul>
+    <li>Share this token with anyone.</li>
+    <li>Save it in plain text files or unsecured storage.</li>
+    <li>Use it on untrusted devices or networks.</li>
+</ul>
+
+<p>If you have any questions, please contact our support team.</p>
+<p>Best regards,</p>
+<p>The Security Team</p>
+</body>
+</html>
