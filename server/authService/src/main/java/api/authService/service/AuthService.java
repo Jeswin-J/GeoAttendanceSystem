@@ -9,8 +9,8 @@ import api.authService.repository.CredentialsRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,19 +19,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
-public class AuthService implements Auth{
-
-//    @Autowired
-//    private JavaMailSender mailSender;
+public class AuthService implements Auth {
 
     @Autowired
-    private TemplateEngine templateEngine;
+    private JavaMailSender mailSender;
+
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
     @Autowired
     private CredentialsRepository credentialsRepository;
@@ -46,12 +47,10 @@ public class AuthService implements Auth{
     private AuthTokenRepository authTokenRepository;
 
     @Autowired
-    AuthenticationManager authManager;
-
+    private AuthenticationManager authManager;
 
     @Override
     public String generateAccessToken(String employeeId) throws NoSuchAlgorithmException {
-
         long timestamp = System.currentTimeMillis();
         String uniqueInput = employeeId + "-" + timestamp;
 
@@ -68,36 +67,40 @@ public class AuthService implements Auth{
         return hexString.toString().toUpperCase();
     }
 
-
     @Override
     public boolean emailAccessToken(String accessToken, String employeeEmail) {
-        try{
+        try {
             Context context = new Context();
             context.setVariable("accessToken", accessToken);
 
-            String emailContent = templateEngine.process("accessTokenEmail", context);
-
-            JavaMailSender mailSender = new JavaMailSenderImpl();
+            String emailContent = templateEngine.process("accessTokenEmail.html", context);
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
-            helper.setTo(employeeEmail);
+            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+            if (employeeEmail.matches(emailRegex)) {
+                helper.setTo(employeeEmail.trim());
+            } else {
+                System.out.println("INVALID EMAIL: " + employeeEmail);
+                return false;
+            }
             helper.setSubject("GAIL (India) Ltd: Your Secure Access Token");
             helper.setText(emailContent, true);
 
             mailSender.send(message);
-
             return true;
 
-        } catch (MessagingException e){
+        } catch (MessagingException e) {
+            System.err.println("Failed to send email: " + e.getMessage());
             return false;
         }
     }
 
     @Override
     public AuthResponse register(AuthRequest registerRequest) {
-        Optional<AuthTokenEntity> inviteToken = authTokenRepository.findByAccessTokenAndIsInviteAndIsRevoked(registerRequest.getAccessToken(), true, false);
+        Optional<AuthTokenEntity> inviteToken = authTokenRepository.findByAccessTokenAndIsInviteAndIsRevoked(
+                registerRequest.getAccessToken(), true, false);
 
         if (inviteToken.isEmpty()) {
             return new AuthResponse("Invalid or expired invite token");
@@ -115,14 +118,14 @@ public class AuthService implements Auth{
         return new AuthResponse("User registered successfully");
     }
 
-
     @Override
     public String verify(AuthRequest authRequest) {
-        Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmployeeId(), authRequest.getPassword()));
+        Authentication authentication = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getEmployeeId(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
             return jwtService.generateToken(authRequest.getEmployeeId());
         } else {
-            return "fail";
+            return "FAIL";
         }
     }
 }
