@@ -1,8 +1,8 @@
 package api.authService.controller;
 
 import api.authService.dto.AuthRequest;
-import api.authService.dto.AuthResponse;
 import api.authService.dto.EmailTokenRequest;
+import api.authService.dto.Response;
 import api.authService.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,23 +19,21 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest authRequest) {
-        AuthResponse response = authService.register(authRequest);
+    public ResponseEntity<Response> register(@RequestBody AuthRequest authRequest) {
+        Response response = authService.register(authRequest);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody AuthRequest loginRequest) {
-        String response = authService.verify(loginRequest);
+    public ResponseEntity<Response> login(@RequestBody AuthRequest loginRequest) {
+        Response response = authService.verify(loginRequest);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/emailToken")
-    public ResponseEntity<Boolean> generateAndEmailToken(@RequestBody EmailTokenRequest request) throws NoSuchAlgorithmException {
-        boolean response = authService.emailAccessToken(authService.generateAccessToken(request.getEmployeeId()), request);
-        if(response){
+    public ResponseEntity<Response> generateAndEmailToken(@RequestBody EmailTokenRequest request) throws NoSuchAlgorithmException {
+        Response response = authService.emailAccessToken(authService.generateAccessToken(request.getEmployeeId()), request);
 
-        }
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
