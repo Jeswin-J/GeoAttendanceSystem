@@ -32,8 +32,10 @@ public class AuthController {
 
     @PostMapping("/emailToken")
     public ResponseEntity<Boolean> generateAndEmailToken(@RequestBody EmailTokenRequest request) throws NoSuchAlgorithmException {
-        System.out.println(request.getEmployeeEmail());
-        boolean response = authService.emailAccessToken(authService.generateAccessToken("E1"), request.getEmployeeEmail());
+        boolean response = authService.emailAccessToken(authService.generateAccessToken(request.getEmployeeId()), request);
+        if(response){
+
+        }
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

@@ -1,5 +1,7 @@
 package api.authService.model;
 
+import api.authService.service.Auth;
+import groovy.transform.builder.Builder;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -46,55 +48,62 @@ public class AuthTokenEntity {
         return credentials;
     }
 
-    public void setCredentials(CredentialsEntity credentials) {
+    public AuthTokenEntity setCredentials(CredentialsEntity credentials) {
         this.credentials = credentials;
+        return this;
     }
 
     public String getAccessToken() {
         return accessToken;
     }
 
-    public void setAccessToken(String accessToken) {
+    public AuthTokenEntity setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+        return this;
     }
 
     public Timestamp getIssuedTimestamp() {
         return issuedTimestamp;
     }
 
-    public void setIssuedTimestamp(Timestamp issuedTimestamp) {
+    public AuthTokenEntity setIssuedTimestamp(Timestamp issuedTimestamp) {
         this.issuedTimestamp = issuedTimestamp;
+        return this;
     }
 
     public Timestamp getExpiryTimestamp() {
         return expiryTimestamp;
     }
 
-    public void setExpiryTimestamp(Timestamp expiryTimestamp) {
+    public AuthTokenEntity setExpiryTimestamp(Timestamp expiryTimestamp) {
         this.expiryTimestamp = expiryTimestamp;
+        return this;
     }
 
     public boolean isRevoked() {
         return isRevoked;
     }
 
-    public void setRevoked(boolean revoked) {
+    public AuthTokenEntity setRevoked(boolean revoked) {
         isRevoked = revoked;
+        return this;
     }
 
     public boolean isInvite() {
         return isInvite;
     }
 
-    public void setInvite(boolean invite) {
+    public AuthTokenEntity setInvite(boolean invite) {
         isInvite = invite;
+        return this;
     }
 
     public String getInvitedBy() {
         return invitedBy;
     }
 
-    public void setInvitedBy(String invitedBy) {
+    public AuthTokenEntity setInvitedBy(String invitedBy) {
         this.invitedBy = invitedBy;
+        return this;
     }
 }

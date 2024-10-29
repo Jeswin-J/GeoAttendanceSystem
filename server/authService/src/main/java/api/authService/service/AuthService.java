@@ -2,6 +2,7 @@ package api.authService.service;
 
 import api.authService.dto.AuthRequest;
 import api.authService.dto.AuthResponse;
+import api.authService.dto.EmailTokenRequest;
 import api.authService.model.AuthTokenEntity;
 import api.authService.model.CredentialsEntity;
 import api.authService.repository.AuthTokenRepository;
@@ -9,7 +10,6 @@ import api.authService.repository.CredentialsRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,12 +17,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Service
@@ -68,7 +68,7 @@ public class AuthService implements Auth {
     }
 
     @Override
-    public boolean emailAccessToken(String accessToken, String employeeEmail) {
+    public boolean emailAccessToken(String accessToken, EmailTokenRequest request) {
         try {
             Context context = new Context();
             context.setVariable("accessToken", accessToken);
@@ -79,16 +79,17 @@ public class AuthService implements Auth {
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
             String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-            if (employeeEmail.matches(emailRegex)) {
-                helper.setTo(employeeEmail.trim());
+            if (request.getEmployeeEmail().matches(emailRegex)) {
+                helper.setTo(request.getEmployeeEmail().trim());
             } else {
-                System.out.println("INVALID EMAIL: " + employeeEmail);
+                System.out.println("INVALID EMAIL: " + request.getEmployeeEmail());
                 return false;
             }
             helper.setSubject("GAIL (India) Ltd: Your Secure Access Token");
             helper.setText(emailContent, true);
 
             mailSender.send(message);
+            saveAccessToken(accessToken, request.getEmployeeId(), request.getSenderEmployeeId());
             return true;
 
         } catch (MessagingException e) {
@@ -106,13 +107,13 @@ public class AuthService implements Auth {
             return new AuthResponse("Invalid or expired invite token");
         }
 
-        CredentialsEntity user = new CredentialsEntity();
-        user.setEmployeeId(registerRequest.getEmployeeId());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        credentialsRepository.save(user);
+        CredentialsEntity userCredentials = credentialsRepository.findByEmployeeId(inviteToken.get().getCredentials().getEmployeeId())
+                    .setPassword(passwordEncoder.encode(registerRequest.getPassword()))
+                    .setActive(true);
 
-        AuthTokenEntity tokenEntity = inviteToken.get();
-        tokenEntity.setRevoked(true);
+        credentialsRepository.save(userCredentials);
+
+        AuthTokenEntity tokenEntity = inviteToken.get().setRevoked(true);
         authTokenRepository.save(tokenEntity);
 
         return new AuthResponse("User registered successfully");
@@ -127,5 +128,26 @@ public class AuthService implements Auth {
         } else {
             return "FAIL";
         }
+    }
+
+
+    @Override
+    public void saveAccessToken(String accessToken, String receiver, String sender) {
+
+        CredentialsEntity credentials = new CredentialsEntity()
+                .setEmployeeId(receiver);
+
+        credentials = credentialsRepository.save(credentials);
+
+        AuthTokenEntity authToken = new AuthTokenEntity()
+                .setAccessToken(accessToken)
+                .setIssuedTimestamp(new Timestamp(System.currentTimeMillis()))
+                .setExpiryTimestamp(new Timestamp(System.currentTimeMillis() + 48 * 3600 * 1000))
+                .setRevoked(false)
+                .setInvite(true)
+                .setInvitedBy(sender)
+                .setCredentials(credentials);
+
+        authTokenRepository.save(authToken);
     }
 }

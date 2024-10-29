@@ -13,7 +13,7 @@ public class CredentialsEntity {
     @Column(nullable = false, unique = true)
     private String employeeId;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Column(nullable = false)
@@ -25,31 +25,35 @@ public class CredentialsEntity {
         return password;
     }
 
-    public void setPassword(String password) {
+    public CredentialsEntity setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public CredentialsEntity setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
+        return this;
     }
 
     public boolean isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public CredentialsEntity setActive(boolean active) {
         isActive = active;
+        return this;
     }
 
     public Long getCredentialId() {
         return credentialId;
     }
 
-    public void setCredentialId(Long credentialId) {
+    public CredentialsEntity setCredentialId(Long credentialId) {
         this.credentialId = credentialId;
+        return this;
     }
 }
