@@ -26,4 +26,9 @@ public class AuthController {
         String response = authService.verify(loginRequest);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @GetMapping("/health")
+    public String healthCheck(){
+        return "Hi! naan nala iruken!";
+    }
 }

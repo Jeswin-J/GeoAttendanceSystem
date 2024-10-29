@@ -27,6 +27,12 @@ public class AuthTokenEntity {
     @Column(nullable = false)
     private boolean isRevoked;
 
+    @Column(nullable = false)
+    private boolean isInvite = false;
+
+    @Column(nullable = true)
+    private String invitedBy;
+
 
     public Long getTokenId() {
         return tokenId;
@@ -74,5 +80,21 @@ public class AuthTokenEntity {
 
     public void setRevoked(boolean revoked) {
         isRevoked = revoked;
+    }
+
+    public boolean isInvite() {
+        return isInvite;
+    }
+
+    public void setInvite(boolean invite) {
+        isInvite = invite;
+    }
+
+    public String getInvitedBy() {
+        return invitedBy;
+    }
+
+    public void setInvitedBy(String invitedBy) {
+        this.invitedBy = invitedBy;
     }
 }
