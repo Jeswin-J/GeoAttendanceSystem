@@ -1,8 +1,9 @@
 package api.authService.service;
 
 import api.authService.dto.AuthRequest;
-import api.authService.dto.AuthResponse;
+import api.authService.dto.LoginResponse;
 import api.authService.dto.EmailTokenRequest;
+import api.authService.dto.Response;
 import api.authService.model.AuthTokenEntity;
 import api.authService.model.CredentialsEntity;
 import api.authService.repository.AuthTokenRepository;
@@ -68,7 +69,7 @@ public class AuthService implements Auth {
     }
 
     @Override
-    public boolean emailAccessToken(String accessToken, EmailTokenRequest request) {
+    public Response emailAccessToken(String accessToken, EmailTokenRequest request) {
         try {
             Context context = new Context();
             context.setVariable("accessToken", accessToken);
@@ -82,29 +83,35 @@ public class AuthService implements Auth {
             if (request.getEmployeeEmail().matches(emailRegex)) {
                 helper.setTo(request.getEmployeeEmail().trim());
             } else {
-                System.out.println("INVALID EMAIL: " + request.getEmployeeEmail());
-                return false;
+                return new Response()
+                        .setSuccess(false)
+                        .setMessage("Invalid Email Address");
             }
             helper.setSubject("GAIL (India) Ltd: Your Secure Access Token");
             helper.setText(emailContent, true);
 
             mailSender.send(message);
             saveAccessToken(accessToken, request.getEmployeeId(), request.getSenderEmployeeId());
-            return true;
+            return new Response()
+                    .setMessage("Access Token sent to email " + request.getEmployeeEmail())
+                    .setSuccess(true);
 
         } catch (MessagingException e) {
-            System.err.println("Failed to send email: " + e.getMessage());
-            return false;
+            return new Response()
+                    .setSuccess(false)
+                    .setMessage("Failed to send access token due to " + e.getMessage());
         }
     }
 
     @Override
-    public AuthResponse register(AuthRequest registerRequest) {
+    public Response register(AuthRequest registerRequest) {
         Optional<AuthTokenEntity> inviteToken = authTokenRepository.findByAccessTokenAndIsInviteAndIsRevoked(
                 registerRequest.getAccessToken(), true, false);
 
         if (inviteToken.isEmpty()) {
-            return new AuthResponse("Invalid or expired invite token");
+            return new Response()
+                    .setMessage("Invalid Access Token")
+                    .setSuccess(false);
         }
 
         CredentialsEntity userCredentials = credentialsRepository.findByEmployeeId(inviteToken.get().getCredentials().getEmployeeId())
@@ -116,18 +123,27 @@ public class AuthService implements Auth {
         AuthTokenEntity tokenEntity = inviteToken.get().setRevoked(true);
         authTokenRepository.save(tokenEntity);
 
-        return new AuthResponse("User registered successfully");
+        return new Response()
+                .setMessage("User Registration Successful")
+                .setSuccess(true);
     }
 
     @Override
-    public String verify(AuthRequest authRequest) {
+    public Response verify(AuthRequest authRequest) {
+
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getEmployeeId(), authRequest.getPassword()));
+
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getEmployeeId());
-        } else {
-            return "FAIL";
+            return new LoginResponse()
+                    .setToken(jwtService.generateToken(authRequest.getEmployeeId()))
+                    .setSuccess(true)
+                    .setMessage("Login Successful");
         }
+
+        return new Response()
+                .setMessage("Login Failed")
+                .setSuccess(false);
     }
 
 

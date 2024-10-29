@@ -1,8 +1,7 @@
 package api.authService.dto;
 
-public class EmailTokenRequest {
+public class EmailTokenRequest extends Request{
 
-    private String employeeId;
     private String employeeEmail;
     private String senderEmployeeId;
 
@@ -12,14 +11,6 @@ public class EmailTokenRequest {
 
     public void setEmployeeEmail(String employeeEmail) {
         this.employeeEmail = employeeEmail;
-    }
-
-    public String getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
     }
 
     public String getSenderEmployeeId() {
