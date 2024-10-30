@@ -9,7 +9,7 @@ class AppConstants {
   };
 
   // Endpoints
-  static const String statusEndpoint = 'status/E2';
+  static const String statusEndpoint = 'status/E4';
   static const String registerEndpoint = 'register';
   static const String loginEndpoint = 'login';
 
