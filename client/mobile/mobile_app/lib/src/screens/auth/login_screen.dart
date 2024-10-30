@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response != null && response['success'] == true) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const MainScreen()));
+            context, MaterialPageRoute(builder: (context) => const SafeArea(child: MainScreen())));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response != null ? response['message'] : 'Login failed')),

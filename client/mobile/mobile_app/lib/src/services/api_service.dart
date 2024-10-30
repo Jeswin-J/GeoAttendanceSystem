@@ -17,7 +17,7 @@ class APIService {
   Future<T?> fetchData<T>(
       String endpoint, T Function(dynamic json) fromJson) async {
     final String endpointUrl = AppConstants.getEndpoint(
-        AppConstants.attendanceService, AppConstants.statusEndpoint);
+        'attendance', AppConstants.statusEndpoint);
 
     print("URL: $endpointUrl");
 
@@ -48,7 +48,7 @@ class APIService {
   Future<T?> postData<T>(String endpoint, AttendanceRequest body,
       T Function(dynamic json) fromJson) async {
     final String endpointUrl =
-        AppConstants.getEndpoint(AppConstants.attendanceService, endpoint);
+        AppConstants.getEndpoint('attendance', endpoint);
 
     print("POST URL: $endpointUrl");
 
@@ -79,7 +79,7 @@ class APIService {
 
   Future<bool> registerUser(String accessToken, String password) async {
     final String endpointUrl = AppConstants.getEndpoint(
-        AppConstants.authService, AppConstants.registerEndpoint);
+        'auth', AppConstants.registerEndpoint);
 
     try {
       final response = await http
@@ -112,7 +112,9 @@ class APIService {
 
 
   Future<T?> login<T>(String employeeId, String password, T Function(dynamic json) fromJson) async {
-    final String endpointUrl = AppConstants.getEndpoint(AppConstants.authService, AppConstants.loginEndpoint);
+    final String endpointUrl = AppConstants.getEndpoint('auth', AppConstants.loginEndpoint);
+
+    print(endpointUrl);
 
     try {
       final response = await http.post(

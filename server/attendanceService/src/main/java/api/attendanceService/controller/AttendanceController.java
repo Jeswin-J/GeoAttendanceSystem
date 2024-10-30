@@ -88,4 +88,13 @@ public class AttendanceController {
         return ResponseEntity.ok(null);
     }
 
+    /**
+     * Health Check.
+     */
+    @GetMapping("/health")
+    public String health(){
+
+        return "Hi pa!";
+    }
+
 }

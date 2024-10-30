@@ -1,17 +1,24 @@
 class AppConstants {
-  static const String baseUrl = "http://192.168.29.111:8080/api";
+  static const String baseHost = "192.168.29.111";
+  static const String baseApiPath = "api";
 
-  static const String attendanceService = 'attendance';
+  // Service Ports
+  static const Map<String, String> servicePorts = {
+    'auth': "8080",
+    'attendance': "8081",
+  };
 
-  static const String statusEndpoint = 'status/E2';
-
-  static const String authService = 'auth';
-
+  // Endpoints
+  static const String statusEndpoint = 'status/E4';
   static const String registerEndpoint = 'register';
-
   static const String loginEndpoint = 'login';
 
-  static String getEndpoint(String serviceName, String endpoint) {
-    return '$baseUrl/$serviceName/$endpoint';
+  static String getBaseUrl(String service) {
+    final port = servicePorts[service];
+    return port != null ? 'http://$baseHost:$port/$baseApiPath/$service' : '';
+  }
+
+  static String getEndpoint(String service, String endpoint) {
+    return '${getBaseUrl(service)}/$endpoint';
   }
 }

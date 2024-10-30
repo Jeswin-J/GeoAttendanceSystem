@@ -56,7 +56,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
     final now = DateTime.now();
     return now
         .difference(widget.checkInTime)
-        .inSeconds; // Calculate elapsed seconds
+        .inSeconds;
   }
 
   String _formatDuration(int seconds) {
