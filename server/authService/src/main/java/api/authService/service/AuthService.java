@@ -134,7 +134,7 @@ public class AuthService implements Auth {
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getEmployeeId(), authRequest.getPassword()));
 
-        System.out.println("Request Here" + authentication.isAuthenticated());
+        System.out.println("Request Here "+ authRequest.getPassword() + authRequest.getEmployeeId() + authentication.isAuthenticated());
         if (authentication.isAuthenticated()) {
             return new LoginResponse()
                     .setToken(jwtService.generateToken(authRequest.getEmployeeId()))
