@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/src/screens/auth/register_screen.dart';
 
+import '../../services/api_service.dart';
 import '../../widgets/button.dart';
+import '../main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,9 +17,32 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _employeeId;
   String? _password;
 
+  final APIService _apiService = APIService();
+
   void _navigateToSignUp() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const RegisterScreen()));
+  }
+
+  Future<void> _authenticateUser() async {
+    if (_formKey.currentState!.validate()) {
+      final response = await _apiService.login(
+        _employeeId!,
+        _password!,
+            (json) => json,
+      );
+
+      print(response);
+
+      if (response != null && response['success'] == true) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const MainScreen()));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response != null ? response['message'] : 'Login failed')),
+        );
+      }
+    }
   }
 
   @override
@@ -85,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: "Authenticate",
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            print("Authenticating...");
+                            _authenticateUser();
                           }
                         },
                         backgroundColor: Colors.blue.shade800,
