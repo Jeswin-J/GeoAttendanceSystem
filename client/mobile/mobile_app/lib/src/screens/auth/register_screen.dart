@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../services/api_service.dart';
 import '../../widgets/button.dart';
 import 'login_screen.dart';
 
@@ -16,9 +17,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? _confirmPassword;
   String? _activationCode;
 
+  final APIService _apiService = APIService();
+
   void _navigateToLogin() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+  }
+
+  Future<void> _authenticateUser() async {
+    if (_formKey.currentState!.validate()) {
+      bool success = await _apiService.registerUser(
+          _activationCode!, _password!);
+      if (success) {
+        _navigateToLogin();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Registration failed")),
+        );
+      }
+    }
   }
 
   @override
@@ -104,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         text: "Authenticate",
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            print("Authenticating...");
+                            _authenticateUser();
                           }
                         },
                         backgroundColor: Colors.blue.shade800,

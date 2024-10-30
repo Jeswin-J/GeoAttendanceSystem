@@ -26,14 +26,15 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody AuthRequest loginRequest) {
+        System.out.println("Request HERE");
         Response response = authService.verify(loginRequest);
+        System.out.println("Request Back HERE");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/emailToken")
     public ResponseEntity<Response> generateAndEmailToken(@RequestBody EmailTokenRequest request) throws NoSuchAlgorithmException {
         Response response = authService.emailAccessToken(authService.generateAccessToken(request.getEmployeeId()), request);
-
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
