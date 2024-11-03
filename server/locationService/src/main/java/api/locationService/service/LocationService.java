@@ -94,6 +94,8 @@ public class LocationService implements Location{
                     .setLocation(location)
                     .setEmployeeId(request.getEmployeeId());
 
+            locationAccessRepository.save(locationAccess);
+
             return new Response()
                     .setMessage("Access Granted to location " + location.getLocationName())
                     .setSuccess(true);
