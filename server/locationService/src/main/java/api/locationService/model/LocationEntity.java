@@ -40,7 +40,7 @@ public class LocationEntity {
     @Column(nullable = false)
     private Timestamp createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Timestamp updatedAt;
 
     public Long getLocationId() {
@@ -128,7 +128,8 @@ public class LocationEntity {
         return division;
     }
 
-    public void setDivision(Division division) {
+    public LocationEntity setDivision(Division division) {
         this.division = division;
+        return this;
     }
 }
