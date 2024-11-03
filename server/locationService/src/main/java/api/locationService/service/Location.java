@@ -18,4 +18,8 @@ public interface Location {
     Response grantLocationAccess(Long locationId, AccessRequest request);
 
     Response revokeLocationAccess(Long locationId, AccessRequest request);
+
+    Response getProvidedAccess(String employeeId);
+
+    Response getAllEmployeesAtLocation(Long locationId);
 }

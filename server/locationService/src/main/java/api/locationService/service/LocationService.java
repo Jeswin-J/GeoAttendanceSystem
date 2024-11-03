@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class LocationService implements Location{
 
@@ -123,6 +124,43 @@ public class LocationService implements Location{
         return new Response()
                 .setMessage("Access revoked successfully for employee ID: " + request.getEmployeeId())
                 .setSuccess(true);
+    }
+
+    @Override
+    public Response getProvidedAccess(String employeeId) {
+
+        List<LocationAccessEntity> locationAccessList = locationAccessRepository
+                .findAllByEmployeeId(employeeId);
+
+        if (!locationAccessList.isEmpty()) {
+            List<LocationEntity> locations = locationAccessList.stream()
+                    .map(access -> new LocationEntity()
+                            .setLocationName(access.getLocation().getLocationName())
+                            .setAddress(access.getLocation().getAddress())
+                            .setDivision(access.getLocation().getDivision())
+                            .setRadius(access.getLocation().getRadius())
+                            .setLatitude(access.getLocation().getLatitude())
+                            .setLongitude(access.getLocation().getLongitude())
+                            .setCreatedAt(access.getLocation().getCreatedAt())
+                            .setUpdatedAt(access.getLocation().getUpdatedAt())
+                            .setType(access.getLocation().getType())
+                            .setLocationId(access.getLocation().getLocationId())
+                    ).toList();
+
+            return new Response()
+                    .setSuccess(true)
+                    .setMessage("Employee " + employeeId + " has access to " + locations.size() + "locations")
+                    .setData(locations);
+        }
+
+        return new Response()
+                .setSuccess(false)
+                .setMessage("No access found for employee ID: " + employeeId);
+    }
+
+    @Override
+    public Response getAllEmployeesAtLocation(Long locationId) {
+        return null;
     }
 
 }
