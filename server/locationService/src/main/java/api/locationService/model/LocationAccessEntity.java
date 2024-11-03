@@ -14,10 +14,8 @@ public class LocationAccessEntity {
     @ManyToOne
     @Column(nullable = false)
     @JoinColumn(name = "locationId", nullable = false)
-    private LocationEntity locationId;
+    private LocationEntity location;
 
-    @Column(nullable = false)
-    private Boolean isAccessRevoked = false;
 
     public Long getLocationAccessId() {
         return locationAccessId;
@@ -37,21 +35,12 @@ public class LocationAccessEntity {
         return this;
     }
 
-    public LocationEntity getLocationId() {
-        return locationId;
+    public LocationEntity getLocation() {
+        return location;
     }
 
-    public LocationAccessEntity setLocationId(LocationEntity locationId) {
-        this.locationId = locationId;
-        return this;
-    }
-
-    public Boolean getAccessRevoked() {
-        return isAccessRevoked;
-    }
-
-    public LocationAccessEntity setAccessRevoked(Boolean accessRevoked) {
-        isAccessRevoked = accessRevoked;
+    public LocationAccessEntity setLocation(LocationEntity location) {
+        this.location = location;
         return this;
     }
 }

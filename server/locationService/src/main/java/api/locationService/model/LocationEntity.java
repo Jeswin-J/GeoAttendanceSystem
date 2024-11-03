@@ -1,5 +1,6 @@
 package api.locationService.model;
 
+import api.locationService.enums.Division;
 import api.locationService.enums.LocationType;
 import jakarta.persistence.*;
 
@@ -32,10 +33,14 @@ public class LocationEntity {
     @Column(nullable = false)
     private LocationType type;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Division division;
+
     @Column(nullable = false)
     private Timestamp createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Timestamp updatedAt;
 
     public Long getLocationId() {
@@ -116,6 +121,15 @@ public class LocationEntity {
 
     public LocationEntity setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+        return this;
+    }
+
+    public Division getDivision() {
+        return division;
+    }
+
+    public LocationEntity setDivision(Division division) {
+        this.division = division;
         return this;
     }
 }
