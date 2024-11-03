@@ -13,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class LocationService implements Location{
+public class LocationService implements Location {
 
     @Autowired
     private LocationAccessRepository locationAccessRepository;
@@ -87,7 +88,7 @@ public class LocationService implements Location{
     public Response grantLocationAccess(Long locationId, AccessRequest request) {
         Optional<LocationEntity> existingLocationOp = locationRepository.findById(locationId);
 
-        if(existingLocationOp.isPresent()){
+        if (existingLocationOp.isPresent()) {
             LocationEntity location = existingLocationOp.get();
 
             LocationAccessEntity locationAccess = new LocationAccessEntity()
@@ -125,4 +126,56 @@ public class LocationService implements Location{
                 .setSuccess(true);
     }
 
+    @Override
+    public Response getProvidedAccess(String employeeId) {
+
+        List<LocationAccessEntity> locationAccessList = locationAccessRepository
+                .findAllByEmployeeId(employeeId);
+
+        if (!locationAccessList.isEmpty()) {
+            List<LocationEntity> locations = locationAccessList.stream()
+                    .map(access -> new LocationEntity()
+                            .setLocationName(access.getLocation().getLocationName())
+                            .setAddress(access.getLocation().getAddress())
+                            .setDivision(access.getLocation().getDivision())
+                            .setRadius(access.getLocation().getRadius())
+                            .setLatitude(access.getLocation().getLatitude())
+                            .setLongitude(access.getLocation().getLongitude())
+                            .setCreatedAt(access.getLocation().getCreatedAt())
+                            .setUpdatedAt(access.getLocation().getUpdatedAt())
+                            .setType(access.getLocation().getType())
+                            .setLocationId(access.getLocation().getLocationId())
+                    ).toList();
+
+            return new Response()
+                    .setSuccess(true)
+                    .setMessage("Employee " + employeeId + " has access to " + locations.size() + "locations")
+                    .setData(locations);
+        }
+
+        return new Response()
+                .setSuccess(false)
+                .setMessage("No access found for employee ID: " + employeeId);
+    }
+
+    @Override
+    public Response getAllEmployeesAtLocation(Long locationId) {
+        List<LocationAccessEntity> accessRecords = locationAccessRepository
+                .findAllByLocationId(locationId);
+
+        if (!accessRecords.isEmpty()) {
+            List<String> employees = accessRecords.stream()
+                    .map(LocationAccessEntity::getEmployeeId)
+                    .toList();
+
+            return new Response()
+                    .setMessage(employees.size() + " Employees have Access to Location " + locationId)
+                    .setSuccess(true)
+                    .setData(accessRecords);
+        }
+
+        return new Response()
+                .setSuccess(false)
+                .setMessage("No employees found with access to location ID: " + locationId);
+    }
 }

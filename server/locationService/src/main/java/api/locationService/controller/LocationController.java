@@ -55,13 +55,15 @@ public class LocationController {
     }
 
     @GetMapping("/emp/{employeeId}")
-    public Response getEmployeeLocationAccess(){
-        return new Response();
+    public ResponseEntity<Response> getEmployeeLocationAccess(@PathVariable String employeeId){
+        Response response = location.getProvidedAccess(employeeId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("access/{locationId}")
-    public Response employeesAtLocation(){
-        return new Response();
+    public ResponseEntity<Response> employeesAtLocation(@PathVariable Long locationId){
+        Response response = location.getAllEmployeesAtLocation(locationId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
