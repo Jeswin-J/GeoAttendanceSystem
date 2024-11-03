@@ -1,9 +1,16 @@
 package api.locationService.service;
 
 import api.locationService.dto.NewLocationRequest;
-import api.locationService.dto.Request;
 import api.locationService.dto.Response;
+import api.locationService.dto.UpdateLocationRequest;
+import api.locationService.model.LocationEntity;
+
+import java.util.List;
 
 public interface Location {
     Response createNewLocation(NewLocationRequest request);
+
+    List<LocationEntity> getLocationsByDivision(String division);
+
+    Response updateLocation(Long locationId, UpdateLocationRequest request);
 }

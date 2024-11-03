@@ -2,12 +2,15 @@ package api.locationService.service;
 
 import api.locationService.dto.NewLocationRequest;
 import api.locationService.dto.Response;
+import api.locationService.dto.UpdateLocationRequest;
 import api.locationService.model.LocationEntity;
 import api.locationService.repository.LocationAccessRepository;
 import api.locationService.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
 
 public class LocationService implements Location{
 
@@ -41,6 +44,41 @@ public class LocationService implements Location{
                     .setMessage("New Location creation failed!")
                     .setSuccess(false);
         }
+    }
+
+    @Override
+    public List<LocationEntity> getLocationsByDivision(String division) {
+        return locationRepository.findByDivision(division);
+    }
+
+    @Override
+    public Response updateLocation(Long locationId, UpdateLocationRequest request) {
+
+        Optional<LocationEntity> existingLocationOp = locationRepository.findById(locationId);
+
+        if (existingLocationOp.isPresent()) {
+            LocationEntity existingLocation = existingLocationOp.get();
+
+            request.getLocationName().ifPresent(existingLocation::setLocationName);
+            request.getLatitude().ifPresent(existingLocation::setLatitude);
+            request.getLongitude().ifPresent(existingLocation::setLongitude);
+            request.getRadius().ifPresent(existingLocation::setRadius);
+            request.getAddress().ifPresent(existingLocation::setAddress);
+            request.getLocationType().ifPresent(existingLocation::setType);
+            request.getDivision().ifPresent(existingLocation::setDivision);
+
+            existingLocation.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+            locationRepository.save(existingLocation);
+
+            return new Response()
+                    .setSuccess(true)
+                    .setMessage("Location Updated Successfully");
+        }
+
+        return new Response()
+                .setSuccess(true)
+                .setMessage("No Location found with ID: " + locationId);
     }
 
 }
