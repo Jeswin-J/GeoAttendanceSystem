@@ -11,4 +11,6 @@ public interface LocationAccessRepository extends JpaRepository<LocationAccessEn
     Optional<LocationAccessEntity> findByLocationIdAndEmployeeId(Long locationId, String employeeId);
 
     List<LocationAccessEntity> findAllByEmployeeId(String employeeId);
+
+    List<LocationAccessEntity> findAllByLocationId(Long locationId);
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class LocationService implements Location{
+public class LocationService implements Location {
 
     @Autowired
     private LocationAccessRepository locationAccessRepository;
@@ -88,7 +88,7 @@ public class LocationService implements Location{
     public Response grantLocationAccess(Long locationId, AccessRequest request) {
         Optional<LocationEntity> existingLocationOp = locationRepository.findById(locationId);
 
-        if(existingLocationOp.isPresent()){
+        if (existingLocationOp.isPresent()) {
             LocationEntity location = existingLocationOp.get();
 
             LocationAccessEntity locationAccess = new LocationAccessEntity()
@@ -160,7 +160,22 @@ public class LocationService implements Location{
 
     @Override
     public Response getAllEmployeesAtLocation(Long locationId) {
-        return null;
-    }
+        List<LocationAccessEntity> accessRecords = locationAccessRepository
+                .findAllByLocationId(locationId);
 
+        if (!accessRecords.isEmpty()) {
+            List<String> employees = accessRecords.stream()
+                    .map(LocationAccessEntity::getEmployeeId)
+                    .toList();
+
+            return new Response()
+                    .setMessage(employees.size() + " Employees have Access to Location " + locationId)
+                    .setSuccess(true)
+                    .setData(accessRecords);
+        }
+
+        return new Response()
+                .setSuccess(false)
+                .setMessage("No employees found with access to location ID: " + locationId);
+    }
 }
