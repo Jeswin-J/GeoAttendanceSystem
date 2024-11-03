@@ -6,14 +6,14 @@ import jakarta.persistence.*;
 @Table(name = "location_access")
 public class LocationAccessEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long locationAccessId;
 
     @Column(nullable = false)
     private String employeeId;
 
     @ManyToOne
-    @Column(nullable = false)
-    @JoinColumn(name = "locationId", nullable = false)
+    @JoinColumn(name = "location_id", referencedColumnName = "locationId", nullable = false)
     private LocationEntity location;
 
 

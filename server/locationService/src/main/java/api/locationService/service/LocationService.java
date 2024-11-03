@@ -9,19 +9,21 @@ import api.locationService.model.LocationEntity;
 import api.locationService.repository.LocationAccessRepository;
 import api.locationService.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+
+@Service
 public class LocationService implements Location {
 
     @Autowired
-    private LocationAccessRepository locationAccessRepository;
+    LocationAccessRepository locationAccessRepository;
 
     @Autowired
-    private LocationRepository locationRepository;
+    LocationRepository locationRepository;
 
     @Override
     public Response createNewLocation(NewLocationRequest request) {
@@ -111,7 +113,7 @@ public class LocationService implements Location {
     public Response revokeLocationAccess(Long locationId, AccessRequest request) {
 
         Optional<LocationAccessEntity> accessGrantOpt = locationAccessRepository
-                .findByLocationIdAndEmployeeId(locationId, request.getEmployeeId());
+                .findByLocationAndEmployeeId(locationRepository.findById(locationId), request.getEmployeeId());
 
         if (accessGrantOpt.isEmpty()) {
             return new Response()
@@ -161,7 +163,7 @@ public class LocationService implements Location {
     @Override
     public Response getAllEmployeesAtLocation(Long locationId) {
         List<LocationAccessEntity> accessRecords = locationAccessRepository
-                .findAllByLocationId(locationId);
+                .findAllByLocation(locationRepository.findById(locationId));
 
         if (!accessRecords.isEmpty()) {
             List<String> employees = accessRecords.stream()

@@ -1,16 +1,19 @@
 package api.locationService.repository;
 
 import api.locationService.model.LocationAccessEntity;
+import api.locationService.model.LocationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface LocationAccessRepository extends JpaRepository<LocationAccessEntity, Long> {
 
-    Optional<LocationAccessEntity> findByLocationIdAndEmployeeId(Long locationId, String employeeId);
+    Optional<LocationAccessEntity> findByLocationAndEmployeeId(Optional<LocationEntity> location, String employeeId);
 
     List<LocationAccessEntity> findAllByEmployeeId(String employeeId);
 
-    List<LocationAccessEntity> findAllByLocationId(Long locationId);
+    List<LocationAccessEntity> findAllByLocation(Optional<LocationEntity> location);
 }
