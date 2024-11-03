@@ -1,8 +1,10 @@
 package api.locationService.service;
 
+import api.locationService.dto.AccessRequest;
 import api.locationService.dto.NewLocationRequest;
 import api.locationService.dto.Response;
 import api.locationService.dto.UpdateLocationRequest;
+import api.locationService.model.LocationAccessEntity;
 import api.locationService.model.LocationEntity;
 import api.locationService.repository.LocationAccessRepository;
 import api.locationService.repository.LocationRepository;
@@ -79,6 +81,46 @@ public class LocationService implements Location{
         return new Response()
                 .setSuccess(true)
                 .setMessage("No Location found with ID: " + locationId);
+    }
+
+    @Override
+    public Response grantLocationAccess(Long locationId, AccessRequest request) {
+        Optional<LocationEntity> existingLocationOp = locationRepository.findById(locationId);
+
+        if(existingLocationOp.isPresent()){
+            LocationEntity location = existingLocationOp.get();
+
+            LocationAccessEntity locationAccess = new LocationAccessEntity()
+                    .setLocation(location)
+                    .setEmployeeId(request.getEmployeeId());
+
+            return new Response()
+                    .setMessage("Access Granted to location " + location.getLocationName())
+                    .setSuccess(true);
+        }
+
+        return new Response()
+                .setMessage("Failed! May be due to invalid Location Id")
+                .setSuccess(false);
+    }
+
+    @Override
+    public Response revokeLocationAccess(Long locationId, AccessRequest request) {
+
+        Optional<LocationAccessEntity> accessGrantOpt = locationAccessRepository
+                .findByLocationIdAndEmployeeId(locationId, request.getEmployeeId());
+
+        if (accessGrantOpt.isEmpty()) {
+            return new Response()
+                    .setSuccess(false)
+                    .setMessage("No access found for employee ID: " + request.getEmployeeId() + " at location ID: " + locationId);
+        }
+
+        locationAccessRepository.delete(accessGrantOpt.get());
+
+        return new Response()
+                .setMessage("Access revoked successfully for employee ID: " + request.getEmployeeId())
+                .setSuccess(true);
     }
 
 }

@@ -1,9 +1,6 @@
 package api.locationService.controller;
 
-import api.locationService.dto.NewLocationRequest;
-import api.locationService.dto.Request;
-import api.locationService.dto.Response;
-import api.locationService.dto.UpdateLocationRequest;
+import api.locationService.dto.*;
 import api.locationService.model.LocationEntity;
 import api.locationService.service.Location;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +42,16 @@ public class LocationController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PostMapping("/grant")
-    public Response grantAccess(Request request){
-        return new Response();
+    @PostMapping("/grant/{locationId}")
+    public ResponseEntity<Response> grantAccess(@PathVariable Long locationId, AccessRequest request){
+        Response response = location.grantLocationAccess(locationId, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/revoke")
-    public Response revokeAccess(Request request){
-        return new Response();
+    @DeleteMapping("/revoke/{locationId}")
+    public ResponseEntity<Response> revokeAccess(@PathVariable Long locationId, AccessRequest request){
+        Response response = location.revokeLocationAccess(locationId, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/emp/{employeeId}")

@@ -1,5 +1,6 @@
 package api.locationService.service;
 
+import api.locationService.dto.AccessRequest;
 import api.locationService.dto.NewLocationRequest;
 import api.locationService.dto.Response;
 import api.locationService.dto.UpdateLocationRequest;
@@ -13,4 +14,8 @@ public interface Location {
     List<LocationEntity> getLocationsByDivision(String division);
 
     Response updateLocation(Long locationId, UpdateLocationRequest request);
+
+    Response grantLocationAccess(Long locationId, AccessRequest request);
+
+    Response revokeLocationAccess(Long locationId, AccessRequest request);
 }
