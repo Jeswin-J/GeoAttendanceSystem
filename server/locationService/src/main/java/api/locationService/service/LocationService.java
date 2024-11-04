@@ -29,6 +29,19 @@ public class LocationService implements Location {
     @Override
     public Response createNewLocation(NewLocationRequest request) {
         try {
+            
+            boolean exists = locationRepository.existsByDivisionAndTypeAndLatitudeAndLongitude(
+                    request.getDivision(),
+                    request.getLocationType(),
+                    request.getLatitude(),
+                    request.getLongitude()
+            );
+
+            if (exists) {
+                return new Response()
+                        .setMessage("A similar location already exists!")
+                        .setSuccess(false);
+            }
             LocationEntity newLocation = new LocationEntity()
                     .setLocationName(request.getLocationName())
                     .setCreatedAt(new Timestamp(System.currentTimeMillis()))
