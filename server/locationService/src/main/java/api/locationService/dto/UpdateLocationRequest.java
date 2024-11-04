@@ -49,4 +49,32 @@ public class UpdateLocationRequest {
     public Optional<Division> getDivision() {
         return division;
     }
+
+    public void setLocationName(Optional<String> locationName) {
+        this.locationName = locationName;
+    }
+
+    public void setLatitude(Optional<Double> latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Optional<Double> longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setAddress(Optional<String> address) {
+        this.address = address;
+    }
+
+    public void setRadius(Optional<Float> radius) {
+        this.radius = radius;
+    }
+
+    public void setLocationType(Optional<LocationType> locationType) {
+        this.locationType = locationType;
+    }
+
+    public void setDivision(Optional<Division> division) {
+        this.division = division;
+    }
 }

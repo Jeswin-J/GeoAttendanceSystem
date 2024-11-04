@@ -4,6 +4,7 @@ import api.locationService.dto.AccessRequest;
 import api.locationService.dto.NewLocationRequest;
 import api.locationService.dto.Response;
 import api.locationService.dto.UpdateLocationRequest;
+import api.locationService.enums.Division;
 import api.locationService.model.LocationAccessEntity;
 import api.locationService.model.LocationEntity;
 import api.locationService.repository.LocationAccessRepository;
@@ -46,14 +47,14 @@ public class LocationService implements Location {
 
         } catch (Exception e) {
             return new Response()
-                    .setMessage("New Location creation failed!")
+                    .setMessage("New Location creation failed! " + e.getMessage())
                     .setSuccess(false);
         }
     }
 
     @Override
     public List<LocationEntity> getLocationsByDivision(String division) {
-        return locationRepository.findByDivision(division);
+        return locationRepository.findByDivision(Division.valueOf(division.toUpperCase()));
     }
 
     @Override

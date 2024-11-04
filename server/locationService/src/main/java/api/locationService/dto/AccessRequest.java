@@ -8,4 +8,7 @@ public class AccessRequest {
         return employeeId;
     }
 
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
 }
