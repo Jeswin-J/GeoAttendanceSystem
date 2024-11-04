@@ -29,7 +29,7 @@ public class LocationService implements Location {
     @Override
     public Response createNewLocation(NewLocationRequest request) {
         try {
-            
+
             boolean exists = locationRepository.existsByDivisionAndTypeAndLatitudeAndLongitude(
                     request.getDivision(),
                     request.getLocationType(),
@@ -108,10 +108,16 @@ public class LocationService implements Location {
             LocationEntity location = existingLocationOp.get();
 
             LocationAccessEntity locationAccess = new LocationAccessEntity()
-                    .setLocation(location)
-                    .setEmployeeId(request.getEmployeeId());
+                    .setEmployeeId(request.getEmployeeId())
+                    .setLocation(location);
 
-            locationAccessRepository.save(locationAccess);
+            try{
+                locationAccessRepository.save(locationAccess);
+            } catch (Exception e){
+                return new Response()
+                        .setMessage("Access Granter Already to employee " + request.getEmployeeId())
+                        .setSuccess(false);
+            }
 
             return new Response()
                     .setMessage("Access Granted to location " + location.getLocationName())
@@ -165,7 +171,7 @@ public class LocationService implements Location {
 
             return new Response()
                     .setSuccess(true)
-                    .setMessage("Employee " + employeeId + " has access to " + locations.size() + "locations")
+                    .setMessage("Employee " + employeeId + " has access to " + locations.size() + " locations")
                     .setData(locations);
         }
 
