@@ -8,5 +8,10 @@ public enum Division {
     NORTHEAST,
     NORTHWEST,
     SOUTHEAST,
-    SOUTHWEST
+    SOUTHWEST;
+
+    @Override
+    public String toString() {
+        return name();
+    }
 }

@@ -3,8 +3,9 @@ package api.locationService.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "location_access")
+@Table(name = "location_access", uniqueConstraints = @UniqueConstraint(columnNames = {"employee_id", "location_id"}))
 public class LocationAccessEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long locationAccessId;

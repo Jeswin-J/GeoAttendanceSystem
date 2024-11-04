@@ -4,6 +4,7 @@ import api.locationService.dto.AccessRequest;
 import api.locationService.dto.NewLocationRequest;
 import api.locationService.dto.Response;
 import api.locationService.dto.UpdateLocationRequest;
+import api.locationService.enums.Division;
 import api.locationService.model.LocationAccessEntity;
 import api.locationService.model.LocationEntity;
 import api.locationService.repository.LocationAccessRepository;
@@ -28,6 +29,19 @@ public class LocationService implements Location {
     @Override
     public Response createNewLocation(NewLocationRequest request) {
         try {
+
+            boolean exists = locationRepository.existsByDivisionAndTypeAndLatitudeAndLongitude(
+                    request.getDivision(),
+                    request.getLocationType(),
+                    request.getLatitude(),
+                    request.getLongitude()
+            );
+
+            if (exists) {
+                return new Response()
+                        .setMessage("A similar location already exists!")
+                        .setSuccess(false);
+            }
             LocationEntity newLocation = new LocationEntity()
                     .setLocationName(request.getLocationName())
                     .setCreatedAt(new Timestamp(System.currentTimeMillis()))
@@ -46,14 +60,14 @@ public class LocationService implements Location {
 
         } catch (Exception e) {
             return new Response()
-                    .setMessage("New Location creation failed!")
+                    .setMessage("New Location creation failed! " + e.getMessage())
                     .setSuccess(false);
         }
     }
 
     @Override
     public List<LocationEntity> getLocationsByDivision(String division) {
-        return locationRepository.findByDivision(division);
+        return locationRepository.findByDivision(Division.valueOf(division.toUpperCase()));
     }
 
     @Override
@@ -94,10 +108,16 @@ public class LocationService implements Location {
             LocationEntity location = existingLocationOp.get();
 
             LocationAccessEntity locationAccess = new LocationAccessEntity()
-                    .setLocation(location)
-                    .setEmployeeId(request.getEmployeeId());
+                    .setEmployeeId(request.getEmployeeId())
+                    .setLocation(location);
 
-            locationAccessRepository.save(locationAccess);
+            try{
+                locationAccessRepository.save(locationAccess);
+            } catch (Exception e){
+                return new Response()
+                        .setMessage("Access Granter Already to employee " + request.getEmployeeId())
+                        .setSuccess(false);
+            }
 
             return new Response()
                     .setMessage("Access Granted to location " + location.getLocationName())
@@ -151,7 +171,7 @@ public class LocationService implements Location {
 
             return new Response()
                     .setSuccess(true)
-                    .setMessage("Employee " + employeeId + " has access to " + locations.size() + "locations")
+                    .setMessage("Employee " + employeeId + " has access to " + locations.size() + " locations")
                     .setData(locations);
         }
 
