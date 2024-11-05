@@ -1,15 +1,13 @@
-/* Table Container */
 .table-container {
     overflow-x: auto;
     margin: 20px 0;
-    font-family: Arial, sans-serif;
   }
   
-  /* Table Styling */
   .custom-table {
     width: 100%;
     border-collapse: collapse;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center; 
   }
   
   .table-header {
@@ -20,6 +18,7 @@
     font-weight: 600;
     cursor: pointer;
     border-bottom: 2px solid #dee2e6;
+    text-align: center; 
   }
   
   .table-header:hover {
@@ -32,9 +31,9 @@
     color: #666;
   }
   
-  /* Row Striping and Hover */
   .table-row {
     transition: background-color 0.15s ease;
+    cursor: pointer;
   }
   
   .even-row {
@@ -54,8 +53,7 @@
     color: #555;
     border-bottom: 1px solid #dee2e6;
   }
-  
-  /* Pagination Styling */
+
   .pagination-controls {
     display: flex;
     justify-content: space-between;
@@ -87,4 +85,29 @@
     color: #333;
     font-size: 0.9em;
   }
+
+  .search-filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .filter-select {
+    padding: 0 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .table-heading {
+    margin: 0;
+    font-size: 1.5rem; 
+  }
+  
+  .controls-container {
+    display: flex; 
+    gap: 40px;
+    align-items: center;
+  }
+
+  
   

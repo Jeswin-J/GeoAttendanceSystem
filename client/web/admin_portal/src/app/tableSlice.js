@@ -1,30 +1,33 @@
+// tableSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  data: [],
   currentPage: 1,
   rowsPerPage: 10,
-  sortConfig: { key: '', direction: '' }
+  sortConfig: { key: '', direction: '' },
+  searchTerm: '',
+  filter: '',
 };
 
 const tableSlice = createSlice({
   name: 'table',
   initialState,
   reducers: {
-    setData: (state, action) => {
-      state.data = action.payload;
-    },
-    setPage: (state, action) => {
+    setPage(state, action) {
       state.currentPage = action.payload;
     },
-    setRowsPerPage: (state, action) => {
-      state.rowsPerPage = action.payload;
-    },
-    setSortConfig: (state, action) => {
+    setSortConfig(state, action) {
       state.sortConfig = action.payload;
+    },
+    setSearchTerm(state, action) {
+      state.searchTerm = action.payload;
+    },
+    setFilter(state, action) {
+      state.filter = action.payload;
     },
   },
 });
 
-export const { setData, setPage, setRowsPerPage, setSortConfig } = tableSlice.actions;
+export const { setPage, setSortConfig, setSearchTerm, setFilter } = tableSlice.actions;
+
 export default tableSlice.reducer;
