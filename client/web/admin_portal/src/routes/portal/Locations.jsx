@@ -18,10 +18,9 @@ function Locations() {
         { key: 'latitude', label: 'Latitude' },
         { key: 'longitude', label: 'Longitude' },
         { key: 'radius', label: 'Radius (m)' },
+        { key: 'division', label: 'Region' },
         { key: 'address', label: 'Address' },
         { key: 'type', label: 'Type' },
-        { key: 'division', label: 'Division' },
-        { key: 'createdAt', label: 'Created At' },
     ];
 
     const filterOptions = [
