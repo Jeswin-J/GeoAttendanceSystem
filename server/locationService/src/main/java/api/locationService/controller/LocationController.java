@@ -20,6 +20,12 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
+    @GetMapping("/")
+    public ResponseEntity<Response> allLocations(){
+        Response response = locationService.getAllLocations();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping("/new")
     public ResponseEntity<Response> addLocation(@RequestBody NewLocationRequest request){
         Response response = locationService.createNewLocation(request);

@@ -200,4 +200,22 @@ public class LocationService implements Location {
                 .setSuccess(false)
                 .setMessage("No employees found with access to location ID: " + locationId);
     }
+
+    @Override
+    public Response getAllLocations() {
+        try {
+            List<LocationEntity> allLocations = locationRepository.findAll();
+
+            return new Response()
+                    .setMessage("Locations fetched successfully.")
+                    .setSuccess(true)
+                    .setData(allLocations);
+
+        } catch (Exception e) {
+            return new Response()
+                    .setMessage("Failed to fetch locations: " + e.getMessage())
+                    .setSuccess(false);
+        }
+    }
+
 }
