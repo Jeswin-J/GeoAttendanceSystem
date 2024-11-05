@@ -6,7 +6,6 @@ import api.locationService.dto.Response;
 import api.locationService.dto.UpdateLocationRequest;
 import api.locationService.model.LocationEntity;
 import api.locationService.service.LocationService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +15,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/locations")
+@CrossOrigin(origins = "http://localhost:3000")
 public class LocationController {
 
     @Autowired
     private LocationService locationService;
+
+    @GetMapping("/")
+    public ResponseEntity<Response> allLocations(){
+        Response response = locationService.getAllLocations();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
     @PostMapping("/new")
     public ResponseEntity<Response> addLocation(@RequestBody NewLocationRequest request){

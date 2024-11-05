@@ -1,10 +1,12 @@
-import React from 'react'
+import React from 'react';
+
+import Portal from '../../components/layout/Portal/Portal';
 
 function Dashboard() {
   return (
-    <div>
-      
-    </div>
+    <>
+      <Portal />
+    </>
   )
 }
 

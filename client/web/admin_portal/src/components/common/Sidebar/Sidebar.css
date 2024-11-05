@@ -8,11 +8,11 @@
     left: 0;
     z-index: 999;
     transition: width 0.3s ease;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    height: 100vh;
 }
 
 .sidebar-list{
@@ -27,6 +27,12 @@
 .sidebar-list li{
     display: flex;
     justify-content: center; 
+    padding: 5px 0;
+}
+
+hr{
+    color: #fff;
+    width: 100%;
 }
 
 

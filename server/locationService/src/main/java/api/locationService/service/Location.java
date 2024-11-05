@@ -22,4 +22,6 @@ public interface Location {
     Response getProvidedAccess(String employeeId);
 
     Response getAllEmployeesAtLocation(Long locationId);
+
+    Response getAllLocations();
 }
