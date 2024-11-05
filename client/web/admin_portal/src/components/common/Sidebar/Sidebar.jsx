@@ -6,35 +6,35 @@ const Sidebar = () => {
         <div className="sidebar">
             <ul className="sidebar-list">
                 <li>
-                    <a href="/home">
+                    <a href="/portal/home">
                         <i className="bi bi-house"></i>
                         <br />
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/dashboard">
+                    <a href="/portal/attendance">
                         <i className="bi bi-card-checklist"></i>
                         <br />
                         <span>Attendance</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/settings">
-                        <i className="bi bi-kanban"></i>
+                    <a href="/portal/locations">
+                        <i className="bi bi-geo"></i>
                         <br />
-                        <span>Manage</span>
+                        <span>Locations</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports">
+                    <a href="/portal/reports">
                         <i className="bi bi-graph-up"></i>
                         <br />
                         <span>Reports</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/settings">
+                    <a href="/portal/settings">
                         <i className="bi bi-gear"></i>
                         <br />
                         <span>Settings</span>

@@ -6,7 +6,6 @@ import api.locationService.dto.Response;
 import api.locationService.dto.UpdateLocationRequest;
 import api.locationService.model.LocationEntity;
 import api.locationService.service.LocationService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
