@@ -17,7 +17,7 @@ function Locations() {
         { key: 'locationName', label: 'Location' },
         { key: 'latitude', label: 'Latitude' },
         { key: 'longitude', label: 'Longitude' },
-        { key: 'radius', label: 'Radius (m)' },
+        { key: 'radius', label: 'Geofence (m)' },
         { key: 'division', label: 'Region' },
         { key: 'address', label: 'Address' },
         { key: 'type', label: 'Type' },
