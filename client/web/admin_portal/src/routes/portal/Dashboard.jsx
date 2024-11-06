@@ -5,7 +5,9 @@ import Portal from '../../components/layout/Portal/Portal';
 function Dashboard() {
   return (
     <>
-      <Portal />
+      <Portal>
+        
+      </Portal>
     </>
   )
 }

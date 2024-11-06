@@ -218,4 +218,20 @@ public class LocationService implements Location {
         }
     }
 
+    @Override
+    public Response getLocationById(Long locationId) {
+        Optional<LocationEntity> locationDetails = locationRepository.findById(locationId);
+
+        if(locationDetails.isPresent()){
+            return new Response()
+                    .setMessage("Got Location Details!")
+                    .setSuccess(true)
+                    .setData(locationDetails.get());
+        }
+
+        return new Response()
+                .setMessage("No such location found!")
+                .setSuccess(false);
+    }
+
 }

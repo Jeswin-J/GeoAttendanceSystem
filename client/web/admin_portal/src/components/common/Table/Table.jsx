@@ -5,9 +5,17 @@ import './Table.css';
 import Button from '../Button/Button';
 import Input from '../Input/Input'
 import Select from '../Select/Select';
+import { useNavigate } from 'react-router-dom';
 
 const Table = ({tableHeading, columns, data, filterOptions }) => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+
+    const handleRowClick = (locationId) => {
+        navigate(`/location/${locationId}`);
+    };
+
   const { currentPage, rowsPerPage, sortConfig, searchTerm, filter } = useSelector((state) => state.table || { 
     currentPage: 1, 
     rowsPerPage: 10, 
@@ -87,20 +95,20 @@ const Table = ({tableHeading, columns, data, filterOptions }) => {
           </tr>
         </thead>
         <tbody>
-          {sortedData
-            .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
-            .map((row, rowIndex) => (
-              <tr
-                key={row.id || rowIndex}
-                className={`table-row ${rowIndex % 2 === 0 ? 'even-row' : 'odd-row'}`}
-              >
-                {columns.map((column) => (
-                  <td key={column.key} className="table-cell">
-                    {row[column.key]}
-                  </td>
-                ))}
-              </tr>
-            ))}
+          {data.map((row, rowIndex) => (
+            <tr
+              key={row.locationId || rowIndex}
+              onClick={() => handleRowClick(row.locationId)}
+              className="table-row"
+              style={{ cursor: 'pointer' }}
+            >
+              {columns.map((column) => (
+                <td key={column.key} className="table-cell">
+                  {row[column.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
       <div className="pagination-controls">

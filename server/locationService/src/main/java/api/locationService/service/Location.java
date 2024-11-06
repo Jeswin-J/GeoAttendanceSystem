@@ -24,4 +24,6 @@ public interface Location {
     Response getAllEmployeesAtLocation(Long locationId);
 
     Response getAllLocations();
+
+    Response getLocationById(Long locationId);
 }
