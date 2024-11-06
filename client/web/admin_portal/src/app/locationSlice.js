@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const cacheDuration = 30 * 1000;
 
-
 const getCachedData = (cacheKey, cacheTimeKey) => {
     const cachedData = localStorage.getItem(cacheKey);
     const cacheTime = localStorage.getItem(cacheTimeKey);
@@ -21,7 +20,6 @@ const setCache = (cacheKey, cacheTimeKey, data) => {
     localStorage.setItem(cacheKey, JSON.stringify(data));
     localStorage.setItem(cacheTimeKey, new Date().getTime());
 };
-
 
 const fetchWithTimeout = async (url, options = {}, timeout = 5000) => {
     const controller = new AbortController();
@@ -67,7 +65,6 @@ export const fetchLocationById = createAsyncThunk('locations/fetchLocationById',
     const cacheKey = `location_${locationId}`;
     const cacheTimeKey = `location_${locationId}_cache_time`;
 
-    // Check cache first
     const cachedData = getCachedData(cacheKey, cacheTimeKey);
     if (cachedData) return cachedData;
 
@@ -90,6 +87,33 @@ export const fetchLocationById = createAsyncThunk('locations/fetchLocationById',
     }
 });
 
+export const updateLocation = createAsyncThunk('locations/updateLocation', async (locationData, { rejectWithValue }) => {
+    try {
+        alert("Here");
+        // You can send a PUT or PATCH request to the server to update the location.
+        const response = await fetchWithTimeout(`http://localhost:8082/api/locations/update/${locationData.locationId}`, {
+            method: 'PUT',
+            body: JSON.stringify(locationData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update location');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            alert("Location updated successfully")
+            return data.data;
+        } else {
+            return rejectWithValue('Failed to update location');
+        }
+    } catch (error) {
+        return rejectWithValue(error.message || 'Network error occurred');
+    }
+});
 
 const locationSlice = createSlice({
     name: 'locations',
@@ -125,6 +149,9 @@ const locationSlice = createSlice({
             .addCase(fetchLocationById.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Could not fetch location details';
+            })
+            .addCase(updateLocation.fulfilled, (state, action) => {
+                state.location = action.payload; // Update the location in state with the new data
             });
     },
 });
