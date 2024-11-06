@@ -27,6 +27,12 @@ public class LocationController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/{locationId}")
+    public ResponseEntity<Response> allLocations(@PathVariable Long locationId){
+        Response response = locationService.getLocationById(locationId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping("/new")
     public ResponseEntity<Response> addLocation(@RequestBody NewLocationRequest request){
         Response response = locationService.createNewLocation(request);
