@@ -1,0 +1,6 @@
+.info-card {
+    display: grid;
+    grid: auto / auto auto auto auto auto;
+    grid-gap: 20px;
+    margin-top: 20px;
+}

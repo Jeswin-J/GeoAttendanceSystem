@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -12,17 +12,26 @@ L.Icon.Default.mergeOptions({
 
 const Map = ({
     center = [51.505, -0.09],
-    zoom = 13,
+    zoom = 18,
     markers = [],
     onMarkerClick
 }) => {
 
     const ChangeMapCenter = ({ center }) => {
         const map = useMap();
-        map.setView(center);
-        return null;
+        useEffect(() => {
+            map.setView(center);
+        }, [center, map]);
     };
 
+    const DisableScrollZoom = () => {
+        const map = useMap();
+        useEffect(() => {
+            map.scrollWheelZoom.disable();
+        }, [map]);
+
+        return null;
+    };
 
     return (
         <MapContainer center={center} zoom={zoom} style={{ height: '100%', width: '100%' }}>
@@ -32,6 +41,7 @@ const Map = ({
             />
 
             <ChangeMapCenter center={center} />
+            <DisableScrollZoom />
 
             {markers.map((marker, index) => (
                 <Marker
