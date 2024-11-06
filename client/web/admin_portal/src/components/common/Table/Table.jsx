@@ -64,7 +64,7 @@ const Table = ({tableHeading, columns, data, filterOptions }) => {
                 value={searchTerm}
                 onChange={(e) => dispatch(setSearchTerm(e.target.value))} 
                 className="search-input"
-                />
+                name="search"/>
                 
                 <Select  
                 options={filterOptions} 

@@ -3,6 +3,8 @@ import Portal from '../../components/layout/Portal/Portal';
 import Table from '../../components/common/Table/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLocations } from '../../app/locationSlice';
+import Button from "../../components/common/Button/Button";
+import AddLocation from "../../components/features/AddLocation/AddLocation";
 
 function Locations() {
     const dispatch = useDispatch();
@@ -46,6 +48,7 @@ function Locations() {
                  data={locations} 
                  filterOptions={filterOptions}
                  tableHeading={"Locations"} />
+                <AddLocation/>
             </Portal>
         </>
     );
