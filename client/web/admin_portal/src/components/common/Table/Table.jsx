@@ -94,35 +94,35 @@ const Table = ({tableHeading, columns, data, filterOptions }) => {
             ))}
           </tr>
         </thead>
-        <tbody>
-          {data.map((row, rowIndex) => (
-            <tr
-              key={row.locationId || rowIndex}
-              onClick={() => handleRowClick(row.locationId)}
-              className="table-row"
-              style={{ cursor: 'pointer' }}
-            >
-              {columns.map((column) => (
-                <td key={column.key} className="table-cell">
-                  {row[column.key]}
-                </td>
-              ))}
-            </tr>
+          <tbody>
+          {sortedData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).map((row, rowIndex) => (
+              <tr
+                  key={row.locationId || rowIndex}
+                  onClick={() => handleRowClick(row.locationId)}
+                  className="table-row"
+                  style={{cursor: 'pointer'}}
+              >
+                  {columns.map((column) => (
+                      <td key={column.key} className="table-cell">
+                          {row[column.key]}
+                      </td>
+                  ))}
+              </tr>
           ))}
-        </tbody>
+          </tbody>
       </table>
-      <div className="pagination-controls">
-        <Button
-          onClick={() => dispatch(setPage(currentPage - 1))}
-          disabled={currentPage === 1}
-          className="pagination-button"
-        >
-          Previous
-        </Button>
-        <span className="pagination-info">Page {currentPage}</span>
-        <Button
-          onClick={() => dispatch(setPage(currentPage + 1))}
-          disabled={currentPage * rowsPerPage >= sortedData.length}
+        <div className="pagination-controls">
+            <Button
+                onClick={() => dispatch(setPage(currentPage - 1))}
+                disabled={currentPage === 1}
+                className="pagination-button"
+            >
+                Previous
+            </Button>
+            <span className="pagination-info">Page {currentPage}</span>
+            <Button
+                onClick={() => dispatch(setPage(currentPage + 1))}
+                disabled={currentPage * rowsPerPage >= sortedData.length}
           className="pagination-button"
         >
           Next
