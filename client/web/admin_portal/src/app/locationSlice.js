@@ -89,8 +89,6 @@ export const fetchLocationById = createAsyncThunk('locations/fetchLocationById',
 
 export const updateLocation = createAsyncThunk('locations/updateLocation', async (locationData, { rejectWithValue }) => {
     try {
-        alert("Here");
-        // You can send a PUT or PATCH request to the server to update the location.
         const response = await fetchWithTimeout(`http://localhost:8082/api/locations/update/${locationData.locationId}`, {
             method: 'PUT',
             body: JSON.stringify(locationData),
