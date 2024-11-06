@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './Modal.css';
 import Button from '../Button/Button';
 
-function Modal({ isOpen, onClose, title, children }) {
+function Modal({ isOpen, onClose, onContinue, title, children }) {
   if (!isOpen) return null; 
 
   return (
@@ -20,7 +20,7 @@ function Modal({ isOpen, onClose, title, children }) {
           <Button variant='danger' onClick={onClose}>
             Cancel
           </Button>
-          <Button variant='success' onClick={onClose}>
+          <Button variant='success' onClick={onContinue}>
             Continue
           </Button>
         </div>
