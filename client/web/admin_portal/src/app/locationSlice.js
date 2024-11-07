@@ -144,6 +144,33 @@ export const addLocation = createAsyncThunk(
     }
 );
 
+export const deleteLocation = createAsyncThunk(
+    'locations/deleteLocation',
+    async (locationId, { rejectWithValue }) => {
+        try {
+            const response = await fetchWithTimeout(`http://localhost:8082/api/locations/delete/${locationId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                return rejectWithValue(errorData.message || 'Failed to delete location.');
+            }
+
+            const data = await response.json();
+            if (data.success) {
+                alert("Location deleted successfully!");
+                return locationId; // Return the ID of the deleted location for state update
+            } else {
+                return rejectWithValue('Failed to delete location');
+            }
+        } catch (error) {
+            return rejectWithValue(error.message || 'Network error occurred during deletion');
+        }
+    }
+);
+
+
 const locationSlice = createSlice({
     name: 'locations',
     initialState: {
@@ -193,6 +220,20 @@ const locationSlice = createSlice({
             })
             .addCase(updateLocation.fulfilled, (state, action) => {
                 state.location = action.payload;
+            }).addCase(deleteLocation.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+            .addCase(deleteLocation.fulfilled, (state, action) => {
+                state.loading = false;
+                state.locations = state.locations.filter(
+                    (location) => location.locationId !== action.payload
+                );
+                state.location = null; // Clear selected location if it was deleted
+            })
+            .addCase(deleteLocation.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Failed to delete location';
             });
     },
 });
