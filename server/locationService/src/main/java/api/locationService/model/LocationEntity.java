@@ -14,13 +14,13 @@ public class LocationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long locationId;
 
-    @Column(nullable = false )
+    @Column(nullable = false)
     private String locationName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Double latitude;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Double longitude;
 
     @Column(nullable = false)

@@ -64,6 +64,12 @@ public class LocationController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @DeleteMapping("/delete/{locationId}")
+    public ResponseEntity<Response> revokeAccess(@PathVariable Long locationId){
+        Response response = locationService.deleteLocation(locationId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping("/grant/{locationId}")
     public ResponseEntity<Response> grantAccess(@PathVariable Long locationId, @RequestBody AccessRequest request){
         Response response = locationService.grantLocationAccess(locationId, request);

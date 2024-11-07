@@ -33,3 +33,18 @@
 .form-group{
     margin-right: 15px;
 }
+
+.grey-bg {
+    background: rgba(198, 203, 212, 0.50);
+    user-select: none;
+    cursor: not-allowed;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+b{
+    font-weight: 500;
+}

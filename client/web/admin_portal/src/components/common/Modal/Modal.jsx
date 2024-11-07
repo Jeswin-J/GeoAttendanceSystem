@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 import './Modal.css';
 import Button from '../Button/Button';
 
-function Modal({ isOpen, onClose, onContinue, title, children }) {
+function Modal({
+                 isOpen,
+                 onClose,
+                 onContinue,
+                 title,
+                 children,
+                 showCancel = true,
+                 showContinue = true
+               }) {
   if (!isOpen) return null;
 
   return (
@@ -17,12 +25,16 @@ function Modal({ isOpen, onClose, onContinue, title, children }) {
           </div>
           <div className="modal-body">{children}</div>
           <div className="modal-footer">
-            <Button variant='danger' onClick={onClose}>
-              Cancel
-            </Button>
-            <Button variant='success' onClick={onContinue}>
-              Continue
-            </Button>
+            {showCancel && (
+                <Button variant="danger" onClick={onClose}>
+                  Cancel
+                </Button>
+            )}
+            {showContinue && (
+                <Button variant="success" onClick={onContinue}>
+                  Continue
+                </Button>
+            )}
           </div>
         </div>
       </div>
@@ -31,10 +43,12 @@ function Modal({ isOpen, onClose, onContinue, title, children }) {
 
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onContinue: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
+  onContinue: PropTypes.func,
   title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
+  showCancel: PropTypes.bool,
+  showContinue: PropTypes.bool,
 };
 
 export default Modal;
