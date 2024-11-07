@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,8 @@ public class EmployeeController {
     Employee employee;
 
     @PostMapping("/new")
-    public ResponseEntity<Response> createNewEmployee(CreateRequest request){
+    public ResponseEntity<Response> createNewEmployee(@RequestBody CreateRequest request){
+        System.out.println(request);
         Response response = employee.addNewEmployee(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

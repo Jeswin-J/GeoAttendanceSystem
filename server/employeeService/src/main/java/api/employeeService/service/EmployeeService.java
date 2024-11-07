@@ -18,7 +18,7 @@ public class EmployeeService implements Employee{
     @Override
     public Response addNewEmployee(CreateRequest request) {
 
-        Optional<EmployeeEntity> existingEmployeeByEmail = employeeRepository.findByEmployeeId(request.getWorkEmail());
+        Optional<EmployeeEntity> existingEmployeeByEmail = employeeRepository.findByWorkEmail(request.getWorkEmail());
         if (existingEmployeeByEmail.isPresent()) {
             return new Response().setSuccess(false).setMessage("An employee with this work email already exists.");
         }
@@ -36,6 +36,8 @@ public class EmployeeService implements Employee{
                 .setPersonalEmail(request.getPersonalEmail())
                 .setProfilePictureUrl(request.getProfilePictureUrl())
                 .setStatus(request.getStatus());
+
+
 
         try {
             employeeRepository.save(newEmployee);
