@@ -77,6 +77,67 @@ public class CreateRequest {
     public String getProfilePictureUrl() {
         return profilePictureUrl;
     }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+//
+//    public void setWorkEmail(String workEmail) {
+//        this.workEmail = workEmail;
+//    }
+//
+//    public void setPersonalEmail(String personalEmail) {
+//        this.personalEmail = personalEmail;
+//    }
+//
+//    public void setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
+//
+//    public void setDesignation(Designation designation) {
+//        this.designation = designation;
+//    }
+//
+//    public void setDepartment(Department department) {
+//        this.department = department;
+//    }
+//
+//    public void setStatus(Status status) {
+//        this.status = status;
+//    }
+//
+//    public void setDateOfJoining(LocalDate dateOfJoining) {
+//        this.dateOfJoining = dateOfJoining;
+//    }
+//
+//    public void setEmployeeType(WorkType employeeType) {
+//        this.employeeType = employeeType;
+//    }
+//
+//    public void setProfilePictureUrl(String profilePictureUrl) {
+//        this.profilePictureUrl = profilePictureUrl;
+//    }
+
+    @Override
+    public String toString() {
+        return "CreateRequest{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", workEmail='" + workEmail + '\'' +
+                ", personalEmail='" + personalEmail + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", designation=" + designation +
+                ", department=" + department +
+                ", status=" + status +
+                ", dateOfJoining=" + dateOfJoining +
+                ", employeeType=" + employeeType +
+                ", profilePictureUrl='" + profilePictureUrl + '\'' +
+                '}';
+    }
 
     public String getEmployeeId() {
         return employeeId;

@@ -12,15 +12,16 @@ import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDate;
-import java.text.DecimalFormat;
 
 @Entity
 @Table(name = "employee")
 public class EmployeeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(unique = true, nullable = false)
-    @NotBlank(message = "Employee ID cannot be blank")
     private String employeeId;
 
     @Column(nullable = false)
@@ -31,7 +32,7 @@ public class EmployeeEntity {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @Email(regexp = "^[a-zA-Z0-9._%+-]+@gail\\.in$\n")
+    @Email(regexp = "^[a-zA-Z0-9._%+-]+@gail\\.in$")
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Work email is required")
     private String workEmail;
@@ -43,17 +44,17 @@ public class EmployeeEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Designation is required")
+    @NotNull(message = "Designation is required")
     private Designation designation;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Department is required")
+    @NotNull(message = "Department is required")
     private Department department;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Status is required")
+    @NotNull(message = "Status is required")
     private Status status;
 
     @Column(nullable = false)
@@ -61,7 +62,8 @@ public class EmployeeEntity {
     private LocalDate dateOfJoining;
 
     @Column(nullable = false)
-    @NotBlank(message = "Employee type is required")
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Employee type is required")
     private WorkType employeeType;
 
     @Column(nullable = false)
@@ -74,14 +76,8 @@ public class EmployeeEntity {
     @NotBlank(message = "Personal email is required")
     private String personalEmail;
 
-
     public String getEmployeeId() {
         return employeeId;
-    }
-
-    public EmployeeEntity setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-        return this;
     }
 
     public String getFirstName() {
@@ -183,8 +179,8 @@ public class EmployeeEntity {
         return this;
     }
 
-    public static String generateEmployeeId(long id) {
-        DecimalFormat format = new DecimalFormat("EMP0000000");
-        return format.format(id);
+    public EmployeeEntity setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+        return this;
     }
 }

@@ -18,7 +18,7 @@ public class EmployeeService implements Employee{
     @Override
     public Response addNewEmployee(CreateRequest request) {
 
-        Optional<EmployeeEntity> existingEmployeeByEmail = employeeRepository.findByEmployeeId(request.getWorkEmail());
+        Optional<EmployeeEntity> existingEmployeeByEmail = employeeRepository.findByWorkEmail(request.getWorkEmail());
         if (existingEmployeeByEmail.isPresent()) {
             return new Response().setSuccess(false).setMessage("An employee with this work email already exists.");
         }
@@ -37,6 +37,8 @@ public class EmployeeService implements Employee{
                 .setProfilePictureUrl(request.getProfilePictureUrl())
                 .setStatus(request.getStatus());
 
+
+
         try {
             employeeRepository.save(newEmployee);
         } catch (Exception e) {
@@ -50,4 +52,21 @@ public class EmployeeService implements Employee{
                 .setMessage("Employee added successfully!")
                 .setData(newEmployee);
     }
+
+    @Override
+    public Response deleteEmployeeById(String employeeId) {
+        Optional<EmployeeEntity> employeeOpt = employeeRepository.findByEmployeeId(employeeId);
+
+        if (employeeOpt.isPresent()) {
+            employeeRepository.delete(employeeOpt.get());
+            return new Response()
+                    .setMessage("Employee with ID " + employeeId + " has been successfully deleted.")
+                    .setSuccess(true);
+        } else {
+            return new Response()
+                    .setMessage("Employee with ID " + employeeId + " not found.")
+                    .setSuccess(false);
+        }
+    }
+
 }
