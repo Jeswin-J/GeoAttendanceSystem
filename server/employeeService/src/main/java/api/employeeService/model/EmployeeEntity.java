@@ -38,8 +38,8 @@ public class EmployeeEntity {
     private String phoneNumber;
 
     @Column(nullable = false)
-    @NotBlank(message = "Role is required")
-    private String role;
+    @NotBlank(message = "Designation is required")
+    private String designation;
 
     @Column(nullable = false)
     @NotBlank(message = "Department is required")
@@ -100,12 +100,12 @@ public class EmployeeEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRole() {
-        return role;
+    public String getDesignation() {
+        return designation;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
     public String getDepartment() {
