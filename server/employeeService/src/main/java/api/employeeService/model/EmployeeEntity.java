@@ -3,6 +3,7 @@ package api.employeeService.model;
 import api.employeeService.enums.Department;
 import api.employeeService.enums.Designation;
 import api.employeeService.enums.Status;
+import api.employeeService.enums.WorkType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -61,7 +62,7 @@ public class EmployeeEntity {
 
     @Column(nullable = false)
     @NotBlank(message = "Employee type is required")
-    private String employeeType;
+    private WorkType employeeType;
 
     @Column(nullable = false)
     @URL
@@ -146,11 +147,11 @@ public class EmployeeEntity {
         return this;
     }
 
-    public String getEmployeeType() {
+    public WorkType getEmployeeType() {
         return employeeType;
     }
 
-    public EmployeeEntity setEmployeeType(String employeeType) {
+    public EmployeeEntity setEmployeeType(WorkType employeeType) {
         this.employeeType = employeeType;
         return this;
     }
