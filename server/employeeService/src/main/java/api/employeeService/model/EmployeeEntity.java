@@ -1,5 +1,9 @@
 package api.employeeService.model;
 
+import api.employeeService.enums.Department;
+import api.employeeService.enums.Designation;
+import api.employeeService.enums.Status;
+import api.employeeService.enums.WorkType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -38,16 +42,19 @@ public class EmployeeEntity {
     private String phoneNumber;
 
     @Column(nullable = false)
-    @NotBlank(message = "Role is required")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @NotBlank(message = "Designation is required")
+    private Designation designation;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @NotBlank(message = "Department is required")
-    private String department;
+    private Department department;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @NotBlank(message = "Status is required")
-    private String status;
+    private Status status;
 
     @Column(nullable = false)
     @NotNull(message = "Date of joining is required")
@@ -55,7 +62,7 @@ public class EmployeeEntity {
 
     @Column(nullable = false)
     @NotBlank(message = "Employee type is required")
-    private String employeeType;
+    private WorkType employeeType;
 
     @Column(nullable = false)
     @URL
@@ -72,100 +79,112 @@ public class EmployeeEntity {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public EmployeeEntity setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public EmployeeEntity setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public EmployeeEntity setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public EmployeeEntity setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
     }
 
-    public String getRole() {
-        return role;
+    public Designation getDesignation() {
+        return designation;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public EmployeeEntity setDesignation(Designation designation) {
+        this.designation = designation;
+        return this;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public EmployeeEntity setDepartment(Department department) {
         this.department = department;
+        return this;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public EmployeeEntity setStatus(Status status) {
         this.status = status;
+        return this;
     }
 
     public LocalDate getDateOfJoining() {
         return dateOfJoining;
     }
 
-    public void setDateOfJoining(LocalDate dateOfJoining) {
+    public EmployeeEntity setDateOfJoining(LocalDate dateOfJoining) {
         this.dateOfJoining = dateOfJoining;
+        return this;
     }
 
-    public String getEmployeeType() {
+    public WorkType getEmployeeType() {
         return employeeType;
     }
 
-    public void setEmployeeType(String employeeType) {
+    public EmployeeEntity setEmployeeType(WorkType employeeType) {
         this.employeeType = employeeType;
+        return this;
     }
 
     public String getProfilePictureUrl() {
         return profilePictureUrl;
     }
 
-    public void setProfilePictureUrl(String profilePictureUrl) {
+    public EmployeeEntity setProfilePictureUrl(String profilePictureUrl) {
         this.profilePictureUrl = profilePictureUrl;
+        return this;
     }
 
     public String getWorkEmail() {
         return workEmail;
     }
 
-    public void setWorkEmail(String workEmail) {
+    public EmployeeEntity setWorkEmail(String workEmail) {
         this.workEmail = workEmail;
-    }
-
-    public static String generateEmployeeId(long id) {
-        DecimalFormat format = new DecimalFormat("EMP0000000");
-        return format.format(id);
+        return this;
     }
 
     public String getPersonalEmail() {
         return personalEmail;
     }
 
-    public void setPersonalEmail(String personalEmail) {
+    public EmployeeEntity setPersonalEmail(String personalEmail) {
         this.personalEmail = personalEmail;
+        return this;
+    }
+
+    public static String generateEmployeeId(long id) {
+        DecimalFormat format = new DecimalFormat("EMP0000000");
+        return format.format(id);
     }
 }
