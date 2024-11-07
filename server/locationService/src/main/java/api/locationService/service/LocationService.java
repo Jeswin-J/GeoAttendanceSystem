@@ -9,7 +9,10 @@ import api.locationService.model.LocationAccessEntity;
 import api.locationService.model.LocationEntity;
 import api.locationService.repository.LocationAccessRepository;
 import api.locationService.repository.LocationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -232,6 +235,22 @@ public class LocationService implements Location {
         return new Response()
                 .setMessage("No such location found!")
                 .setSuccess(false);
+    }
+
+    @Override
+    @Transactional
+    public Response deleteLocation(Long locationId) {
+        if (!locationRepository.existsById(locationId)) {
+            return new Response()
+                    .setSuccess(false)
+                    .setMessage("Location not found!");
+        }
+
+        locationRepository.deleteById(locationId);
+
+        return new Response()
+                .setSuccess(true)
+                .setMessage("Location deleted successfully!");
     }
 
 }

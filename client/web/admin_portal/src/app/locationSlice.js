@@ -160,7 +160,7 @@ export const deleteLocation = createAsyncThunk(
             const data = await response.json();
             if (data.success) {
                 alert("Location deleted successfully!");
-                return locationId; // Return the ID of the deleted location for state update
+                return locationId;
             } else {
                 return rejectWithValue('Failed to delete location');
             }
@@ -229,7 +229,7 @@ const locationSlice = createSlice({
                 state.locations = state.locations.filter(
                     (location) => location.locationId !== action.payload
                 );
-                state.location = null; // Clear selected location if it was deleted
+                state.location = null;
             })
             .addCase(deleteLocation.rejected, (state, action) => {
                 state.loading = false;

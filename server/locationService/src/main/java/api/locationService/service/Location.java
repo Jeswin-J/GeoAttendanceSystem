@@ -26,4 +26,6 @@ public interface Location {
     Response getAllLocations();
 
     Response getLocationById(Long locationId);
+
+    Response deleteLocation(Long locationId);
 }
