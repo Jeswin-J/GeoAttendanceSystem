@@ -7,7 +7,6 @@ import './MapView.css';
 import Map from "../../common/Map/Map";
 import Input from "../../common/Input/Input";
 import {useNavigate} from "react-router-dom";
-import Table from "../../common/Table/Table";
 
 function MapView() {
     const dispatch = useDispatch();

@@ -3,14 +3,17 @@ import Portal from '../../components/layout/Portal/Portal';
 import Table from '../../components/common/Table/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLocations } from '../../app/locationSlice';
+import AddLocation from "../../components/features/AddLocation/AddLocation";
 
 function Locations() {
     const dispatch = useDispatch();
     const { locations, loading, error } = useSelector((state) => state.locations);
 
     useEffect(() => {
-        dispatch(fetchLocations());
-    }, [dispatch]);
+        if (locations.length === 0) {  // Only fetch if locations are not yet loaded
+            dispatch(fetchLocations());
+        }
+    }, [dispatch, locations.length]);
 
     const columns = [
         { key: 'locationId', label: 'ID' },
@@ -42,10 +45,11 @@ function Locations() {
         <>
             <Portal>
                 <Table
-                 columns={columns} 
-                 data={locations} 
-                 filterOptions={filterOptions}
-                 tableHeading={"Locations"} />
+                    columns={columns}
+                    data={locations}
+                    filterOptions={filterOptions}
+                    tableHeading={"Locations"} />
+                <AddLocation/>
             </Portal>
         </>
     );

@@ -113,6 +113,37 @@ export const updateLocation = createAsyncThunk('locations/updateLocation', async
     }
 });
 
+
+export const addLocation = createAsyncThunk(
+    'locations/addLocation',
+    async (locationData, { rejectWithValue }) => {
+        try {
+            const response = await fetchWithTimeout('http://localhost:8082/api/locations/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(locationData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                return rejectWithValue(errorData.message || 'An error occurred during submission.');
+            }
+
+            const data = await response.json();
+            if (data.success) {
+                alert("Location added successfully!");
+                return {};
+            } else {
+                return rejectWithValue('Failed to add location');
+            }
+        } catch (error) {
+            return rejectWithValue(`An error occurred: ${error.message}`);
+        }
+    }
+);
+
 const locationSlice = createSlice({
     name: 'locations',
     initialState: {
@@ -124,6 +155,18 @@ const locationSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(addLocation.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addLocation.fulfilled, (state, action) => {
+                state.loading = false;
+                state.locations.push(action.payload);
+            })
+            .addCase(addLocation.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Failed to add location.';
+            })
             .addCase(fetchLocations.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -149,9 +192,10 @@ const locationSlice = createSlice({
                 state.error = action.payload || 'Could not fetch location details';
             })
             .addCase(updateLocation.fulfilled, (state, action) => {
-                state.location = action.payload; // Update the location in state with the new data
+                state.location = action.payload;
             });
     },
 });
+
 
 export default locationSlice.reducer;

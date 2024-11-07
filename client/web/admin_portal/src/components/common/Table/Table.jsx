@@ -64,7 +64,7 @@ const Table = ({tableHeading, columns, data, filterOptions }) => {
                 value={searchTerm}
                 onChange={(e) => dispatch(setSearchTerm(e.target.value))} 
                 className="search-input"
-                />
+                name="search"/>
                 
                 <Select  
                 options={filterOptions} 
@@ -117,7 +117,7 @@ const Table = ({tableHeading, columns, data, filterOptions }) => {
                 disabled={currentPage === 1}
                 className="pagination-button"
             >
-                Previous
+                <i className="bi bi-arrow-left" style={{marginRight: 0}}></i>
             </Button>
             <span className="pagination-info">Page {currentPage}</span>
             <Button
@@ -125,7 +125,7 @@ const Table = ({tableHeading, columns, data, filterOptions }) => {
                 disabled={currentPage * rowsPerPage >= sortedData.length}
           className="pagination-button"
         >
-          Next
+                <i className="bi bi-arrow-right" style={{marginRight: 0}}></i>
         </Button>
       </div>
     </div>

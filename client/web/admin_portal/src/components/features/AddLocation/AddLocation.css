@@ -1,0 +1,29 @@
+.add-location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.add-location-button {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.add-location-form {
+    display: flex;
+    flex-direction: column;
+    margin-right: 15px;
+}
+
+
+.select-fields {
+    display: flex;
+    gap: 1rem;
+}
+
+.select-fields .input-container {
+    flex: 1;
+}
+
