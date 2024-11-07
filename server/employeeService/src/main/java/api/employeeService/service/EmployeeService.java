@@ -52,4 +52,21 @@ public class EmployeeService implements Employee{
                 .setMessage("Employee added successfully!")
                 .setData(newEmployee);
     }
+
+    @Override
+    public Response deleteEmployeeById(String employeeId) {
+        Optional<EmployeeEntity> employeeOpt = employeeRepository.findByEmployeeId(employeeId);
+
+        if (employeeOpt.isPresent()) {
+            employeeRepository.delete(employeeOpt.get());
+            return new Response()
+                    .setMessage("Employee with ID " + employeeId + " has been successfully deleted.")
+                    .setSuccess(true);
+        } else {
+            return new Response()
+                    .setMessage("Employee with ID " + employeeId + " not found.")
+                    .setSuccess(false);
+        }
+    }
+
 }
