@@ -7,4 +7,6 @@ public interface Employee {
     Response addNewEmployee(CreateRequest request);
 
     Response deleteEmployeeById(String employeeId);
+
+    Response getAllEmployees();
 }
