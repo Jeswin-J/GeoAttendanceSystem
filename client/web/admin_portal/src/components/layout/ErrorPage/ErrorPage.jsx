@@ -1,17 +1,17 @@
 import React from 'react';
 import Lottie from 'lottie-react';
 import { useNavigate } from 'react-router-dom';
-import animationData from '../../../assets/animations/error.json'; // Replace with your Lottie file path
+import errorLottie from "../../../assets/animations/error.json";
 import './ErrorPage.css';
 import Button from "../../common/Button/Button";
 
-function ErrorPage({ title = "Oops! Something went wrong.", message = "We couldn't find the page you were looking for.", lottieData = animationData }) {
+function ErrorPage({ title, message }) {
     const navigate = useNavigate();
 
     return (
         <div className="error-container">
             <div className="error-lottie">
-                <Lottie animationData={lottieData} loop={true} style={{ width: '150px', height: '150px' }} />
+                <Lottie animationData={errorLottie} loop={true} style={{ width: '150px', height: '150px' }} />
             </div>
 
             <h1 className="error-title">{title}</h1>
