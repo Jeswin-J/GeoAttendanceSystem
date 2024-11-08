@@ -9,6 +9,8 @@ import Loader from './components/common/Loader/Loader';
 import Locations from './routes/portal/Locations';
 import LocationDetail from './routes/portal/LocationDetail';
 import Employee from "./routes/portal/Employee";
+import Attendance from "./routes/portal/Attendance";
+import Settings from "./routes/portal/Settings";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -31,8 +33,10 @@ const AppRoutes = () => {
             
             <Route path="/portal/home" element={<Dashboard />} />
             <Route path="/portal/emp" element={<Employee />} />
+            <Route path="/portal/attendance" element={<Attendance />} />
             <Route path="/portal/locations" element={<Locations />} />
             <Route path="/location/:locationId" element={<LocationDetail />} />
+            <Route path="/portal/settings" element={<Settings />} />
         </Routes>
     );
 };
