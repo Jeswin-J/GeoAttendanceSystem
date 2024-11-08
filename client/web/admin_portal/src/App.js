@@ -8,6 +8,7 @@ import Dashboard from './routes/portal/Dashboard';
 import Loader from './components/common/Loader/Loader';
 import Locations from './routes/portal/Locations';
 import LocationDetail from './routes/portal/LocationDetail';
+import Employee from "./routes/portal/Employee";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -29,6 +30,7 @@ const AppRoutes = () => {
 
             
             <Route path="/portal/home" element={<Dashboard />} />
+            <Route path="/portal/emp" element={<Employee />} />
             <Route path="/portal/locations" element={<Locations />} />
             <Route path="/location/:locationId" element={<LocationDetail />} />
         </Routes>

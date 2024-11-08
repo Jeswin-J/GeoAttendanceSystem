@@ -14,8 +14,8 @@ const SidebarItem = ({ href, iconClass, label }) => (
 const Sidebar = () => {
     const menuItems = [
         { href: '/portal/home', iconClass: 'bi-house', label: 'Dashboard' },
-        { href: '/portal/emp', iconClass: 'bi-people', label: 'Employee' },
         { href: '/portal/attendance', iconClass: 'bi-card-checklist', label: 'Attendance' },
+        { href: '/portal/emp', iconClass: 'bi-people', label: 'Employee' },
         { href: '/portal/locations', iconClass: 'bi-geo', label: 'Locations' },
         { href: '/portal/reports', iconClass: 'bi-graph-up', label: 'Reports' },
         { href: '/portal/settings', iconClass: 'bi-gear', label: 'Settings' }
