@@ -15,6 +15,12 @@ public class EmployeeController {
     @Autowired
     Employee employee;
 
+    @GetMapping("")
+    public ResponseEntity<Response> allEmployees(){
+        Response response = employee.getAllEmployees();
+        return ResponseEntity.status(response.getSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(response);
+    }
+
     @PostMapping("/new")
     public ResponseEntity<Response> createNewEmployee(@RequestBody CreateRequest request){
         Response response = employee.addNewEmployee(request);

@@ -7,6 +7,7 @@ import api.employeeService.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,6 +68,22 @@ public class EmployeeService implements Employee{
                     .setMessage("Employee with ID " + employeeId + " not found.")
                     .setSuccess(false);
         }
+    }
+
+    @Override
+    public Response getAllEmployees() {
+        List<EmployeeEntity> employees = employeeRepository.findAll();
+
+        if(employees.isEmpty()){
+            return new Response()
+                    .setMessage("No Employees found in Database")
+                    .setSuccess(false);
+        }
+
+        return new Response()
+                .setMessage( employees.size() + " Employees found!")
+                .setSuccess(true)
+                .setData(employees);
     }
 
 }
