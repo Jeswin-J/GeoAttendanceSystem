@@ -33,10 +33,7 @@ public class EmployeeService implements Employee{
                 .setFirstName(request.getFirstName())
                 .setLastName(request.getLastName())
                 .setPhoneNumber(request.getPhoneNumber())
-                .setWorkEmail(request.getWorkEmail())
-                .setPersonalEmail(request.getPersonalEmail())
-                .setProfilePictureUrl(request.getProfilePictureUrl())
-                .setStatus(request.getStatus());
+                .setWorkEmail(request.getWorkEmail());
 
 
 
@@ -84,6 +81,22 @@ public class EmployeeService implements Employee{
                 .setMessage( employees.size() + " Employees found!")
                 .setSuccess(true)
                 .setData(employees);
+    }
+
+    @Override
+    public Response getEmployeeById(String employeeId) {
+        Optional<EmployeeEntity> employeeOpt = employeeRepository.findByEmployeeId(employeeId);
+
+        if(employeeOpt.isPresent()){
+            return new Response()
+                    .setSuccess(true)
+                    .setMessage("Employee found!")
+                    .setData(employeeOpt.get());
+        }
+
+        return new Response()
+                .setMessage("No employee with ID " + employeeId + " found!")
+                .setSuccess(false);
     }
 
 }

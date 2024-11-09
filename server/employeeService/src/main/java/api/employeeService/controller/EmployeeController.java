@@ -16,17 +16,27 @@ public class EmployeeController {
     @Autowired
     Employee employee;
 
+
     @GetMapping("")
     public ResponseEntity<Response> allEmployees(){
         Response response = employee.getAllEmployees();
         return ResponseEntity.status(response.getSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(response);
     }
 
+
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<Response> employeeById(@PathVariable String employeeId){
+        Response response = employee.getEmployeeById(employeeId);
+        return ResponseEntity.status(response.getSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(response);
+    }
+
+
     @PostMapping("/new")
     public ResponseEntity<Response> createNewEmployee(@RequestBody CreateRequest request){
         Response response = employee.addNewEmployee(request);
         return ResponseEntity.status(response.getSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(response);
     }
+
 
     @DeleteMapping("/delete/{employeeId}")
     public ResponseEntity<Response> deleteEmployee(@PathVariable String employeeId){

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Select.css';
 
-const Select = ({ label, options, value, onChange, error, disabled }) => {
+const Select = ({ label, options, value, onChange, name, error, disabled }) => {
     return (
         <div className="input-container">
             {label && <label className="input-label">{label}</label>}
@@ -9,6 +9,7 @@ const Select = ({ label, options, value, onChange, error, disabled }) => {
                 className={`input-field ${error ? 'input-error' : ''} ${disabled ? 'input-disabled' : ''}`}
                 value={value}
                 onChange={onChange}
+                name={name}
                 disabled={disabled}
             >
                 {options.map((option) => (

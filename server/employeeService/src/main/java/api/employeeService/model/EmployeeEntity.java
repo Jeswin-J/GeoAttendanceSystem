@@ -55,7 +55,7 @@ public class EmployeeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Status is required")
-    private Status status;
+    private Status status = Status.INACTIVE;
 
     @Column(nullable = false)
     @NotNull(message = "Date of joining is required")
@@ -66,15 +66,10 @@ public class EmployeeEntity {
     @NotNull(message = "Employee type is required")
     private WorkType employeeType;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     @URL
-    @NotBlank(message = "Profile picture URL is required")
     private String profilePictureUrl;
 
-    @Email
-    @Column(nullable = false, unique = true)
-    @NotBlank(message = "Personal email is required")
-    private String personalEmail;
 
     public String getEmployeeId() {
         return employeeId;
@@ -167,15 +162,6 @@ public class EmployeeEntity {
 
     public EmployeeEntity setWorkEmail(String workEmail) {
         this.workEmail = workEmail;
-        return this;
-    }
-
-    public String getPersonalEmail() {
-        return personalEmail;
-    }
-
-    public EmployeeEntity setPersonalEmail(String personalEmail) {
-        this.personalEmail = personalEmail;
         return this;
     }
 
