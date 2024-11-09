@@ -27,3 +27,47 @@ export const validateForm = (formData) => {
 
     return errors;
 };
+
+
+export const validateEmployeeForm = (data) => {
+    const errors = {};
+
+    if (!data.firstName) {
+        errors.firstName = 'First name is required';
+    }
+
+    if (!data.lastName) {
+        errors.lastName = 'Last name is required';
+    }
+
+    if (!data.email) {
+        errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+        errors.email = 'Email is invalid';
+    }
+
+    if (!data.phoneNumber) {
+        errors.phoneNumber = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(data.phoneNumber)) {
+        errors.phoneNumber = 'Phone number must be 10 digits';
+    }
+
+    if (!data.department) {
+        errors.department = 'Department is required';
+    }
+
+    if (!data.designation) {
+        errors.designation = 'Designation is required';
+    }
+
+    if (!data.employeeType) {
+        errors.employeeType = 'Employee type is required';
+    }
+
+    if (!data.dateOfJoining) {
+        errors.dateOfJoining = 'Date of joining is required';
+    }
+
+    return errors;
+};
+

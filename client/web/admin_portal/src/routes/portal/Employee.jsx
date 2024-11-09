@@ -4,6 +4,7 @@ import { fetchEmployees } from '../../app/employeeSlice';
 import Table from '../../components/common/Table/Table';
 import Portal from "../../components/layout/Portal/Portal";
 import { useNavigate } from "react-router-dom";
+import AddEmployee from "../../components/features/AddEmployee/AddEmployee";
 
 function Employee() {
     const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function Employee() {
                 columns={columns}
                 data={employees}
             />
+            <AddEmployee />
         </Portal>
     );
 }
