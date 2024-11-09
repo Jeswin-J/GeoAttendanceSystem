@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchEmployees } from '../../app/employeeSlice';
 import Table from '../../components/common/Table/Table';
 import Portal from "../../components/layout/Portal/Portal";
+import {useNavigate} from "react-router-dom";
 
 function Employee() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { data: employees, loading, error } = useSelector((state) => state.employees);
 
     useEffect(() => {
@@ -42,6 +44,8 @@ function Employee() {
                 columns={columns}
                 data={employees}
                 filterOptions={filterOptions}
+                customSearchFields={['firstName', 'lastName', 'workEmail', 'phoneNumber']}
+                filterFunction={(row, filter) => row.department === filter}
             />
         </Portal>
     );

@@ -4,9 +4,11 @@ import Table from '../../components/common/Table/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLocations } from '../../app/locationSlice';
 import AddLocation from "../../components/features/AddLocation/AddLocation";
+import {useNavigate} from "react-router-dom";
 
 function Locations() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { locations, loading, error } = useSelector((state) => state.locations);
 
     useEffect(() => {
@@ -42,16 +44,17 @@ function Locations() {
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <>
             <Portal>
                 <Table
+                    tableHeading="Locations"
                     columns={columns}
                     data={locations}
                     filterOptions={filterOptions}
-                    tableHeading={"Locations"} />
+                    onRowClick={(row) => navigate(`/location/${row.locationId}`)}
+                    filterFunction={(row, filter) => row.division === filter}
+                />
                 <AddLocation/>
             </Portal>
-        </>
     );
 }
 
