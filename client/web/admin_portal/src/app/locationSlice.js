@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const cacheDuration = 30 * 1000;
 
@@ -21,19 +22,11 @@ const setCache = (cacheKey, cacheTimeKey, data) => {
     localStorage.setItem(cacheTimeKey, new Date().getTime());
 };
 
-const fetchWithTimeout = async (url, options = {}, timeout = 5000) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-    try {
-        const response = await fetch(url, { ...options, signal: controller.signal });
-        clearTimeout(timeoutId);
-        return response;
-    } catch (error) {
-        clearTimeout(timeoutId);
-        throw error;
-    }
-};
+const axiosInstance = axios.create({
+    baseURL: 'http://localhost:8082/api/',
+    timeout: 5000,
+});
 
 export const fetchLocations = createAsyncThunk('locations/fetchLocations', async (_, { rejectWithValue }) => {
     const cacheKey = 'locations';
@@ -43,21 +36,15 @@ export const fetchLocations = createAsyncThunk('locations/fetchLocations', async
     if (cachedData) return cachedData;
 
     try {
-        const response = await fetchWithTimeout('http://localhost:8082/api/locations/', { method: 'GET' });
-
-        if (!response.ok) {
-            throw new Error('Failed to fetch locations: Server responded with an error');
-        }
-
-        const data = await response.json();
-        if (data.success) {
-            setCache(cacheKey, cacheTimeKey, data.data);
-            return data.data;
+        const response = await axiosInstance.get('locations/');
+        if (response.data.success) {
+            setCache(cacheKey, cacheTimeKey, response.data.data);
+            return response.data.data;
         } else {
             return rejectWithValue('Failed to fetch locations');
         }
     } catch (error) {
-        return rejectWithValue(error.message || 'Network error occurred');
+        return rejectWithValue(error.response?.data?.message || 'Network error occurred');
     }
 });
 
@@ -69,107 +56,57 @@ export const fetchLocationById = createAsyncThunk('locations/fetchLocationById',
     if (cachedData) return cachedData;
 
     try {
-        const response = await fetchWithTimeout(`http://localhost:8082/api/locations/${locationId}`, { method: 'GET' });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch location ${locationId}: Server responded with an error`);
-        }
-
-        const data = await response.json();
-        if (data.success) {
-            setCache(cacheKey, cacheTimeKey, data.data);
-            return data.data;
+        const response = await axiosInstance.get(`locations/${locationId}`);
+        if (response.data.success) {
+            setCache(cacheKey, cacheTimeKey, response.data.data);
+            return response.data.data;
         } else {
             return rejectWithValue('Failed to fetch location details');
         }
     } catch (error) {
-        return rejectWithValue(error.message || 'Network error occurred');
+        return rejectWithValue(error.response?.data?.message || 'Network error occurred');
     }
 });
 
 export const updateLocation = createAsyncThunk('locations/updateLocation', async (locationData, { rejectWithValue }) => {
     try {
-        const response = await fetchWithTimeout(`http://localhost:8082/api/locations/update/${locationData.locationId}`, {
-            method: 'PUT',
-            body: JSON.stringify(locationData),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update location');
-        }
-
-        const data = await response.json();
-        if (data.success) {
-            alert("Location updated successfully")
-            return data.data;
+        const response = await axiosInstance.put(`locations/update/${locationData.locationId}`, locationData);
+        if (response.data.success) {
+            alert("Location updated successfully");
+            return response.data.data;
         } else {
             return rejectWithValue('Failed to update location');
         }
     } catch (error) {
-        return rejectWithValue(error.message || 'Network error occurred');
+        return rejectWithValue(error.response?.data?.message || 'Network error occurred');
     }
 });
 
-
-export const addLocation = createAsyncThunk(
-    'locations/addLocation',
-    async (locationData, { rejectWithValue }) => {
-        try {
-            const response = await fetchWithTimeout('http://localhost:8082/api/locations/new', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(locationData),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                return rejectWithValue(errorData.message || 'An error occurred during submission.');
-            }
-
-            const data = await response.json();
-            if (data.success) {
-                alert("Location added successfully!");
-                return {};
-            } else {
-                return rejectWithValue('Failed to add location');
-            }
-        } catch (error) {
-            return rejectWithValue(`An error occurred: ${error.message}`);
+export const addLocation = createAsyncThunk('locations/addLocation', async (locationData, { rejectWithValue }) => {
+    try {
+        const response = await axiosInstance.post('locations/new', locationData);
+        if (response.data.success) {
+            return response.data.data;
+        } else {
+            return rejectWithValue('Failed to add location');
         }
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || 'An error occurred during submission.');
     }
-);
+});
 
-export const deleteLocation = createAsyncThunk(
-    'locations/deleteLocation',
-    async (locationId, { rejectWithValue }) => {
-        try {
-            const response = await fetchWithTimeout(`http://localhost:8082/api/locations/delete/${locationId}`, {
-                method: 'DELETE',
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                return rejectWithValue(errorData.message || 'Failed to delete location.');
-            }
-
-            const data = await response.json();
-            if (data.success) {
-                alert("Location deleted successfully!");
-                return locationId;
-            } else {
-                return rejectWithValue('Failed to delete location');
-            }
-        } catch (error) {
-            return rejectWithValue(error.message || 'Network error occurred during deletion');
+export const deleteLocation = createAsyncThunk('locations/deleteLocation', async (locationId, { rejectWithValue }) => {
+    try {
+        const response = await axiosInstance.delete(`locations/delete/${locationId}`);
+        if (response.data.success) {
+            return locationId;
+        } else {
+            return rejectWithValue('Failed to delete location');
         }
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || 'Network error occurred during deletion');
     }
-);
-
+});
 
 const locationSlice = createSlice({
     name: 'locations',
@@ -220,10 +157,11 @@ const locationSlice = createSlice({
             })
             .addCase(updateLocation.fulfilled, (state, action) => {
                 state.location = action.payload;
-            }).addCase(deleteLocation.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
+            })
+            .addCase(deleteLocation.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(deleteLocation.fulfilled, (state, action) => {
                 state.loading = false;
                 state.locations = state.locations.filter(
@@ -237,6 +175,5 @@ const locationSlice = createSlice({
             });
     },
 });
-
 
 export default locationSlice.reducer;

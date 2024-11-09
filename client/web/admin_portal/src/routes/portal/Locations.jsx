@@ -12,7 +12,7 @@ function Locations() {
     const { locations, loading, error } = useSelector((state) => state.locations);
 
     useEffect(() => {
-        if (locations.length === 0) {  // Only fetch if locations are not yet loaded
+        if (locations.length === 0) {
             dispatch(fetchLocations());
         }
     }, [dispatch, locations.length]);
