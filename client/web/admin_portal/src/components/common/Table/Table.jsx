@@ -5,6 +5,8 @@ import './Table.css';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import Select from '../Select/Select';
+import Lottie from "lottie-react";
+import noRecordFound from '../../../assets/animations/noRecordFound.json';
 
 const Table = ({
                    tableHeading,
@@ -13,7 +15,7 @@ const Table = ({
                    onRowClick,
                }) => {
     const dispatch = useDispatch();
-    const { currentPage, rowsPerPage, sortConfig, searchTerm, filter } = useSelector((state) => state.table);
+    const { currentPage, rowsPerPage, sortConfig, searchTerm} = useSelector((state) => state.table);
 
     const [filterColumn, setFilterColumn] = useState('');  // Track the selected column for search
 
@@ -76,60 +78,69 @@ const Table = ({
                 </div>
             </div>
 
-            <table className="custom-table">
-                <thead>
-                <tr>
-                    {columns.map((column) => (
-                        <th
-                            key={column.key}
-                            onClick={() => handleSort(column.key)}
-                            className="table-header"
-                        >
-                            {column.label}
-                            {sortConfig.key === column.key && (
-                                <span className="sort-indicator">
-                                        {sortConfig.direction === 'asc' ? '▲' : '▼'}
-                                    </span>
-                            )}
-                        </th>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                {sortedData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).map((row, rowIndex) => (
-                    <tr
-                        key={row.id || rowIndex}
-                        onClick={() => onRowClick && onRowClick(row)}
-                        className="table-row"
-                        style={{ cursor: onRowClick ? 'pointer' : 'default' }}
-                    >
-                        {columns.map((column) => (
-                            <td key={column.key} className="table-cell">
-                                {row[column.key]}
-                            </td>
+            {sortedData.length === 0 ? (
+                <div className="no-data-container">
+                    <Lottie options={{ loop: true }} animationData={noRecordFound}/>
+                    <p>No records found</p>
+                </div>
+            ) : (
+                <>
+                    <table className="custom-table">
+                        <thead>
+                        <tr>
+                            {columns.map((column) => (
+                                <th
+                                    key={column.key}
+                                    onClick={() => handleSort(column.key)}
+                                    className="table-header"
+                                >
+                                    {column.label}
+                                    {sortConfig.key === column.key && (
+                                        <span className="sort-indicator">
+                                                {sortConfig.direction === 'asc' ? '▲' : '▼'}
+                                            </span>
+                                    )}
+                                </th>
+                            ))}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {sortedData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).map((row, rowIndex) => (
+                            <tr
+                                key={row.id || rowIndex}
+                                onClick={() => onRowClick && onRowClick(row)}
+                                className="table-row"
+                                style={{ cursor: onRowClick ? 'pointer' : 'default' }}
+                            >
+                                {columns.map((column) => (
+                                    <td key={column.key} className="table-cell">
+                                        {row[column.key]}
+                                    </td>
+                                ))}
+                            </tr>
                         ))}
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
 
-            <div className="pagination-controls">
-                <Button
-                    onClick={() => dispatch(setPage(currentPage - 1))}
-                    disabled={currentPage === 1}
-                    className="pagination-button"
-                >
-                    <i className="bi bi-arrow-left"></i>
-                </Button>
-                <span className="pagination-info">Page {currentPage}</span>
-                <Button
-                    onClick={() => dispatch(setPage(currentPage + 1))}
-                    disabled={currentPage * rowsPerPage >= sortedData.length}
-                    className="pagination-button"
-                >
-                    <i className="bi bi-arrow-right"></i>
-                </Button>
-            </div>
+                    <div className="pagination-controls">
+                        <Button
+                            onClick={() => dispatch(setPage(currentPage - 1))}
+                            disabled={currentPage === 1}
+                            className="pagination-button"
+                        >
+                            <i className="bi bi-arrow-left"></i>
+                        </Button>
+                        <span className="pagination-info">Page {currentPage}</span>
+                        <Button
+                            onClick={() => dispatch(setPage(currentPage + 1))}
+                            disabled={currentPage * rowsPerPage >= sortedData.length}
+                            className="pagination-button"
+                        >
+                            <i className="bi bi-arrow-right"></i>
+                        </Button>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
