@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchEmployees } from '../../app/employeeSlice';
 import Table from '../../components/common/Table/Table';
 import Portal from "../../components/layout/Portal/Portal";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Employee() {
     const dispatch = useDispatch();
@@ -27,14 +27,7 @@ function Employee() {
         { key: 'employeeType', label: 'Employee Type' }
     ];
 
-    const filterOptions = [
-        { value: '', label: 'All Departments' },
-        { value: 'HUMAN_RESOURCE', label: 'Human Resources' },
-        { value: 'TECHNICAL', label: 'Technical' },
-        { value: 'ADMINISTRATIVE', label: 'Administrative' },
-    ];
-
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <p>Loading employee data...</p>;
     if (error) return <p>Error: {error}</p>;
 
     return (
@@ -43,9 +36,6 @@ function Employee() {
                 tableHeading="Employee Directory"
                 columns={columns}
                 data={employees}
-                filterOptions={filterOptions}
-                customSearchFields={['firstName', 'lastName', 'workEmail', 'phoneNumber']}
-                filterFunction={(row, filter) => row.department === filter}
             />
         </Portal>
     );

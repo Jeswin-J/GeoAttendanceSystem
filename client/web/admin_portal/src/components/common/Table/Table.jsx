@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage, setSortConfig, setSearchTerm, setFilter } from '../../../app/tableSlice';
+import {setSearchTerm, setPage, setSortConfig} from '../../../app/tableSlice';
 import './Table.css';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
@@ -10,35 +10,42 @@ const Table = ({
                    tableHeading,
                    columns,
                    data,
-                   filterOptions = [],
                    onRowClick,
-                   filterFunction,
-                   customSearchFields
                }) => {
     const dispatch = useDispatch();
     const { currentPage, rowsPerPage, sortConfig, searchTerm, filter } = useSelector((state) => state.table);
+
+    const [filterColumn, setFilterColumn] = useState('');  // Track the selected column for search
 
     const handleSort = (key) => {
         const direction = sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc';
         dispatch(setSortConfig({ key, direction }));
     };
 
-    const handleFilterChange = (e) => {
-        dispatch(setFilter(e.target.value));
+    const handleSearchTermChange = (e) => {
+        dispatch(setSearchTerm(e.target.value));
     };
 
-    const filteredData = React.useMemo(() => {
+    const handleFilterColumnChange = (e) => {
+        setFilterColumn(e.target.value);  // Update filter column
+    };
+
+    const filteredData = useMemo(() => {
         return data.filter((row) => {
-            const searchMatch = customSearchFields
-                ? customSearchFields.some((field) => row[field].toLowerCase().includes(searchTerm.toLowerCase()))
-                : Object.values(row).join(' ').toLowerCase().includes(searchTerm.toLowerCase());
+            // If no column is selected, search across all columns
+            if (!filterColumn) {
+                return Object.values(row).some(value =>
+                    (value ? value.toString().toLowerCase() : '').includes(searchTerm.toLowerCase())
+                );
+            }
 
-            const filterMatch = filter ? filterFunction(row, filter) : true;
-            return searchMatch && filterMatch;
+            // If a column is selected, search only in that column
+            const cellValue = row[filterColumn];
+            return (cellValue ? cellValue.toString().toLowerCase() : '').includes(searchTerm.toLowerCase());
         });
-    }, [data, searchTerm, filter, customSearchFields, filterFunction]);
+    }, [data, searchTerm, filterColumn]);  // Recalculate when the filterColumn changes
 
-    const sortedData = React.useMemo(() => {
+    const sortedData = useMemo(() => {
         if (!sortConfig.key) return filteredData;
 
         return [...filteredData].sort((a, b) => {
@@ -57,17 +64,15 @@ const Table = ({
                         type="text"
                         placeholder="Search..."
                         value={searchTerm}
-                        onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+                        onChange={handleSearchTermChange}
                         className="search-input"
                     />
 
-                    {filterOptions.length > 0 && (
-                        <Select
-                            options={filterOptions}
-                            value={filter}
-                            onChange={handleFilterChange}
-                        />
-                    )}
+                    <Select
+                        options={[{ value: '', label: 'All Columns' }, ...columns.map(col => ({ value: col.key, label: col.label }))]}
+                        value={filterColumn}
+                        onChange={handleFilterColumnChange}
+                    />
                 </div>
             </div>
 

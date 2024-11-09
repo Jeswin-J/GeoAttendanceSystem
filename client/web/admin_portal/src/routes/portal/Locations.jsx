@@ -28,18 +28,6 @@ function Locations() {
         { key: 'type', label: 'Type' },
     ];
 
-    const filterOptions = [
-        { value: '', label: 'All Regions' },
-        { value: 'EAST', label: 'East' },
-        { value: 'NORTH', label: 'North' },
-        { value: 'SOUTH', label: 'South' },
-        { value: 'WEST', label: 'West' },
-        { value: 'NORTHEAST', label: 'North East' },
-        { value: 'SOUTHEAST', label: 'South East' },
-        { value: 'NORTHWEST', label: 'North West' },
-        { value: 'SOUTHWEST', label: 'South West' },
-    ];
-
     if (loading) return <p>Loading locations...</p>;
     if (error) return <p>Error: {error}</p>;
 
@@ -49,9 +37,7 @@ function Locations() {
                 tableHeading="Locations"
                 columns={columns}
                 data={locations}
-                filterOptions={filterOptions}
                 onRowClick={(row) => navigate(`/location/${row.locationId}`)}
-                filterFunction={(row, filter) => row.division === filter}
             />
             <AddLocation/>
         </Portal>
