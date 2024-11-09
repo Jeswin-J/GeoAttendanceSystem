@@ -1,0 +1,17 @@
+.dp-img{
+    width: 200px;
+    height: 260px;
+    aspect-ratio: 1/4;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.dp-container h3{
+    margin: 5px;
+}
+
+.dp-container p{
+    margin: 0 0 0 5px;
+    color: #504d4d;
+    font-weight: bold;
+}
