@@ -86,4 +86,20 @@ public class EmployeeService implements Employee{
                 .setData(employees);
     }
 
+    @Override
+    public Response getEmployeeById(String employeeId) {
+        Optional<EmployeeEntity> employeeOpt = employeeRepository.findByEmployeeId(employeeId);
+
+        if(employeeOpt.isPresent()){
+            return new Response()
+                    .setSuccess(true)
+                    .setMessage("Employee found!")
+                    .setData(employeeOpt.get());
+        }
+
+        return new Response()
+                .setMessage("No employee with ID " + employeeId + " found!")
+                .setSuccess(false);
+    }
+
 }

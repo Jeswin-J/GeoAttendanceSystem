@@ -9,4 +9,6 @@ public interface Employee {
     Response deleteEmployeeById(String employeeId);
 
     Response getAllEmployees();
+
+    Response getEmployeeById(String employeeId);
 }

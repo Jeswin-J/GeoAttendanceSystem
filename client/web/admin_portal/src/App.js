@@ -15,6 +15,7 @@ import BadRequest from "./routes/error/BadRequest";
 import Forbidden from "./routes/error/Forbidden";
 import NotFound from "./routes/error/NotFound";
 import ServerError from "./routes/error/ServerError";
+import EmployeeProfile from "./routes/portal/EmployeeProfile";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -37,6 +38,7 @@ const AppRoutes = () => {
 
             <Route path="/portal/home" element={<Dashboard />} />
             <Route path="/portal/emp" element={<Employee />} />
+            <Route path="/portal/emp/:employeeId" element={<EmployeeProfile />} />
             <Route path="/portal/attendance" element={<Attendance />} />
             <Route path="/portal/locations" element={<Locations />} />
             <Route path="/location/:locationId" element={<LocationDetail />} />

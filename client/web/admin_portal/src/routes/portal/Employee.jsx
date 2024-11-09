@@ -37,6 +37,7 @@ function Employee() {
                 tableHeading="Employee Directory"
                 columns={columns}
                 data={employees}
+                onRowClick={(row) => navigate(`/portal/emp/${row.employeeId}`)}
             />
             <AddEmployee />
         </Portal>

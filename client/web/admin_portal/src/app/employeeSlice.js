@@ -19,6 +19,18 @@ export const addEmployee = createAsyncThunk('employees/addEmployee', async (empl
     }
 });
 
+export const fetchEmployeeById = createAsyncThunk(
+    'employee/fetchEmployeeById',
+    async (employeeId, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`http://localhost:8083/api/emp/${employeeId}`);
+            return response.data; // Ensure your API is returning the employee object
+        } catch (error) {
+            return rejectWithValue(error.response ? error.response.data : error.message);
+        }
+    }
+);
+
 const employeeSlice = createSlice({
     name: 'employee',
     initialState: {
@@ -52,6 +64,18 @@ const employeeSlice = createSlice({
             .addCase(addEmployee.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Failed to add employee';
+            })
+            .addCase(fetchEmployeeById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchEmployeeById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.employee = action.payload.data;
+            })
+            .addCase(fetchEmployeeById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Failed to fetch employee data';
             });
     }
 });
