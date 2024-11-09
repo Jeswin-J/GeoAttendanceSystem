@@ -32,6 +32,10 @@ export const validateForm = (formData) => {
 export const validateEmployeeForm = (data) => {
     const errors = {};
 
+    if (!data.employeeId) {
+        errors.employeeId = 'Employee ID is required';
+    }
+
     if (!data.firstName) {
         errors.firstName = 'First name is required';
     }
@@ -40,10 +44,10 @@ export const validateEmployeeForm = (data) => {
         errors.lastName = 'Last name is required';
     }
 
-    if (!data.email) {
-        errors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-        errors.email = 'Email is invalid';
+    if (!data.workEmail) {
+        errors.workEmail = "Work email is required";
+    } else if (!/^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(data.workEmail)) {
+        errors.workEmail = "Must be a valid email address";
     }
 
     if (!data.phoneNumber) {

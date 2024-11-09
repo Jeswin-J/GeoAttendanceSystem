@@ -33,10 +33,7 @@ public class EmployeeService implements Employee{
                 .setFirstName(request.getFirstName())
                 .setLastName(request.getLastName())
                 .setPhoneNumber(request.getPhoneNumber())
-                .setWorkEmail(request.getWorkEmail())
-                .setPersonalEmail(request.getPersonalEmail())
-                .setProfilePictureUrl(request.getProfilePictureUrl())
-                .setStatus(request.getStatus());
+                .setWorkEmail(request.getWorkEmail());
 
 
 

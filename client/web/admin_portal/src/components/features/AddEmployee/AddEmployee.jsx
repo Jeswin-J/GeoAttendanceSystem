@@ -8,16 +8,19 @@ import Select from "../../common/Select/Select";
 import { addEmployee } from '../../../app/employeeSlice';
 import { validateEmployeeForm } from '../../../utils/validation';
 import { useNavigate } from "react-router-dom";
+import { departmentOptions, designationOptions, employeeTypeOptions } from "../../../data/employee/data";
 
 function AddEmployee() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading, error } = useSelector((state) => state.employees);
+
     const [isModalOpen, setModalOpen] = useState(false);
     const [formData, setFormData] = useState({
+        employeeId: '',
         firstName: '',
         lastName: '',
-        email: '',
+        workEmail: '',
         phoneNumber: '',
         department: '',
         designation: '',
@@ -25,26 +28,7 @@ function AddEmployee() {
         employeeType: '',
     });
     const [formErrors, setFormErrors] = useState({});
-
-    const departmentOptions = [
-        { value: '', label: 'Select Department' },
-        { value: 'HUMAN_RESOURCE', label: 'Human Resources' },
-        { value: 'TECHNICAL', label: 'Technical' },
-        { value: 'ADMINISTRATIVE', label: 'Administrative' },
-    ];
-
-    const designationOptions = [
-        { value: '', label: 'Select Designation' },
-        { value: 'MANAGER', label: 'Manager' },
-        { value: 'DEVELOPER', label: 'Developer' },
-        { value: 'HR', label: 'HR' },
-    ];
-
-    const employeeTypeOptions = [
-        { value: '', label: 'Select Employee Type' },
-        { value: 'FULL_TIME', label: 'Full Time' },
-        { value: 'PART_TIME', label: 'Part Time' },
-    ];
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleAddClick = () => setModalOpen(true);
     const handleModalClose = () => setModalOpen(false);
@@ -67,25 +51,37 @@ function AddEmployee() {
             return;
         }
 
+        setIsSubmitting(true);
+
         try {
             const result = await dispatch(addEmployee(formData)).unwrap();
             if (result) {
                 setModalOpen(false);
-                setFormData({
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    phoneNumber: '',
-                    department: '',
-                    designation: '',
-                    dateOfJoining: '',
-                    employeeType: '',
-                });
-                navigate('/portal/employees');
+                resetForm();
+                navigate('/portal/emp');
             }
         } catch (error) {
             console.error("Failed to add employee:", error);
+            setFormErrors({ general: 'Failed to add employee. Please try again later.' });
+        } finally {
+            setIsSubmitting(false);
         }
+    };
+
+    // Reset form data
+    const resetForm = () => {
+        setFormData({
+            employeeId: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            department: '',
+            designation: '',
+            dateOfJoining: '',
+            employeeType: '',
+        });
+        setFormErrors({});
     };
 
     return (
@@ -104,6 +100,19 @@ function AddEmployee() {
                 onContinue={handleFormSubmit}
             >
                 <form className="add-employee-form">
+                    {formErrors.general && <p className="error-message">{formErrors.general}</p>}
+
+                    <Input
+                        label="Employee ID"
+                        type="text"
+                        name="employeeId"
+                        onChange={handleInputChange}
+                        placeholder="Enter Employee ID"
+                        value={formData.employeeId}
+                        required
+                        error={formErrors.employeeId}
+                    />
+
                     <Input
                         label="First Name"
                         type="text"
@@ -129,12 +138,12 @@ function AddEmployee() {
                     <Input
                         label="Email"
                         type="email"
-                        name="email"
+                        name="workEmail"
                         onChange={handleInputChange}
                         placeholder="Enter Email"
-                        value={formData.email}
+                        value={formData.workEmail}
                         required
-                        error={formErrors.email}
+                        error={formErrors.workEmail}
                     />
 
                     <Input
@@ -148,63 +157,54 @@ function AddEmployee() {
                         error={formErrors.phoneNumber}
                     />
 
-
                     <div className="input-select-fields">
                         <Input
-                        label="Date of Joining"
-                        type="date"
-                        name="dateOfJoining"
-                        onChange={handleInputChange}
-                        value={formData.dateOfJoining}
-                        required
-                        error={formErrors.dateOfJoining}
+                            label="Date of Joining"
+                            type="date"
+                            name="dateOfJoining"
+                            onChange={handleInputChange}
+                            value={formData.dateOfJoining}
+                            required
+                            error={formErrors.dateOfJoining}
                         />
 
                         <Select
                             label="Department"
                             options={departmentOptions}
                             value={formData.department}
-                            onChange={(e) => handleInputChange({target: {name: 'department', value: e.target.value}})}
+                            onChange={handleInputChange}
+                            name="department"
                             error={formErrors.department}
                         />
                     </div>
 
-                        <div className="select-fields">
+                    <div className="select-fields">
+                        <Select
+                            label="Designation"
+                            options={designationOptions}
+                            value={formData.designation}
+                            onChange={handleInputChange}
+                            name="designation"
+                            error={formErrors.designation}
+                        />
 
-                            <Select
-                                label="Designation"
-                                options={designationOptions}
-                                value={formData.designation}
-                                onChange={(e) => handleInputChange({
-                                    target: {
-                                        name: 'designation',
-                                        value: e.target.value
-                                    }
-                                })}
-                                error={formErrors.designation}
-                            />
+                        <Select
+                            label="Employee Type"
+                            options={employeeTypeOptions}
+                            value={formData.employeeType}
+                            onChange={handleInputChange}
+                            name="employeeType"
+                            error={formErrors.employeeType}
+                        />
+                    </div>
 
-                            <Select
-                                label="Employee Type"
-                                options={employeeTypeOptions}
-                                value={formData.employeeType}
-                                onChange={(e) => handleInputChange({
-                                    target: {
-                                        name: 'employeeType',
-                                        value: e.target.value
-                                    }
-                                })}
-                                error={formErrors.employeeType}
-                            />
-
-                        </div>
-
-                        {loading && <p className="loading-message">Saving...</p>}
-                        {error && <p className="error-message">{error}</p>}
+                    {loading && <p className="loading-message">Saving...</p>}
+                    {isSubmitting && <p className="loading-message">Submitting...</p>}
+                    {error && <p className="error-message">{error}</p>}
                 </form>
             </Modal>
         </div>
-);
+    );
 }
 
 export default AddEmployee;

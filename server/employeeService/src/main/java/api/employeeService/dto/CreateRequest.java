@@ -17,21 +17,15 @@ public class CreateRequest {
 
     private String workEmail;
 
-    private String personalEmail;
-
     private String phoneNumber;
 
     private Designation designation;
 
     private Department department;
 
-    private Status status;
-
     private LocalDate dateOfJoining;
 
     private WorkType employeeType;
-
-    private String profilePictureUrl;
 
 
     public String getFirstName() {
@@ -46,10 +40,6 @@ public class CreateRequest {
         return workEmail;
     }
 
-    public String getPersonalEmail() {
-        return personalEmail;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -62,10 +52,6 @@ public class CreateRequest {
         return department;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
     public LocalDate getDateOfJoining() {
         return dateOfJoining;
     }
@@ -74,53 +60,6 @@ public class CreateRequest {
         return employeeType;
     }
 
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-//
-//    public void setFirstName(String firstName) {
-//        this.firstName = firstName;
-//    }
-//
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
-//
-//    public void setWorkEmail(String workEmail) {
-//        this.workEmail = workEmail;
-//    }
-//
-//    public void setPersonalEmail(String personalEmail) {
-//        this.personalEmail = personalEmail;
-//    }
-//
-//    public void setPhoneNumber(String phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//    }
-//
-//    public void setDesignation(Designation designation) {
-//        this.designation = designation;
-//    }
-//
-//    public void setDepartment(Department department) {
-//        this.department = department;
-//    }
-//
-//    public void setStatus(Status status) {
-//        this.status = status;
-//    }
-//
-//    public void setDateOfJoining(LocalDate dateOfJoining) {
-//        this.dateOfJoining = dateOfJoining;
-//    }
-//
-//    public void setEmployeeType(WorkType employeeType) {
-//        this.employeeType = employeeType;
-//    }
-//
-//    public void setProfilePictureUrl(String profilePictureUrl) {
-//        this.profilePictureUrl = profilePictureUrl;
-//    }
 
     @Override
     public String toString() {
@@ -128,14 +67,11 @@ public class CreateRequest {
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", workEmail='" + workEmail + '\'' +
-                ", personalEmail='" + personalEmail + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", designation=" + designation +
                 ", department=" + department +
-                ", status=" + status +
                 ", dateOfJoining=" + dateOfJoining +
                 ", employeeType=" + employeeType +
-                ", profilePictureUrl='" + profilePictureUrl + '\'' +
                 '}';
     }
 
