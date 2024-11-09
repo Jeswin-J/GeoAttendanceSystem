@@ -27,6 +27,7 @@ public class EmployeeController {
     @GetMapping("/{employeeId}")
     public ResponseEntity<Response> employeeById(@PathVariable String employeeId){
         Response response = employee.getEmployeeById(employeeId);
+        System.out.println(response.getMessage());
         return ResponseEntity.status(response.getSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(response);
     }
 

@@ -1,0 +1,23 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 4fr 2fr;
+    gap: 20px;
+}
+
+.grid-container h3{
+    margin: 0;
+    color: #5a5b60;
+    font-weight: 500;
+}
+
+.grid-container > div {
+    padding: 20px;
+}
+
+.profile-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+

@@ -52,16 +52,20 @@ export const fetchEmployeeById = createAsyncThunk(
     'employee/fetchEmployeeById',
     async (employeeId, { rejectWithValue }) => {
         try {
+            console.log(`Fetching employee with ID: ${employeeId}`); // Log to verify ID
             const response = await axiosInstance.get(`/emp/${employeeId}`);
+            console.log("API Response:", response); // Log the response for debugging
             if (!response.data) {
                 throw new Error('Employee data is not available');
             }
             return response.data;
         } catch (error) {
+            console.log("API Error:", error); // Log errors from the API call
             return rejectWithValue(error.response ? error.response.data : error.message);
         }
     }
 );
+
 
 // Slice with reducers and extraReducers
 const employeeSlice = createSlice({
@@ -110,7 +114,7 @@ const employeeSlice = createSlice({
             })
             .addCase(fetchEmployeeById.fulfilled, (state, action) => {
                 state.loading = false;
-                state.employee = action.payload;
+                state.employee = action.payload.data;
             })
             .addCase(fetchEmployeeById.rejected, (state, action) => {
                 state.loading = false;
