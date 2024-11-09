@@ -44,17 +44,17 @@ function Locations() {
     if (error) return <p>Error: {error}</p>;
 
     return (
-            <Portal>
-                <Table
-                    tableHeading="Locations"
-                    columns={columns}
-                    data={locations}
-                    filterOptions={filterOptions}
-                    onRowClick={(row) => navigate(`/location/${row.locationId}`)}
-                    filterFunction={(row, filter) => row.division === filter}
-                />
-                <AddLocation/>
-            </Portal>
+        <Portal>
+            <Table
+                tableHeading="Locations"
+                columns={columns}
+                data={locations}
+                filterOptions={filterOptions}
+                onRowClick={(row) => navigate(`/location/${row.locationId}`)}
+                filterFunction={(row, filter) => row.division === filter}
+            />
+            <AddLocation/>
+        </Portal>
     );
 }
 
