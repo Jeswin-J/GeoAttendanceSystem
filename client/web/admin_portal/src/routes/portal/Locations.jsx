@@ -4,9 +4,11 @@ import Table from '../../components/common/Table/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLocations } from '../../app/locationSlice';
 import AddLocation from "../../components/features/AddLocation/AddLocation";
+import {useNavigate} from "react-router-dom";
 
 function Locations() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { locations, loading, error } = useSelector((state) => state.locations);
 
     useEffect(() => {
@@ -26,32 +28,19 @@ function Locations() {
         { key: 'type', label: 'Type' },
     ];
 
-    const filterOptions = [
-        { value: '', label: 'All Regions' },
-        { value: 'EAST', label: 'East' },
-        { value: 'NORTH', label: 'North' },
-        { value: 'SOUTH', label: 'South' },
-        { value: 'WEST', label: 'West' },
-        { value: 'NORTHEAST', label: 'North East' },
-        { value: 'SOUTHEAST', label: 'South East' },
-        { value: 'NORTHWEST', label: 'North West' },
-        { value: 'SOUTHWEST', label: 'South West' },
-    ];
-
     if (loading) return <p>Loading locations...</p>;
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <>
-            <Portal>
-                <Table
-                    columns={columns}
-                    data={locations}
-                    filterOptions={filterOptions}
-                    tableHeading={"Locations"} />
-                <AddLocation/>
-            </Portal>
-        </>
+        <Portal>
+            <Table
+                tableHeading="Locations"
+                columns={columns}
+                data={locations}
+                onRowClick={(row) => navigate(`/location/${row.locationId}`)}
+            />
+            <AddLocation/>
+        </Portal>
     );
 }
 
