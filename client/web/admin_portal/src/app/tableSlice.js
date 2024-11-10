@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   currentPage: 1,
-  rowsPerPage: 10,
+  rowsPerPage: 5,
   sortConfig: { key: '', direction: '' },
   searchTerm: '',
   filter: '',

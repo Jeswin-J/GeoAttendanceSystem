@@ -88,7 +88,7 @@ function AddEmployee() {
         <div className="add-employee">
             <div className="add-employee-button">
                 <Button variant="success" onClick={handleAddClick}>
-                    <i className="bi bi-plus"></i>
+                    <i className="bi bi-person-plus"></i>
                     Add New Employee
                 </Button>
             </div>
