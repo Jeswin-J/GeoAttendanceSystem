@@ -5,11 +5,11 @@ import dpPic from "../../../assets/images/img.png";
 import Button from "../../common/Button/Button";
 import Input from "../../common/Input/Input";
 import Select from "../../common/Select/Select";
-import { departmentOptions, designationOptions, employeeTypeOptions, statusOptions } from "../../../data/employee/data";
+import {departmentOptions, designationOptions, employeeTypeOptions, statusOptions} from "../../../data/employee/data";
 import AttendanceStatus from "../../features/AttendanceStatus/AttendanceStatus";
 import Map from "../../common/Map/Map";
 
-function ProfileLayout({ props }) {
+function ProfileLayout({props}) {
     const {
         profilePictureUrl,
         firstName,
@@ -78,8 +78,9 @@ function ProfileLayout({ props }) {
                 </div>
             </div>
 
-            <div className="map-container">
+            <div className="grid-container-2">
                 <div className="map">
+                    <h3>Last Known Location</h3>
                     <Map
                         disableInteractions
                         center={[13.000, 80.23123]}
@@ -90,7 +91,12 @@ function ProfileLayout({ props }) {
                         }]}
                     />
                 </div>
+
+                <div>
+                    <h3>Recent Activity</h3>
+                </div>
             </div>
+
 
         </>
 
