@@ -39,7 +39,7 @@ function ProfileLayout({props}) {
             title: 'Meeting with HR',
             description: 'Attended a virtual HR meeting.',
             timestamp: '2024-11-09 04:30 PM',
-        },
+        }
     ];
 
     return (

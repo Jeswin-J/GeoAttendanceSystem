@@ -18,7 +18,7 @@ const RecentActivityList = ({ activities }) => {
                             avatar={
                                 <Avatar
                                     icon={<ClockCircleOutlined />}
-                                    style={{ backgroundColor: '#1890ff' }}
+                                    style={{ backgroundColor: '#0083d4' }}
                                 />
                             }
                             title={<Text strong>{activity.title}</Text>}
