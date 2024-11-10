@@ -16,7 +16,7 @@
 }
 
 .button.primary {
-    background-color: #0083d4; 
+    background-color: #0083d4;
 }
 
 .button.primary:hover {
@@ -37,6 +37,17 @@
 
 .button.danger:hover {
     background-color: #9C1716; 
+}
+
+.button.link {
+    color: #243495;
+    background: transparent;
+    cursor: pointer;
+}
+
+.button.link:hover {
+    color: #3246c1;
+    background: transparent;
 }
 
 .button.disabled {

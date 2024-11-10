@@ -1,0 +1,30 @@
+.attendance-status-card {
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-align: center;
+    width: 200px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    font-weight: bolder;
+    font-size: 1.1rem;
+    margin: 20px 0;
+}
+
+.status-present {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-absent {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-break {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-unknown {
+    background-color: #d6d8d9;
+    color: #383d41;
+}

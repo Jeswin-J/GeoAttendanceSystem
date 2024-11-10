@@ -3,10 +3,10 @@ import './Select.css';
 
 const Select = ({ label, options, value, onChange, name, error, disabled }) => {
     return (
-        <div className="input-container">
-            {label && <label className="input-label">{label}</label>}
+        <div className="select-container">
+            {label && <label className="select-label">{label}</label>}
             <select
-                className={`input-field ${error ? 'input-error' : ''} ${disabled ? 'input-disabled' : ''}`}
+                className={`select-field ${error ? 'select-error' : ''} ${disabled ? 'select-disabled' : ''}`}
                 value={value}
                 onChange={onChange}
                 name={name}

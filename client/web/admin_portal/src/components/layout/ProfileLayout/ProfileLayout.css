@@ -1,12 +1,19 @@
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 4fr 2fr;
-    gap: 20px;
+    grid-template-columns: 1fr 3fr 1fr;
+    gap: 10px;
+}
+
+.grid-container-2{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 60px;
 }
 
 .grid-container h3{
     margin: 0;
-    color: #5a5b60;
+    color: #000;
     font-weight: 500;
 }
 
@@ -16,8 +23,28 @@
 
 .profile-image {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
+
+.name-field-div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.third-field-div{
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.reporting-to{
+    width: 100%;
+}
+
 

@@ -24,7 +24,6 @@ function EmployeeProfile() {
     return (
         <>
             <Portal>
-                <h2>Employee Details</h2>
                 <ProfileLayout props={employee}/>
             </Portal>
         </>
