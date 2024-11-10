@@ -42,3 +42,10 @@ export const employeeTypeOptions = [
     { value: 'PART_TIME', label: 'Part Time' },
     { value: 'CONTRACT', label: 'Contract' },
 ];
+
+export const statusOptions = [
+    { value: '', label: 'Employee Status' },
+    { value: 'ACTIVE', label: 'Active' },
+    { value: 'INACTIVE', label: 'Inactive' },
+    { value: 'ON_LEAVE', label: 'On Leave' },
+];

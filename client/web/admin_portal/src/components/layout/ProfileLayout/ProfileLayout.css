@@ -6,7 +6,7 @@
 
 .grid-container h3{
     margin: 0;
-    color: #5a5b60;
+    color: #000;
     font-weight: 500;
 }
 
@@ -16,8 +16,28 @@
 
 .profile-image {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
 
+.name-field-div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.second-field-div{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.third-field-div{
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: 15px;
+}

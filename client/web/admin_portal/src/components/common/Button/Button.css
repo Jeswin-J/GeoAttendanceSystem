@@ -39,6 +39,17 @@
     background-color: #9C1716; 
 }
 
+.button.link {
+    color: #243495;
+    background: transparent;
+    cursor: pointer;
+}
+
+.button.link:hover {
+    color: #3246c1;
+    background: transparent;
+}
+
 .button.disabled {
     opacity: 0.5;
     cursor: not-allowed;
