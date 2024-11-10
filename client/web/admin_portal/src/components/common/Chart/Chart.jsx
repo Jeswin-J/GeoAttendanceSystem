@@ -4,14 +4,12 @@ import {
     BarChart,
     PieChart,
     AreaChart,
-    RadarChart,
     ScatterChart,
     ComposedChart,
     Line,
     Bar,
     Area,
     Pie,
-    Radar,
     Scatter,
     XAxis,
     YAxis,
@@ -20,9 +18,6 @@ import {
     CartesianGrid,
     ResponsiveContainer,
     Cell,
-    RadarPolarGrid,
-    RadarPolarAngleAxis,
-    RadarPolarRadiusAxis,
 } from 'recharts';
 import PropTypes from 'prop-types';
 import './Chart.css';
@@ -102,16 +97,6 @@ const Chart = ({
                         <Legend />
                         <Area type="monotone" dataKey={yKey} fill={colors ? colors[0] : '#8884d8'} stroke={colors ? colors[0] : '#8884d8'} />
                     </AreaChart>
-                );
-            case 'radar':
-                return (
-                    <RadarChart outerRadius="80%" data={data}>
-                        <RadarPolarGrid />
-                        <RadarPolarAngleAxis dataKey={xKey} />
-                        <RadarPolarRadiusAxis />
-                        <Tooltip />
-                        <Radar name={xKey} dataKey={yKey} stroke={colors ? colors[0] : '#8884d8'} fill={colors ? colors[0] : '#8884d8'} />
-                    </RadarChart>
                 );
             case 'scatter':
                 return (
