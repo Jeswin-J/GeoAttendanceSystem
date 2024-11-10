@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -11,11 +11,12 @@ L.Icon.Default.mergeOptions({
 });
 
 const Map = ({
-    center = [51.505, -0.09],
-    zoom = 18,
-    markers = [],
-    onMarkerClick
-}) => {
+                 center = [51.505, -0.09],
+                 zoom = 18,
+                 markers = [],
+                 onMarkerClick,
+                 disableInteractions = false
+             }) => {
 
     const ChangeMapCenter = ({ center }) => {
         const map = useMap();
@@ -33,8 +34,27 @@ const Map = ({
         return null;
     };
 
+    const DisableAllInteractions = () => {
+        const map = useMap();
+        useEffect(() => {
+            if (disableInteractions) {
+                map.dragging.disable();
+                map.touchZoom.disable();
+                map.doubleClickZoom.disable();
+                map.scrollWheelZoom.disable();
+                map.boxZoom.disable();
+                map.keyboard.disable();
+                if (map.tap) map.tap.disable();
+                map.off('click');
+            }
+        }, [map]);
+
+        return null;
+    };
+
     return (
         <MapContainer center={center} zoom={zoom} style={{ height: '100%' }}>
+
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -42,6 +62,7 @@ const Map = ({
 
             <ChangeMapCenter center={center} />
             <DisableScrollZoom />
+            <DisableAllInteractions />
 
             {markers.map((marker, index) => (
                 <Marker
