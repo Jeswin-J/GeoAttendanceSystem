@@ -8,6 +8,7 @@ import Select from "../../common/Select/Select";
 import {departmentOptions, designationOptions, employeeTypeOptions, statusOptions} from "../../../data/employee/data";
 import AttendanceStatus from "../../features/AttendanceStatus/AttendanceStatus";
 import Map from "../../common/Map/Map";
+import RecentActivityList from "../RecentActivityList/RecentActivityList";
 
 function ProfileLayout({props}) {
     const {
@@ -22,6 +23,24 @@ function ProfileLayout({props}) {
         phoneNumber,
         employeeType
     } = props;
+
+    const activities = [
+        {
+            title: 'Checked in at Mumbai Office',
+            description: 'Employee checked in at 09:30 AM',
+            timestamp: '2024-11-09 09:30 AM',
+        },
+        {
+            title: 'Checked out from Delhi Office',
+            description: 'Employee checked out at 06:00 PM',
+            timestamp: '2024-11-09 06:00 PM',
+        },
+        {
+            title: 'Meeting with HR',
+            description: 'Attended a virtual HR meeting.',
+            timestamp: '2024-11-09 04:30 PM',
+        },
+    ];
 
     return (
         <>
@@ -92,8 +111,8 @@ function ProfileLayout({props}) {
                     />
                 </div>
 
-                <div>
-                    <h3>Recent Activity</h3>
+                <div className="recent-activities">
+                    <RecentActivityList activities={activities} />
                 </div>
             </div>
 
