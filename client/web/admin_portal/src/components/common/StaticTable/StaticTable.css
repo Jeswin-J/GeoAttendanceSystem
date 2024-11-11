@@ -1,0 +1,23 @@
+.simple-static-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.simple-static-table th, .simple-static-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.simple-static-table th {
+    background-color: #f4f4f4;
+}
+
+.static-table-container{
+    margin: 20px 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

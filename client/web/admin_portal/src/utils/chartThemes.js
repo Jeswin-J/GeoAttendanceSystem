@@ -62,14 +62,14 @@ export const greenColors = [
 
 export const redColors = [
     "#E74C3C",
-    "#F5B7B1",
-    "#B71C1C",
-    "#D32F2F",
     "#E57373",
+    "#B71C1C",
+    "#FF6659",
+    "#D32F2F",
+    "#F5B7B1",
     "#F44336",
     "#C62828",
     "#EF5350",
-    "#FF6659",
     "#FF8A80",
     "#EF9A9A",
     "#FFCDD2",
@@ -81,12 +81,12 @@ export const redColors = [
 
 export const orangeColors = [
     "#E67E22",
-    "#FAD7A0",
     "#D35400",
     "#FF9800",
     "#FFA726",
     "#F57C00",
     "#E65100",
+    "#FAD7A0",
     "#FB8C00",
     "#FFB74D",
     "#FFD180",
