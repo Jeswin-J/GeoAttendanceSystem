@@ -97,7 +97,7 @@ function Locations() {
         <Portal>
             <InfoCardGroup cardData={cardData}/>
 
-            <GridLayout columns={2} columnSizes={["2fr", "1fr"]} gap={"10px"} alignItems={"center"}>
+            <GridLayout columns={2} columnSizes={["5fr", "2fr"]} gap={"10px"} alignItems={"center"}>
                 <div>
                     <Table
                         tableHeading="Locations"
