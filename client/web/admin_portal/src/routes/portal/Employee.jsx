@@ -57,7 +57,18 @@ function Employee() {
     return (
         <Portal>
             <InfoCardGroup cardData={cardData} />
-            <GridLayout columns={2} gap="10px" columnSizes={["1fr", "2fr"]}  alignItems="center">
+            <GridLayout columns={2} gap="10px" columnSizes={["2fr", "1fr"]}  alignItems="center">
+
+                <div>
+                    <Table
+                        tableHeading="Employee Directory"
+                        columns={columns}
+                        data={processedEmployees}  // Pass processed employees data
+                        onRowClick={(row) => navigate(`/portal/emp/${row.employeeId}`)}
+                    />
+                    <br />
+                    <AddEmployee />
+                </div>
                 <Chart
                     isResponsive
                     chartType="pie"
@@ -69,16 +80,6 @@ function Employee() {
                     colors={["#5A9BD5", "#A7C6ED", "#1E3A8A", "#4A90E2", "#7FBAE4", "#4682B4"]}
                     // colors={['#1E3A8A', '#38B2AC', '#F97316', '#4A5568', '#319795', '#E53E3E']}
                     height={300} />
-                <div>
-                    <Table
-                        tableHeading="Employee Directory"
-                        columns={columns}
-                        data={processedEmployees}  // Pass processed employees data
-                        onRowClick={(row) => navigate(`/portal/emp/${row.employeeId}`)}
-                    />
-                    <br />
-                    <AddEmployee />
-                </div>
             </GridLayout>
         </Portal>
     );
