@@ -63,8 +63,6 @@ function Attendance(props) {
         { hour: '04:00 PM', attendance: 850 },
     ];
 
-    // New Data for Additional Graphs
-
     // Attendance by Department
     const attendanceByDepartment = [
         { department: 'Projects', attendance: 5000 },
@@ -75,7 +73,6 @@ function Attendance(props) {
         { department: 'R&D', attendance: 3000 },
         { department: 'Procurement', attendance: 3500 },
         { department: 'Operations', attendance: 2000 },
-        { department: 'Planning', attendance: 4000 },
         { department: 'Petrochemicals', attendance: 3000 },
     ];
 
@@ -112,17 +109,6 @@ function Attendance(props) {
         { gender: 'Female', rate: 3 },
     ];
 
-    // Attendance Improvement Over Time
-    const attendanceImprovementData = [
-        { month: 'Jan', improvement: 5 },
-        { month: 'Feb', improvement: 6 },
-        { month: 'Mar', improvement: 4 },
-        { month: 'Apr', improvement: 7 },
-        { month: 'May', improvement: 5 },
-        { month: 'Jun', improvement: 8 },
-        { month: 'Jul', improvement: 6 },
-    ];
-
     return (
         <Portal>
             <InfoCardGroup cardData={cardData} />
@@ -147,20 +133,22 @@ function Attendance(props) {
                 />
             </GridLayout>
 
-            <GridLayout columns={1} gap={"20px"}>
-                <Chart
-                    isResponsive
-                    chartType="line"
-                    data={hourlyAttendanceData}
-                    xKey="hour"
-                    yKey="attendance"
-                    title="Hourly Attendance Distribution"
-                    colors={blueColors}
-                    height={300}
-                />
-            </GridLayout>
+                <GridLayout columns={1} gap={"20px"}>
+                    {/* Hourly Attendance Distribution: Line Chart */}
+                    <Chart
+                        isResponsive
+                        chartType="line"
+                        data={hourlyAttendanceData}
+                        xKey="hour"
+                        yKey="attendance"
+                        title="Hourly Attendance Distribution"
+                        colors={blueColors}
+                        height={300}
+                    />
+                </GridLayout>
 
             <GridLayout columns={2} columnSizes={["2fr", "1fr"]} gap={"10px"} alignItems={"center"}>
+                {/* Attendance by Department: Bar Chart */}
                 <Chart
                     isResponsive
                     chartType="bar"
@@ -168,11 +156,11 @@ function Attendance(props) {
                     xKey="department"
                     yKey="attendance"
                     title="Attendance by Department"
-                    colors={purpleColors}
+                    colors={greenColors}
                     height={300}
                 />
 
-                {/* Attendance Rate by Location: Line Chart */}
+                {/* Attendance by Region: Line Chart */}
                 <Chart
                     isResponsive
                     chartType="line"
@@ -180,21 +168,21 @@ function Attendance(props) {
                     xKey="location"
                     yKey="rate"
                     title="Attendance Rate by Region"
-                    colors={blueColors}
+                    colors={purpleColors}
                     height={300}
                 />
             </GridLayout>
 
-            <GridLayout columns={3} gap={"10px"}>
-                {/* Weekly Absence Breakdown: Bar Chart */}
+            <GridLayout columns={3} gap={"20px"}>
+                {/* Weekly Absence Breakdown: Area Chart */}
                 <Chart
                     isResponsive
-                    chartType="bar"
+                    chartType="area"
                     data={weeklyAbsenceData}
                     xKey="day"
                     yKey="absences"
                     title="Weekly Absence Breakdown"
-                    colors={blueColors}
+                    colors={redColors}
                     height={300}
                 />
 
@@ -222,7 +210,7 @@ function Attendance(props) {
                     xKey="shift"
                     yKey="attendance"
                     title="Employee Attendance by Shift"
-                    colors={greenColors}  // You can update the colors as needed
+                    colors={blueColors}
                     height={300}
                 />
             </GridLayout>
