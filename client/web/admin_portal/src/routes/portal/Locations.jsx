@@ -7,6 +7,8 @@ import AddLocation from "../../components/features/AddLocation/AddLocation";
 import {useNavigate} from "react-router-dom";
 import InfoCardGroup from "../../components/features/InfoCardGroup/InfoCardGroup";
 import GridLayout from "../../components/layout/GridLayout/GridLayout";
+import Chart from "../../components/common/Chart/Chart";
+import {greenColors, redColors} from "../../utils/chartThemes";
 
 function Locations() {
     const dispatch = useDispatch();
@@ -26,7 +28,7 @@ function Locations() {
         // { key: 'longitude', label: 'Longitude' },
         { key: 'radius', label: 'Geofence (m)' },
         { key: 'division', label: 'Region' },
-        // { key: 'address', label: 'Address' },
+        { key: 'address', label: 'Address' },
         { key: 'type', label: 'Type' },
     ];
 
@@ -41,10 +43,17 @@ function Locations() {
         { title: 'Avg. Dwell Time', value: '8.5 Hrs', icon: <i className="bi bi-hourglass-split"></i> },
     ];
 
+    const sampleData = [
+        { name: 'North', value: 4000 },
+        { name: 'South', value: 3000},
+        { name: 'East', value: 2000},
+        { name: 'West', value: 2780},
+    ];
+
     return (
         <Portal>
             <InfoCardGroup cardData={cardData} />
-            <GridLayout columns={2} columnSizes={["4fr", "3fr"]} gap={"10px"} alignItems={"center"}>
+            <GridLayout columns={2} columnSizes={["2fr", "1fr"]} gap={"10px"} alignItems={"center"}>
                 <div>
                     <Table
                         tableHeading="Locations"
@@ -55,7 +64,18 @@ function Locations() {
                     <br />
                     <AddLocation/>
                 </div>
-                <div></div>
+
+                <Chart
+                    isResponsive
+                    chartType="line"
+                    innerRadius={50}
+                    data={sampleData}
+                    xKey="name"
+                    yKey="value"
+                    title="Office Distribution by Region"
+                    colors={redColors}
+                    // colors={['#1E3A8A', '#38B2AC', '#F97316', '#4A5568', '#319795', '#E53E3E']}
+                    height={300} />
             </GridLayout>
         </Portal>
     );

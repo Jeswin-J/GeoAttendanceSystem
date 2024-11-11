@@ -87,7 +87,7 @@ function AddLocation() {
         <div className="add-location">
             <div className="add-location-button">
                 <Button variant="success" onClick={handleAddClick}>
-                    <i className="bi bi-plus"></i>
+                    <i className="bi bi-building-add"></i>
                     Add New Location
                 </Button>
             </div>
