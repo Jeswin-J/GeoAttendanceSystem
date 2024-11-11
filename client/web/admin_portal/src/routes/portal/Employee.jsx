@@ -5,7 +5,6 @@ import Table from '../../components/common/Table/Table';
 import Portal from "../../components/layout/Portal/Portal";
 import { useNavigate } from "react-router-dom";
 import AddEmployee from "../../components/features/AddEmployee/AddEmployee";
-import IconCard from "../../components/common/IconCard/IconCard";
 import InfoCardGroup from "../../components/features/InfoCardGroup/InfoCardGroup";
 import GridLayout from "../../components/layout/GridLayout/GridLayout";
 import Chart from "../../components/common/Chart/Chart";

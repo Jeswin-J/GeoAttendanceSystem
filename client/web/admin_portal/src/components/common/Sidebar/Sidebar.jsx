@@ -17,7 +17,7 @@ const Sidebar = () => {
         { href: '/portal/attendance', iconClass: 'bi-card-checklist', label: 'Attendance' },
         { href: '/portal/emp', iconClass: 'bi-people', label: 'Employee' },
         { href: '/portal/locations', iconClass: 'bi-geo', label: 'Locations' },
-        { href: '/portal/reports', iconClass: 'bi-graph-up', label: 'Reports' },
+        // { href: '/portal/reports', iconClass: 'bi-graph-up', label: 'Reports' },
         { href: '/portal/settings', iconClass: 'bi-gear', label: 'Settings' }
     ];
 
