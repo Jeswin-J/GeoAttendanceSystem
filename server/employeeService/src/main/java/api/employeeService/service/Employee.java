@@ -1,14 +1,19 @@
 package api.employeeService.service;
 
 import api.employeeService.dto.CreateRequest;
-import api.employeeService.dto.Response;
+import api.employeeService.model.EmployeeEntity;
+
+import java.util.List;
 
 public interface Employee {
-    Response addNewEmployee(CreateRequest request);
 
-    Response deleteEmployeeById(String employeeId);
+    List<EmployeeEntity> getAllEmployees();
 
-    Response getAllEmployees();
+    EmployeeEntity getEmployeeById(String employeeId);
 
-    Response getEmployeeById(String employeeId);
+    boolean doesEmployeeExist(String employeeId);
+
+    EmployeeEntity addNewEmployee(CreateRequest request);
+
+    boolean deleteEmployeeById(String employeeId);
 }

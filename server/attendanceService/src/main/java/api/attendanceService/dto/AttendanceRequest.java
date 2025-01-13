@@ -1,15 +1,19 @@
 package api.attendanceService.dto;
 
+import api.attendanceService.model.Coordinate;
 import jakarta.validation.constraints.NotNull;
 
 
 public class AttendanceRequest {
 
-    @NotNull(message = "EmployeeEntity ID cannot be null")
+    @NotNull(message = "Employee ID cannot be null")
     private String employeeId;
 
-    @NotNull(message = "LocationEntity cannot be null")
-    private LocationDTO location;
+    @NotNull(message = "Latitude cannot be null")
+    private double latitude;
+
+    @NotNull(message = "Longitude cannot be null")
+    private double longitude;
 
 
     public String getEmployeeId() {
@@ -20,11 +24,21 @@ public class AttendanceRequest {
         this.employeeId = employeeId;
     }
 
-    public LocationDTO getLocation() {
-        return location;
+    @NotNull(message = "Latitude cannot be null")
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(LocationDTO location) {
-        this.location = location;
+    public void setLatitude(@NotNull(message = "Latitude cannot be null") double latitude) {
+        this.latitude = latitude;
+    }
+
+    @NotNull(message = "Longitude cannot be null")
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(@NotNull(message = "Longitude cannot be null") double longitude) {
+        this.longitude = longitude;
     }
 }

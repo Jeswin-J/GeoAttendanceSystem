@@ -10,6 +10,13 @@ import org.springframework.web.servlet.function.*;
 public class Routes {
 
     @Bean
+    public RouterFunction<ServerResponse> authServiceRoute(){
+        return GatewayRouterFunctions.route("authService")
+                .route(RequestPredicates.path("/api/auth/**"), HandlerFunctions.http("http://localhost:8084"))
+                .build();
+    }
+
+    @Bean
     public RouterFunction<ServerResponse> attendanceServiceRoute(){
         return GatewayRouterFunctions.route("attendanceService")
                 .route(RequestPredicates.path("/api/attendance/**"), HandlerFunctions.http("http://localhost:8081"))

@@ -1,20 +1,37 @@
 package api.employeeService.dto;
 
 public class Response {
+    private boolean success;
     private String message;
-    private Boolean success;
     private Object data;
 
-    public String getMessage() {
-        return message;
+    // Default constructor
+    public Response() {}
+
+    // Constructor for success/failure and message
+    public Response(boolean success, String message) {
+        this.success = success;
+        this.message = message;
     }
 
-    public Boolean getSuccess() {
+    // Constructor for success/failure and data
+    public Response(boolean success, Object data) {
+        this.success = success;
+        this.data = data;
+    }
+
+    // Setters and Getters
+    public boolean isSuccess() {
         return success;
     }
 
-    public Object getData() {
-        return data;
+    public Response setSuccess(boolean success) {
+        this.success = success;
+        return this;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public Response setMessage(String message) {
@@ -22,9 +39,8 @@ public class Response {
         return this;
     }
 
-    public Response setSuccess(Boolean success) {
-        this.success = success;
-        return this;
+    public Object getData() {
+        return data;
     }
 
     public Response setData(Object data) {

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Objects;
+
 
 @Entity
 @Table(name = "attendance")
@@ -14,16 +16,14 @@ public class AttendanceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attendanceId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "employeeId", nullable = false)
-    private EmployeeEntity employee;
+    @Column(nullable = false)
+    private String employeeId;
 
     @Column(nullable = false)
-    private Timestamp checkInTimeStamp = new Timestamp(System.currentTimeMillis());
+    private Timestamp checkInTimeStamp;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "checkInLocationId", nullable = false)
-    private LocationEntity checkInLocationEntity;
+    @Embedded
+    private Coordinate checkInLocation;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -32,74 +32,99 @@ public class AttendanceEntity {
     @Column(nullable = true)
     private Timestamp checkOutTimeStamp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "checkOutLocationId")
-    private LocationEntity checkOutLocationEntity;
+    @Embedded
+    private Coordinate checkOutLocation;
 
-    @Column(precision = 5, scale = 2)
-    private BigDecimal workingHours;
+    @Column(precision = 5, scale = 2, nullable = false)
+    private BigDecimal workingHours = BigDecimal.ZERO;
 
-    @Column(nullable = false)
-    private boolean anomalyDetected = false;
 
+    @PrePersist
+    public void prePersist() {
+        if (checkInTimeStamp == null) {
+            checkInTimeStamp = new Timestamp(System.currentTimeMillis());
+        }
+    }
+
+    // Getters and Setters
 
     public Long getAttendanceId() {
         return attendanceId;
     }
 
-    public void setAttendanceId(Long attendanceId) {
+    public AttendanceEntity setAttendanceId(Long attendanceId) {
         this.attendanceId = attendanceId;
+        return this;
     }
 
-    public EmployeeEntity getEmployee() {
-        return employee;
+    public String getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(EmployeeEntity employee) {
-        this.employee = employee;
+    public AttendanceEntity setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+        return this;
     }
 
-    public LocationEntity getCheckInLocation() {
-        return checkInLocationEntity;
+    public Coordinate getCheckInLocation() {
+        return checkInLocation;
     }
 
-    public void setCheckInLocation(LocationEntity checkInLocationEntity) {
-        this.checkInLocationEntity = checkInLocationEntity;
+    public AttendanceEntity setCheckInLocation(Coordinate checkInLocation) {
+        this.checkInLocation = checkInLocation;
+        return this;
     }
 
     public Status getAttendanceStatus() {
         return attendanceStatus;
     }
 
-    public void setAttendanceStatus(Status attendanceStatus) {
+    public AttendanceEntity setAttendanceStatus(Status attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
+        return this;
     }
 
     public Timestamp getCheckOutTimeStamp() {
         return checkOutTimeStamp;
     }
 
-    public void setCheckOutTimeStamp(Timestamp checkOutTimeStamp) {
+    public AttendanceEntity setCheckOutTimeStamp(Timestamp checkOutTimeStamp) {
         this.checkOutTimeStamp = checkOutTimeStamp;
+        return this;
     }
 
-    public LocationEntity getCheckOutLocation() {
-        return checkOutLocationEntity;
+    public Coordinate getCheckOutLocation() {
+        return checkOutLocation;
     }
 
-    public void setCheckOutLocation(LocationEntity checkOutLocationEntity) {
-        this.checkOutLocationEntity = checkOutLocationEntity;
+    public AttendanceEntity setCheckOutLocation(Coordinate checkOutLocation) {
+        this.checkOutLocation = checkOutLocation;
+        return this;
     }
 
     public BigDecimal getWorkingHours() {
         return workingHours;
     }
 
-    public void setWorkingHours(BigDecimal workingHours) {
+    public AttendanceEntity setWorkingHours(BigDecimal workingHours) {
         this.workingHours = workingHours;
+        return this;
     }
 
     public Timestamp getCheckInTimeStamp() {
         return checkInTimeStamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AttendanceEntity that = (AttendanceEntity) o;
+        return Objects.equals(attendanceId, that.attendanceId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(attendanceId);
     }
 }
