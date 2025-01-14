@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   static Map<String, dynamic> employee = {};
   static Map<String, dynamic>? location;
+  static Map<String, dynamic>? attendance;
 
 
   bool _isCheckedIn = false;
@@ -119,12 +120,16 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       location = await apiService.fetchLocationData(employee['employeeId']);
+      attendance = await apiService.fetchAttendanceData(employee['employeeId']);
 
       if (location != null) {
         print("Location Data: $location");
       } else {
         print("No location data available.");
       }
+
+      print("Attendance Data: $attendance");
+
     }
   }
 

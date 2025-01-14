@@ -66,8 +66,6 @@ class APIService {
     final String endpointUrl = AppConstants.getEndpoint(
         'locations', AppConstants.officeLocationEndpoint, pathParams: employeeId);
 
-    print(endpointUrl);
-
     final token = await appUtils.getToken();
 
     try {
@@ -86,6 +84,33 @@ class APIService {
       }
     } catch (e) {
       print("Fetch Location Data API Error: $e");
+    }
+    return null;
+  }
+
+
+  Future<Map<String, dynamic>?> fetchAttendanceData(String employeeId) async {
+    final String endpointUrl = AppConstants.getEndpoint(
+        'attendance', AppConstants.statusEndpoint, pathParams: employeeId);
+
+    final token = await appUtils.getToken();
+
+    try {
+      final response = await http
+          .get(
+        Uri.parse(endpointUrl),
+        headers: {"Authorization": "Bearer $token"},
+      )
+          .timeout(timeoutDuration);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true) {
+          return data['data'];
+        }
+      }
+    } catch (e) {
+      print("Fetch Attendance Status API Error: $e");
     }
     return null;
   }

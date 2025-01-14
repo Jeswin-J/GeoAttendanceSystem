@@ -23,6 +23,10 @@ public class AttendanceEntity {
     private Timestamp checkInTimeStamp;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(name = "check_in_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "check_in_longitude"))
+    })
     private Coordinate checkInLocation;
 
     @Enumerated(EnumType.STRING)
@@ -33,6 +37,10 @@ public class AttendanceEntity {
     private Timestamp checkOutTimeStamp;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(name = "check_out_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "check_out_longitude"))
+    })
     private Coordinate checkOutLocation;
 
     @Column(precision = 5, scale = 2, nullable = false)
