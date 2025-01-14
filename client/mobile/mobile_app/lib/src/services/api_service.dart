@@ -93,6 +93,7 @@ class APIService {
     final String endpointUrl = AppConstants.getEndpoint(
         'attendance', AppConstants.statusEndpoint, pathParams: employeeId);
 
+
     final token = await appUtils.getToken();
 
     try {
@@ -104,14 +105,12 @@ class APIService {
           .timeout(timeoutDuration);
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['success'] == true) {
-          return data['data'];
-        }
+        return jsonDecode(response.body);
       }
     } catch (e) {
       print("Fetch Attendance Status API Error: $e");
     }
+
     return null;
   }
 
