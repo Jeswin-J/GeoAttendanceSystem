@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/src/utils/helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_app/src/screens/auth/register_screen.dart';
-
 import '../../services/api_service.dart';
 import '../../widgets/button.dart';
 import '../main_screen.dart';
@@ -16,33 +17,82 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String? _employeeId;
   String? _password;
+  bool _isLoading = false;
 
   final APIService _apiService = APIService();
+  final AppUtils _appUtils = AppUtils();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkForStoredEmployeeData();
+  }
+
+  Future<void> _checkForStoredEmployeeData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final employeeData = prefs.getString('employeeData');
+    if (employeeData != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SafeArea(child: MainScreen()),
+        ),
+      );
+    }
+  }
 
   void _navigateToSignUp() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const RegisterScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RegisterScreen()),
+    );
   }
 
   Future<void> _authenticateUser() async {
-    if (_formKey.currentState!.validate()) {
-      final response = await _apiService.login(
-        _employeeId!,
-        _password!,
-            (json) => json,
-      );
+    if (!_formKey.currentState!.validate()) return;
 
-      print(response);
+    setState(() {
+      _isLoading = true;
+    });
 
-      if (response != null && response['success'] == true) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const SafeArea(child: MainScreen())));
+    try {
+      // Attempt to log in the user
+      final loginResponse = await _apiService.login(_employeeId!, _password!);
+
+      if (loginResponse != null && loginResponse['success'] == true) {
+        // Fetch employee data after successful login
+        final employeeData = await _apiService.fetchEmployeeData(_employeeId!);
+
+        if (employeeData != null) {
+          // Navigate to the main screen on successful data retrieval
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SafeArea(child: MainScreen()),
+            ),
+          );
+        } else {
+          _showSnackBar('Failed to fetch employee data.');
+        }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response != null ? response['message'] : 'Login failed')),
+        _showSnackBar(
+          loginResponse != null ? loginResponse['message'] : 'Login failed',
         );
       }
+    } catch (e) {
+      _showSnackBar('An error occurred. Please try again.');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
+  }
+
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
@@ -106,30 +156,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      Button(
-                        text: "Authenticate",
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _authenticateUser();
-                          }
-                        },
-                        backgroundColor: Colors.blue.shade800,
-                        textColor: Colors.white,
-                        fontSize: 18,
-                        borderRadius: 10,
-                        elevation: 4,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 10),
-                      ),
+                      if (_isLoading)
+                        const CircularProgressIndicator()
+                      else
+                        Button(
+                          text: "Authenticate",
+                          onPressed: _authenticateUser,
+                          backgroundColor: Colors.blue.shade800,
+                          textColor: Colors.white,
+                          fontSize: 18,
+                          borderRadius: 10,
+                          elevation: 4,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 10,
+                          ),
+                        ),
                       const SizedBox(height: 16),
                       GestureDetector(
                         onTap: _navigateToSignUp,
                         child: Text(
                           "New User?",
                           style: TextStyle(
-                              color: Colors.blue.shade800,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.blue.shade800,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],

@@ -10,7 +10,7 @@ public class LocationAccessEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long locationAccessId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String employeeId;
 
     @ManyToOne

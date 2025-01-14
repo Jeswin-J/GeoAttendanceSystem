@@ -158,30 +158,31 @@ public class LocationService implements Location {
                 .findAllByEmployeeId(employeeId);
 
         if (!locationAccessList.isEmpty()) {
-            List<LocationEntity> locations = locationAccessList.stream()
-                    .map(access -> new LocationEntity()
-                            .setLocationName(access.getLocation().getLocationName())
-                            .setAddress(access.getLocation().getAddress())
-                            .setDivision(access.getLocation().getDivision())
-                            .setRadius(access.getLocation().getRadius())
-                            .setLatitude(access.getLocation().getLatitude())
-                            .setLongitude(access.getLocation().getLongitude())
-                            .setCreatedAt(access.getLocation().getCreatedAt())
-                            .setUpdatedAt(access.getLocation().getUpdatedAt())
-                            .setType(access.getLocation().getType())
-                            .setLocationId(access.getLocation().getLocationId())
-                    ).toList();
+            // Since only one location is allowed, we fetch the first location from the list
+            LocationAccessEntity access = locationAccessList.get(0);
+            LocationEntity location = new LocationEntity()
+                    .setLocationName(access.getLocation().getLocationName())
+                    .setAddress(access.getLocation().getAddress())
+                    .setDivision(access.getLocation().getDivision())
+                    .setRadius(access.getLocation().getRadius())
+                    .setLatitude(access.getLocation().getLatitude())
+                    .setLongitude(access.getLocation().getLongitude())
+                    .setCreatedAt(access.getLocation().getCreatedAt())
+                    .setUpdatedAt(access.getLocation().getUpdatedAt())
+                    .setType(access.getLocation().getType())
+                    .setLocationId(access.getLocation().getLocationId());
 
             return new Response()
                     .setSuccess(true)
-                    .setMessage("Employee " + employeeId + " has access to " + locations.size() + " locations")
-                    .setData(locations);
+                    .setMessage("Employee " + employeeId + " has access to the location: " + location.getLocationName())
+                    .setData(location); // Return a single location
         }
 
         return new Response()
                 .setSuccess(false)
                 .setMessage("No access found for employee ID: " + employeeId);
     }
+
 
     @Override
     public Response getAllEmployeesAtLocation(Long locationId) {

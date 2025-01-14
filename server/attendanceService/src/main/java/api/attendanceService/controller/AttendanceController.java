@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/attendance/")
+@RequestMapping("api/attendance")
 public class AttendanceController {
 
     @Autowired
@@ -65,7 +65,7 @@ public class AttendanceController {
             return ResponseEntity.ok(attendanceEntity);
         }
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
 
