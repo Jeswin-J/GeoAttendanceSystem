@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,10 +10,9 @@ import 'package:mobile_app/src/widgets/button.dart';
 import 'package:mobile_app/src/widgets/checkin_card.dart';
 import 'package:mobile_app/src/widgets/checkout_card.dart';
 import 'package:mobile_app/src/widgets/welcome_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/attendance_request.dart';
 import '../../models/status_request.dart';
-import '../../services/api_service.dart';
 import '../../utils/app_constants.dart';
 import '../../widgets/auto_close_dialog.dart';
 
@@ -24,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final APIService apiService = APIService();
+  final AppUtils appUtils = AppUtils();
 
   late String formattedDate;
   late String formattedTime;
@@ -32,10 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
   String _address = "";
   double _latitude = 0.0;
   double _longitude = 0.0;
-  static const Duration locationUpdateInterval =
-  Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
+  static const Duration locationUpdateInterval = Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
 
   StatusRequest? _attendanceData;
+
+  static Map<String, dynamic> employee = {};
+
 
   bool _isCheckedIn = false;
 
@@ -43,28 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    _fetchAttendanceDataOnStart();
     _updateTime();
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
     _initializeLocation();
     Timer.periodic(locationUpdateInterval, (Timer t) => _getCurrentLocation());
-  }
-
-  Future<void> _fetchAttendanceDataOnStart() async {
-    final attendanceData = await apiService.fetchData(
-      AppConstants.statusEndpoint,
-          (json) => StatusRequest.fromJson(json),
-    );
-
-    if (attendanceData != null) {
-      setState(() {
-        _attendanceData = attendanceData;
-        _isCheckedIn = _attendanceData!.checkOutTimeStamp == null;
-      });
-      print("SUCCESS: Attendance Data vanthuduchi!");
-    } else {
-      print("ERROR: Attendance Data varla!");
-    }
+    _loadEmployeeData();
   }
 
   void _updateTime() {
@@ -126,44 +111,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _loadEmployeeData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final employeeData = prefs.getString('employeeData');
 
-  void toggleCheckInOut() async {
-    String endpoint = _isCheckedIn ? "checkOut" : "checkIn";
+    employee = jsonDecode(employeeData!);
 
-  var requestBody = {
-      "employeeId": "E2",
-      "location": {
-        "latitude": _latitude,
-        "longitude": _longitude,
-        "accuracy": 0.9999,
-      },
-    };
+    print(employee);
 
-    AttendanceRequest request = AttendanceRequest.fromJson(requestBody);
-
-    final response = await apiService.postData(
-      endpoint,
-      request,
-          (json) => json,
-    );
-
-    if (response != null) {
-      setState(() {
-        _isCheckedIn = !_isCheckedIn;
-      });
-
-      _showAutoCloseDialog(
-        lottieFile: 'assets/animations/success.json',
-        message: _isCheckedIn ? "Check-In Successful" : "Check-Out Successful",
-          isSuccess: true
-      );
-    } else {
-      _showAutoCloseDialog(
-        lottieFile: 'assets/animations/failed.json',
-        message: _isCheckedIn ? "Check-Out Failed" : "Check-In Failed",
-          isSuccess: false
-      );
-    }
+    // if (employeeData != null) {
+    //   setState(() {
+    //     _attendanceData = StatusRequest.fromJson(employeeData);
+    //   });
+    // }
   }
 
   void _showAutoCloseDialog({required String lottieFile, required String message, required bool isSuccess}) {
@@ -180,9 +140,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-
-
   @override
   void dispose() {
     timer.cancel();
@@ -191,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_attendanceData == null) {
+    if (employee == null) {
       return const Center(
           child: CircularProgressIndicator());
     }
@@ -216,8 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           WelcomeCard(
-            empName:
-            "${_attendanceData?.employee.name} 👋🏼",
+            empName: "${employee['firstName']} ${employee['lastName']} 👋🏼",
             date: formattedDate,
             time: formattedTime,
             profileImagePath: "assets/images/profile.png",
@@ -247,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? Button(
                 text: "Check-In",
                 onPressed: () async {
-                  bool confirmed = await showConfirmationDialog(
+                  bool confirmed = await appUtils.showConfirmationDialog(
                     context,
                     title: 'Confirm Action',
                     message: 'Are you sure you want to Check-In?',
@@ -256,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
 
                   if (confirmed) {
-                    toggleCheckInOut();
+                    print("Check-In confirmed");
                   }
                 },
                 backgroundColor: Colors.green.shade700,
@@ -286,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Button(
                       text: "Check-Out",
                       onPressed: () async {
-                        bool confirmed = await showConfirmationDialog(
+                        bool confirmed = await appUtils.showConfirmationDialog(
                           context,
                           title: 'Confirm Action',
                           message: 'Are you sure you want to Check-Out?',
@@ -295,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
 
                         if (confirmed) {
-                          toggleCheckInOut();
+                          print("Check-Out confirmed");
                         }
                       },
                       backgroundColor: Colors.red.shade700,

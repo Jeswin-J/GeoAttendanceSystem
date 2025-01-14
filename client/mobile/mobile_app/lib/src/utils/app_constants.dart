@@ -4,15 +4,17 @@ class AppConstants {
   static const String servicePort = "8080";
 
   // Endpoints
-  static const String statusEndpoint = 'status/EMP4';
+  static const String statusEndpoint = 'status';
   static const String registerEndpoint = 'register';
   static const String loginEndpoint = 'login';
+  static const String empDataEndpoint = '';
 
   static String getBaseUrl(String service) {
     return 'http://$baseHost:$servicePort/$baseApiPath/$service';
   }
 
-  static String getEndpoint(String service, String endpoint) {
-    return '${getBaseUrl(service)}/$endpoint';
+  static String getEndpoint(String service, String endpoint, {String? pathParams}) {
+    final baseUrl = getBaseUrl(service);
+    return pathParams != null ? '$baseUrl/$endpoint/$pathParams' : '$baseUrl/$endpoint';
   }
 }
