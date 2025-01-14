@@ -8,6 +8,7 @@ class AppConstants {
   static const String registerEndpoint = 'register';
   static const String loginEndpoint = 'login';
   static const String empDataEndpoint = '';
+  static const String officeLocationEndpoint = 'emp';
 
   static String getBaseUrl(String service) {
     return 'http://$baseHost:$servicePort/$baseApiPath/$service';

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile_app/src/services/api_service.dart';
 import 'package:mobile_app/src/utils/helper.dart';
 import 'package:mobile_app/src/widgets/button.dart';
 import 'package:mobile_app/src/widgets/checkin_card.dart';
@@ -12,7 +13,6 @@ import 'package:mobile_app/src/widgets/checkout_card.dart';
 import 'package:mobile_app/src/widgets/welcome_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/status_request.dart';
 import '../../utils/app_constants.dart';
 import '../../widgets/auto_close_dialog.dart';
 
@@ -25,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final AppUtils appUtils = AppUtils();
+  final APIService  apiService = APIService();
 
   late String formattedDate;
   late String formattedTime;
@@ -34,9 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   double _longitude = 0.0;
   static const Duration locationUpdateInterval = Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
 
-  StatusRequest? _attendanceData;
-
   static Map<String, dynamic> employee = {};
+  static Map<String, dynamic>? location;
 
 
   bool _isCheckedIn = false;
@@ -66,8 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _latitude = lastPosition.latitude;
         _longitude = lastPosition.longitude;
-        _address =
-        "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
+        _address = "${location?['address']}";
       });
     }
 
@@ -98,8 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           _latitude = position.latitude;
           _longitude = position.longitude;
-          _address =
-          "No 101A, Ohm Sakthi Nagar, II Cross Street, Mangadu, Chennai - 600122";
+          _address = "${location?['address']}";
         });
       }
     } catch (e) {
@@ -115,16 +113,22 @@ class _HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final employeeData = prefs.getString('employeeData');
 
-    employee = jsonDecode(employeeData!);
+    if (employeeData != null) {
+      setState(() {
+        employee = jsonDecode(employeeData);
+      });
 
-    print(employee);
+      location = await apiService.fetchLocationData(employee['employeeId']);
 
-    // if (employeeData != null) {
-    //   setState(() {
-    //     _attendanceData = StatusRequest.fromJson(employeeData);
-    //   });
-    // }
+      if (location != null) {
+        print("Location Data: $location");
+      } else {
+        print("No location data available.");
+      }
+    }
   }
+
+
 
   void _showAutoCloseDialog({required String lottieFile, required String message, required bool isSuccess}) {
     showDialog(
@@ -148,11 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (employee == null) {
-      return const Center(
-          child: CircularProgressIndicator());
-    }
-
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade50,
       appBar: AppBar(
@@ -181,15 +180,15 @@ class _HomeScreenState extends State<HomeScreen> {
           !_isCheckedIn
               ? CheckInCard(
             status: "Check-In",
-            location: "GAIL Office, Delhi",
+            location: "${location?['locationName']}",
             address: _address,
             latitude: _latitude,
             longitude: _longitude,
           )
               : CheckoutCard(
-            checkInTime: _attendanceData!.checkInTimeStamp,
+            checkInTime: DateTime.now(),
             status: "Check-Out",
-            location: "GAIL Office, Delhi",
+            location: "${location?['locationName']}",
             address: _address,
             latitude: _latitude,
             longitude: _longitude,
