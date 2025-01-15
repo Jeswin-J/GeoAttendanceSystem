@@ -146,4 +146,47 @@ class APIService {
     }
     return false;
   }
+
+  Future<Map<String, dynamic>?> sendAttendanceRequest(
+      String employeeId, String type, double latitude, double longitude) async {
+
+    final String endpointUrl = AppConstants.getEndpoint(
+      'attendance',
+      type == 'checkIn'
+          ? AppConstants.checkInEndpoint
+          : AppConstants.checkOutEndpoint,
+    );
+
+    final token = await appUtils.getToken();
+
+    final Map<String, dynamic> requestBody = {
+      "employeeId": employeeId,
+      "latitude": latitude,
+      "longitude": longitude,
+    };
+
+    try {
+      final response = await http
+          .post(
+        Uri.parse(endpointUrl),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(requestBody),
+      )
+          .timeout(timeoutDuration);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        print(
+            "Error: Received ${response.statusCode} from the server. Response body: ${response.body}");
+      }
+    } catch (e) {
+      print("Attendance Request API Error: $e");
+    }
+
+    return null;
+  }
 }

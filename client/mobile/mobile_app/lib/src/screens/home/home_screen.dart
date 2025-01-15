@@ -121,21 +121,31 @@ class _HomeScreenState extends State<HomeScreen> {
         employee = jsonDecode(employeeData);
       });
 
-      location = await apiService.fetchLocationData(employee['employeeId']);
-      attendance = await apiService.fetchAttendanceData(employee['employeeId']);
-
-      if (attendance != null && attendance?['checkOutTimeStamp'] == null) {
-        _isCheckedIn = true;
-      }
-
-      print("Location Data: $location");
-      print("Attendance Data: $attendance");
+      // Fetch location and attendance data dynamically
+      await _updateLocationAndAttendanceData();
     }
 
     setState(() {
       _isLoading = false; // Stop loading
     });
   }
+
+  Future<void> _updateLocationAndAttendanceData() async {
+    location = await apiService.fetchLocationData(employee['employeeId']);
+    attendance = await apiService.fetchAttendanceData(employee['employeeId']);
+
+    setState(() {
+      if (attendance != null && attendance?['checkOutTimeStamp'] == null) {
+        _isCheckedIn = true;
+      } else {
+        _isCheckedIn = false;
+      }
+    });
+
+    print("Updated Location Data: $location");
+    print("Updated Attendance Data: $attendance");
+  }
+
 
   void _showAutoCloseDialog({required String lottieFile, required String message, required bool isSuccess}) {
     showDialog(
@@ -188,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
             empName: "${employee['firstName']} ${employee['lastName']} 👋🏼",
             date: formattedDate,
             time: formattedTime,
-            profileImagePath: "assets/images/profile.png",
+            profileImagePath: AppConstants.profileImagePath,
           ),
           !_isCheckedIn
               ? CheckInCard(
@@ -224,7 +234,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
 
                   if (confirmed) {
-                    print("Check-In confirmed");
+                    await apiService.sendAttendanceRequest(employee['employeeId'], "checkIn", _latitude, _longitude);
+                    _showAutoCloseDialog(lottieFile: AppConstants.successAnimation, message: "Check-In Success", isSuccess: true);
+                    await _updateLocationAndAttendanceData();
                   }
                 },
                 backgroundColor: Colors.green.shade700,
@@ -263,7 +275,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
 
                         if (confirmed) {
-                          print("Check-Out confirmed");
+                          await apiService.sendAttendanceRequest(employee['employeeId'], "checkOut", _latitude, _longitude);
+                          _showAutoCloseDialog(lottieFile: "assets/animations/success.json", message: "Check-Out Success", isSuccess: true);
+                          await _updateLocationAndAttendanceData();
                         }
                       },
                       backgroundColor: Colors.red.shade700,

@@ -1,4 +1,18 @@
 class AppConstants {
+
+  // Strings
+  static const String checkIn = "Check-In";
+  static const String checkOut = "Check-Out";
+  static const String employeeData = "employeeData";
+
+  // Asset Paths
+  static const String successAnimation = "assets/animations/success.json";
+  static const String profileImagePath = "assets/images/profile.png";
+
+  // Other Constants
+  static const Duration locationUpdateInterval = Duration(seconds: 5);
+
+
   static const String baseHost = "192.168.29.111";
   static const String baseApiPath = "api";
   static const String servicePort = "8080";
