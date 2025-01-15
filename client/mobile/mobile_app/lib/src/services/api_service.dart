@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/app_constants.dart';
 import '../utils/helper.dart';
@@ -114,15 +113,6 @@ class APIService {
     return null;
   }
 
-
-  Future<Map<String, dynamic>?> getStoredEmployeeData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final employeeData = prefs.getString('employeeData');
-    if (employeeData != null) {
-      return jsonDecode(employeeData);
-    }
-    return null;
-  }
 
   Future<bool> registerUser(String accessToken, String password) async {
     final String endpointUrl = AppConstants.getEndpoint(

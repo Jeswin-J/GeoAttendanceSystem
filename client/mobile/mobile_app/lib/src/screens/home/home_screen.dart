@@ -25,7 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final AppUtils appUtils = AppUtils();
-  final APIService  apiService = APIService();
+  final APIService apiService = APIService();
 
   late String formattedDate;
   late String formattedTime;
@@ -39,13 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
   static Map<String, dynamic>? location;
   static Map<String, dynamic>? attendance;
 
-
   bool _isCheckedIn = false;
+  bool _isLoading = true; // Track loading state
 
   @override
   void initState() {
     super.initState();
-
     _updateTime();
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
     _initializeLocation();
@@ -70,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _address = "${location?['address']}";
       });
     }
-
     await _getCurrentLocation();
   }
 
@@ -111,6 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadEmployeeData() async {
+    setState(() {
+      _isLoading = true; // Start loading
+    });
+
     final prefs = await SharedPreferences.getInstance();
     final employeeData = prefs.getString('employeeData');
 
@@ -122,18 +124,18 @@ class _HomeScreenState extends State<HomeScreen> {
       location = await apiService.fetchLocationData(employee['employeeId']);
       attendance = await apiService.fetchAttendanceData(employee['employeeId']);
 
-      if (location != null) {
-        print("Location Data: $location");
-      } else {
-        print("No location data available.");
+      if (attendance != null && attendance?['checkOutTimeStamp'] == null) {
+        _isCheckedIn = true;
       }
 
+      print("Location Data: $location");
       print("Attendance Data: $attendance");
-
     }
+
+    setState(() {
+      _isLoading = false; // Stop loading
+    });
   }
-
-
 
   void _showAutoCloseDialog({required String lottieFile, required String message, required bool isSuccess}) {
     showDialog(
@@ -174,7 +176,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         backgroundColor: Colors.transparent,
       ),
-      body: Column(
+      body: _isLoading // Show loader if data is loading
+          ? Center(
+        child: CircularProgressIndicator(
+          color: Colors.blue,
+        ),
+      )
+          : Column(
         children: [
           WelcomeCard(
             empName: "${employee['firstName']} ${employee['lastName']} 👋🏼",
@@ -191,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
             longitude: _longitude,
           )
               : CheckoutCard(
-            checkInTime: DateTime.now(),
+            checkInTime: attendance?['checkInTimeStamp'],
             status: "Check-Out",
             location: "${location?['locationName']}",
             address: _address,

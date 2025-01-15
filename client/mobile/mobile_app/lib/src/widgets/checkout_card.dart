@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -10,7 +9,7 @@ class CheckoutCard extends StatefulWidget {
   final double latitude;
   final double longitude;
   final List<Widget> actions;
-  final DateTime checkInTime;
+  final String checkInTime; // Accept timestamp as a string
 
   const CheckoutCard({
     super.key,
@@ -19,7 +18,7 @@ class CheckoutCard extends StatefulWidget {
     required this.address,
     required this.latitude,
     required this.longitude,
-    required this.checkInTime,
+    required this.checkInTime, // Pass the timestamp string
     this.actions = const [],
   });
 
@@ -29,11 +28,13 @@ class CheckoutCard extends StatefulWidget {
 
 class _CheckoutCardState extends State<CheckoutCard> {
   late Timer _timer;
+  late DateTime _checkInDateTime; // Parsed DateTime from string
   int _secondsElapsed = 0;
 
   @override
   void initState() {
     super.initState();
+    _checkInDateTime = DateTime.parse(widget.checkInTime); // Parse the string
     _secondsElapsed = _calculateInitialElapsedTime();
     _startTimer();
   }
@@ -54,9 +55,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
 
   int _calculateInitialElapsedTime() {
     final now = DateTime.now();
-    return now
-        .difference(widget.checkInTime)
-        .inSeconds;
+    return now.difference(_checkInDateTime).inSeconds;
   }
 
   String _formatDuration(int seconds) {
@@ -70,90 +69,93 @@ class _CheckoutCardState extends State<CheckoutCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 12.0, left: 12.0),
-      child: Card(
-        elevation: 1,
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                widget.status,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800],
-                ),
-              ),
-              Lottie.asset(
-                'assets/animations/work_animation.json',
-                height: 250,
-              ),
-              Text(
-                "Time Elapsed",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
-                ),
-              ),
-              Text(
-                _formatDuration(_secondsElapsed),
-                style: TextStyle(
-                  fontSize: 38,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.gps_fixed,
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: SizedBox(
+        width: double.infinity, // Take full width
+        child: Card(
+          elevation: 1,
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  widget.status,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                     color: Colors.blue[800],
-                    size: 20,
                   ),
-                  const SizedBox(width: 4),
-                  Text(
-                    widget.location,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
+                ),
+                Lottie.asset(
+                  'assets/animations/work_animation.json',
+                  height: 250,
+                ),
+                Text(
+                  "Time Elapsed",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
                   ),
-                ],
-              ),
-              Text(
-                "${widget.latitude}, ${widget.longitude}",
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey,
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                widget.address,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
+                Text(
+                  _formatDuration(_secondsElapsed),
+                  style: TextStyle(
+                    fontSize: 38,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[800],
+                  ),
                 ),
-              ),
-              if (widget.actions.isNotEmpty)
+                const SizedBox(height: 16),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: widget.actions,
+                  children: [
+                    Icon(
+                      Icons.gps_fixed,
+                      color: Colors.blue[800],
+                      size: 20,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      widget.location,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
-            ],
+                Text(
+                  "${widget.latitude}, ${widget.longitude}",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.address,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                if (widget.actions.isNotEmpty)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: widget.actions,
+                  ),
+              ],
+            ),
           ),
         ),
       ),

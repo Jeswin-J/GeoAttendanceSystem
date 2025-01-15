@@ -22,6 +22,17 @@ class AppUtils{
     await prefs.setString('employeeData', jsonEncode(employeeData));
   }
 
+
+  Future<Map<String, dynamic>?> getStoredEmployeeData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final employeeData = prefs.getString('employeeData');
+    if (employeeData != null) {
+      return jsonDecode(employeeData);
+    }
+    return null;
+  }
+
+
   Future<bool> showConfirmationDialog(BuildContext context, {
     required String title,
     required String message,
