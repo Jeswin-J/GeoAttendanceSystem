@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String _address = "";
   double _latitude = 0.0;
   double _longitude = 0.0;
-  static const Duration locationUpdateInterval = Duration(seconds: 5); //TODO: UPDATE FREQUENCY AS REQUIRED
 
   static Map<String, dynamic> employee = {};
   static Map<String, dynamic>? location;
@@ -48,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _updateTime();
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateTime());
     _initializeLocation();
-    Timer.periodic(locationUpdateInterval, (Timer t) => _getCurrentLocation());
+    Timer.periodic(AppConstants.locationUpdateInterval, (Timer t) => _getCurrentLocation());
     _loadEmployeeData();
   }
 
@@ -114,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     final prefs = await SharedPreferences.getInstance();
-    final employeeData = prefs.getString('employeeData');
+    final employeeData = prefs.getString(AppConstants.employeeData);
 
     if (employeeData != null) {
       setState(() {
@@ -187,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.transparent,
       ),
       body: _isLoading // Show loader if data is loading
-          ? Center(
+          ? const Center(
         child: CircularProgressIndicator(
           color: Colors.blue,
         ),

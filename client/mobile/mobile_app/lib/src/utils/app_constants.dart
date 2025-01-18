@@ -1,8 +1,6 @@
 class AppConstants {
 
   // Strings
-  static const String checkIn = "Check-In";
-  static const String checkOut = "Check-Out";
   static const String employeeData = "employeeData";
 
   // Asset Paths

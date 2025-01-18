@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../services/api_service.dart';
 import '../widgets/confirmation_model.dart';
 
 class AppUtils{
@@ -51,6 +53,45 @@ class AppUtils{
         );
       },
     ).then((value) => value ?? false);
+  }
+
+
+  Future<void> checkProximityAndPerformActions(String employeeId, double officeLat, double officeLong, double radius) async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    double distance = Geolocator.distanceBetween(
+      position.latitude,
+      position.longitude,
+      officeLat,
+      officeLong,
+    );
+
+    DateTime now = DateTime.now();
+
+    if (distance <= radius) {
+      if (now.hour >= 8 && now.hour <= 10) {
+        // Automatic Check-In
+        await APIService().sendAttendanceRequest(
+          employeeId,
+          "checkIn",
+          position.latitude,
+          position.longitude,
+        );
+        print("Automatic Check-In Performed");
+      }
+    } else {
+      if (now.hour >= 17) {
+        // Automatic Check-Out
+        await APIService().sendAttendanceRequest(
+          employeeId,
+          "checkOut",
+          position.latitude,
+          position.longitude,
+        );
+        print("Automatic Check-Out Performed");
+      }
+    }
   }
 
 }
